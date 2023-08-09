@@ -4,9 +4,10 @@ import AppBar from '@mui/material/AppBar';
 import Logo from 'app/fuse-layouts/shared-components/Logo';
 import NavbarToggleButton from 'app/fuse-layouts/shared-components/NavbarToggleButton';
 import Navigation from 'app/fuse-layouts/shared-components/Navigation';
-import UserNavbarHeader from 'app/fuse-layouts/shared-components/UserNavbarHeader';
 import clsx from 'clsx';
 import { memo } from 'react';
+import { Stack } from '@mui/material';
+import FooterNavbar from 'app/fuse-layouts/shared-components/FooterNavbar';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -43,20 +44,25 @@ function NavbarStyle1Content(props) {
       <AppBar
         color="primary"
         position="static"
-        className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 px-12 shadow-0"
+        className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 shadow-0"
       >
-        <div className="flex flex-1 mx-4">
+        <div className="flex flex-1">
           <Logo />
         </div>
 
-        <NavbarToggleButton className="w-40 h-40 p-0" />
       </AppBar>
 
-      <StyledContent option={{ suppressScrollX: true, wheelPropagation: false }}>
-        <UserNavbarHeader />
+        <Stack alignItems={'flex-end'}>
+          <NavbarToggleButton className="w-40 h-40 p-0" />
+        </Stack>
 
+      <StyledContent option={{ suppressScrollX: true, wheelPropagation: false }}>
         <Navigation layout="vertical" />
       </StyledContent>
+      
+      <Stack>
+        <FooterNavbar />
+      </Stack>
     </Root>
   );
 }

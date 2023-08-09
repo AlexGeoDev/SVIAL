@@ -34,7 +34,7 @@ const authDB = {
 								position: 'below'
 							},
 							footer: {
-								display: true,
+								display: false,
 								style: 'fixed',
 								position: 'below'
 							},
@@ -43,10 +43,10 @@ const authDB = {
 					},
 					customScrollbars: true,
 					theme: {
-						main: 'defaultDark',
-						navbar: 'defaultDark',
-						toolbar: 'defaultDark',
-						footer: 'defaultDark'
+						main: 'light8',
+						navbar: 'light8',
+						toolbar: 'light8',
+						footer: 'light8'
 					}
 				},
 				shortcuts: ['calendar', 'mail', 'contacts']
@@ -63,7 +63,7 @@ const authDB = {
 				email: 'staff@fusetheme.com',
 				settings: {
 					layout: {
-						style: 'layout2',
+						style: 'layout1',
 						config: {
 							mode: 'boxed',
 							scroll: 'content',
@@ -75,17 +75,17 @@ const authDB = {
 								position: 'below'
 							},
 							footer: {
-								display: true,
+								display: false,
 								style: 'fixed'
 							}
 						}
 					},
 					customScrollbars: true,
 					theme: {
-						main: 'greeny',
-						navbar: 'mainThemeDark',
-						toolbar: 'mainThemeDark',
-						footer: 'mainThemeDark'
+						main: 'light8',
+						navbar: 'light8',
+						toolbar: 'light8',
+						footer: 'light8',
 					}
 				},
 				shortcuts: ['calendar', 'mail', 'contacts', 'todo']
@@ -270,7 +270,7 @@ function generateJWTToken(tokenPayload)
 	const encodedPayload = base64url(stringifiedPayload);
 
 	// Sign the encoded header and mock-api
-	let signature: any = encodedHeader + '.' + encodedPayload;
+	let signature = encodedHeader + '.' + encodedPayload;
 	signature = HmacSHA256(signature, jwtSecret);
 	signature = base64url(signature);
 

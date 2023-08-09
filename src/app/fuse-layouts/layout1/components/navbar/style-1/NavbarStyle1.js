@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { navbarCloseMobile } from 'app/store/fuse/navbarSlice';
 import NavbarStyle1Content from './NavbarStyle1Content';
 
-const navbarWidth = 280;
+const navbarWidth = 268;
 
 const StyledNavBar = styled('div')(({ theme, open, position }) => ({
   minWidth: navbarWidth,

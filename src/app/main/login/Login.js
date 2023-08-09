@@ -31,7 +31,7 @@ function Login() {
       >
           <img 
             className="logo-icon" 
-            src="assets/images/logos/logo2.png" 
+            src="assets/images/logos/logo.png" 
             alt="logo ministerio de transporte de España"
             style={{ maxHeight: '66px' }}
           />
