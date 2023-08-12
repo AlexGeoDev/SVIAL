@@ -50,11 +50,11 @@ function NavbarStyle1Content(props) {
           <Logo />
         </div>
 
-      </AppBar>
-
         <Stack alignItems={'flex-end'}>
           <NavbarToggleButton className="w-40 h-40 p-0" />
         </Stack>
+      </AppBar>
+
 
       <StyledContent option={{ suppressScrollX: true, wheelPropagation: false }}>
         <Navigation layout="vertical" />

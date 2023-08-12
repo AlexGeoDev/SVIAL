@@ -7,6 +7,7 @@ import Navigation from 'app/fuse-layouts/shared-components/Navigation';
 import UserNavbarHeader from 'app/fuse-layouts/shared-components/UserNavbarHeader';
 import clsx from 'clsx';
 import { memo } from 'react';
+import { Stack } from '@mui/material';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -42,18 +43,21 @@ function NavbarStyle2Content(props) {
     <Root className={clsx('flex flex-auto flex-col overflow-hidden h-full', props.className)}>
       <AppBar
         color="primary"
-        position="static"
-        className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 px-12 shadow-0"
+        position="relative"
+        className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 shadow-0"
       >
-        <div className="flex flex-1 mx-4">
+        {/* <div className="flex flex-1">
           <Logo />
-        </div>
+        </div> */}
 
-        <NavbarToggleButton className="w-40 h-40 p-0" />
+        <Stack ml={1.5}> 
+          <NavbarToggleButton className="w-40 h-40 p-0" />
+        </Stack>
       </AppBar>
 
+
       <StyledContent option={{ suppressScrollX: true, wheelPropagation: false }}>
-        <UserNavbarHeader />
+        {/* <UserNavbarHeader /> */}
 
         <Navigation layout="vertical" />
       </StyledContent>

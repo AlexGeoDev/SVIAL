@@ -5,7 +5,7 @@ import { navbarCloseFolded, navbarOpenFolded, navbarCloseMobile } from 'app/stor
 import { useDispatch, useSelector } from 'react-redux';
 import NavbarStyle2Content from './NavbarStyle2Content';
 
-const navbarWidth = 280;
+const navbarWidth = '332px';
 
 const Root = styled('div')(({ theme, folded }) => ({
   display: 'flex',
@@ -59,8 +59,9 @@ const StyledNavbar = styled('div')(
     ...(foldedandclosed && {
       '& .NavbarStyle2-content': {
         '& .logo-icon': {
-          width: 32,
-          height: 32,
+          // border: '3px solid red',
+          width: 0,
+          height: 0,
         },
         '& .logo-text': {
           opacity: 0,

@@ -12,6 +12,7 @@ import LeftSideLayout1 from './components/LeftSideLayout1';
 import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
 import RightSideLayout1 from './components/RightSideLayout1';
 import ToolbarLayout1 from './components/ToolbarLayout1';
+import { Stack } from '@mui/material';
 
 const Root = styled('div')(({ theme, config }) => ({
   ...(config.mode === 'boxed' && {
@@ -39,7 +40,7 @@ function Layout1(props) {
       {config.leftSidePanel.display && <LeftSideLayout1 />}
 
       <div className="flex flex-auto min-w-0">
-        {config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
+          {config.navbar.display && config.navbar.position === 'left' && <NavbarWrapperLayout1 />}
 
         <main id="fuse-main" className="flex flex-col flex-auto min-h-screen min-w-0 relative z-10">
           {config.toolbar.display && (
@@ -61,6 +62,8 @@ function Layout1(props) {
           {config.footer.display && (
             <FooterLayout1 className={config.footer.style === 'fixed' && 'sticky bottom-0'} />
           )}
+
+          {/* </div> */}
         </main>
 
         {config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
