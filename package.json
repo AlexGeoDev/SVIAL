@@ -45,6 +45,7 @@
         "mobile-detect": "1.4.5",
         "moment": "2.29.1",
         "notistack": "1.0.6-next.3",
+        "ol": "^7.5.1",
         "perfect-scrollbar": "1.5.3",
         "prismjs": "1.25.0",
         "prop-types": "15.7.2",
