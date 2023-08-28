@@ -56,6 +56,15 @@ const ConsultaMapa = () => {
   const handleClearPobFinal = () => {
     setPoblacionFinal('');
   }
+  // -----------------------------------------
+  
+  const handleChangeHigway = (event) => {
+    setSelectHighway(event.target.value);
+  };
+  const handleClearHighway = () => {
+    setSelectHighway('');
+  };
+  // -----------------------------------------
 
   const handleYearChange = (date) => {
     setSelectedYear(date);
@@ -69,21 +78,14 @@ const ConsultaMapa = () => {
     setSelectedDate(date);
   };
 
-  const handleChangeLocation = (event) => {
-    setSelectedLocation(event.target.value);
-  };
+  // const handleChangeLocation = (event) => {
+  //   setSelectedLocation(event.target.value);
+  // };
 
-  const handleClearLocation = () => {
-    setSelectedLocation('');
-  };
+  // const handleClearLocation = () => {
+  //   setSelectedLocation('');
+  // };
 
-  const handleChangeHigway = (event) => {
-    setSelectHighway(event.target.value);
-  };
-
-  const handleClearHighway = () => {
-    setSelectHighway('');
-  };
 
   return (
     <Stack

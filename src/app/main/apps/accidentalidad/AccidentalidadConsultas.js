@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Box,
-  Button,
   Stack, 
-  Grid,
   Tab, 
   Tabs, 
   Typography 
@@ -13,10 +11,17 @@ import AccidentalidadMap from './AccidentalidadMap';
 import ConsultaMapa from './tabs/ConsultaMapa';
 import ConsultaTramo from './tabs/ConsultaTramo';
 import ConsultaAmbito from './tabs/ConsultaAmbito';
+import BarChart from './tabs/components/BarChart';
+import PieChart from './tabs/components/PieChart';
+import AccidentalidadEstadisticas from './AccidentalidadEstadisticas';
+
+const tabLabelStyles = {
+  fontWeight: 'bold', // Texto en negrilla
+  color: 'black',     // Color de texto negro
+};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <Stack 
       role="tabpanel"
@@ -32,8 +37,8 @@ function TabPanel(props) {
       )}
       
     </Stack>
-  )
-};
+  );
+}
 
 TabPanel.propTypes = {
   children: PropTypes.node,
@@ -46,30 +51,54 @@ function a11yProps(index) {
     id: `vertical-tab-${index}`,
     'aria-controls': `vertical-tabpanel-${index}`,
   };
-};
+}
 
 export default function AccidentalidadConsultas() {
   const [tabValue, setTabValue] = useState(0);
-  const [showTabs, setShowTabs] = useState(false);
-
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  return(
+  
+  return (
     <Box className='flex flex-col'>
       <Stack direction={'row'} className='flex flex-1'>
         <Tabs
-          className='border-1'
+          // className='border-1'
           orientation='vertical'
           value={tabValue}
           onChange={handleChange}
           aria-label="Vertical tabs"
-          sx={{ borderRight: 1, borderColor: 'divider'}}
+          sx={{ 
+            borderRight: 1, 
+            borderColor: 'divider', 
+            minWidth: '170px', 
+            '& .Mui-selected': {
+              backgroundColor: '#9fccf8',
+            },
+            '& .MuiTab-root': {
+              backgroundColor: 'white',
+              '&.Mui-selected': {
+                backgroundColor: '#9fccf8',
+              },
+            },
+          }}
         >
-          <Tab label="Consulta por tramo" {...a11yProps(0)} />
-          <Tab label="Consulta por ámbito" {...a11yProps(1)} />
-          <Tab label="Consulta por mapa" {...a11yProps(2)} />
+          <Tab 
+            label="Consulta por tramo" 
+            style={tabLabelStyles}
+            {...a11yProps(0)} 
+          />
+          <Tab 
+            label="Consulta por ámbito" 
+            style={tabLabelStyles}
+            {...a11yProps(1)} 
+          />
+          <Tab 
+            label="Consulta por mapa" 
+            style={tabLabelStyles}
+            {...a11yProps(2)} 
+          />
         </Tabs>
         <TabPanel 
           value={tabValue} 
@@ -81,11 +110,13 @@ export default function AccidentalidadConsultas() {
         <TabPanel 
           value={tabValue} 
           index={1}
-          className='flex flex-1 justify-center'
+          className='flex flex-1 justify-center w-max-170'
         >
           <ConsultaAmbito />
         </TabPanel>
-        <TabPanel value={tabValue} index={2}>
+        <TabPanel 
+          value={tabValue} 
+          index={2}>
           <ConsultaMapa />
         </TabPanel>
       </Stack>
@@ -94,13 +125,18 @@ export default function AccidentalidadConsultas() {
         <Stack width={'50vw'}>
           <AccidentalidadMap />
         </Stack>
-        <Stack>
-          Graficos estadisticos
+        <Stack direction={'row'} width={'50vw'} 
+          justifyContent={'center'}
+          alignItems={'center'}
+        >
+          <BarChart />
+          <PieChart />
         </Stack>
       </Stack>
 
-      
+      <Stack className='flex flex-1'>
+        <AccidentalidadEstadisticas />
+      </Stack>
     </Box>
-    
-  )
-};
+  );
+}
