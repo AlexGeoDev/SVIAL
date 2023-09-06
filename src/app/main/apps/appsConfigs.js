@@ -1,5 +1,6 @@
 import AcademyAppConfig from './academy/AcademyAppConfig';
 import AccidentalidadAppConfig from './accidentalidad/AccidentalidadAppConfig';
+import AccidentesAppConfig from './accidentes/AccidentesAppConfig';
 import CalendarAppConfig from './calendar/CalendarAppConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
@@ -14,6 +15,7 @@ import TodoAppConfig from './todo/TodoAppConfig';
 
 const appsConfigs = [
   AccidentalidadAppConfig,
+  AccidentesAppConfig,
   AnalyticsDashboardAppConfig,
   ProjectDashboardAppConfig,
   MailAppConfig,

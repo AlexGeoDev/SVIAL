@@ -12,6 +12,8 @@ import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import Logo from 'app/fuse-layouts/shared-components/Logo';
+import Typography from '@mui/material/Typography'
+import { Stack } from '@mui/material';
 // import FuseShortcuts from '@fuse/core/FuseShortcuts';
 // import ChatPanelToggleButton from 'app/fuse-layouts/shared-components/chatPanel/ChatPanelToggleButton';
 // import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
@@ -56,7 +58,10 @@ function ToolbarLayout1(props) {
             {/* <Hidden lgDown>
               <FuseShortcuts />
             </Hidden> */}
-            <Logo />
+            {/* <Logo /> */}
+            <Stack ml={5}>
+              <Typography variant="h4" color="white" fontWeight={'bold'}>SVIAL</Typography>
+            </Stack>
           </div>
 
           <div className="flex items-center px-8 h-full overflow-x-auto">

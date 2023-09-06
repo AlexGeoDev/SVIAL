@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Stack, TextField, Typography, Button } from '@mui/material';
-import ReportIcon from '@mui/icons-material/Report';
+import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 import BackspaceIcon from '@mui/icons-material/Backspace';
@@ -27,13 +27,13 @@ const ReportButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const AccidentalidadHeader = () => {
+const AccidentesHeader = () => {
   return (
     <HeaderContainer className='flex border-1 border-black'>
       <Stack direction="row" width="30vw" className="flex items-center" spacing={1}>
-        <ReportIcon style={{ fontSize: '34px', color: 'white' }} />
+        <TaxiAlertIcon style={{ fontSize: '34px', color: 'white' }} />
         <Typography variant="h5" color="initial" style={{ fontWeight: 'bold', height: '36px' }}>
-          Accidentalidad
+          Accidentes
         </Typography>
       </Stack>
 
@@ -72,4 +72,4 @@ const AccidentalidadHeader = () => {
   );
 }
 
-export default AccidentalidadHeader;
+export default AccidentesHeader;

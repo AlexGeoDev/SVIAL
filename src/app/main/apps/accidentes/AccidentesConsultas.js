@@ -7,13 +7,20 @@ import {
   Typography 
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import AccidentalidadMap from './AccidentalidadMap';
-import ConsultaMapa from './tabs/ConsultaMapa';
-import ConsultaTramo from './tabs/ConsultaTramo';
-import ConsultaAmbito from './tabs/ConsultaAmbito';
+import ConsultaAmbito from './tabs/tabsConsultas/ConsultaAmbito';
+import ConsultaTramo from './tabs/tabsConsultas/ConsultaTramo';
+import ConsultaMapa from './tabs/tabsConsultas/ConsultaMapa';
+import AccidentesMap from './AccidentesMap';
 import BarChart from './tabs/components/BarChart';
 import PieChart from './tabs/components/PieChart';
-import AccidentalidadEstadisticas from './AccidentalidadEstadisticas';
+import AccidentesEstadisticas from './AccidentesEstadisticas';
+import AccidentesVariables from './AccidentesVariables';
+// import AccidentalidadMap from './AccidentalidadMap';
+// import ConsultaMapa from './tabs/ConsultaMapa';
+// import ConsultaTramo from './tabs/ConsultaTramo';
+// import ConsultaAmbito from './tabs/ConsultaAmbito';
+// import BarChart from './tabs/components/BarChart';
+// import PieChart from './tabs/components/PieChart';
 
 const tabLabelStyles = {
   fontWeight: 'bold', // Texto en negrilla
@@ -53,7 +60,7 @@ function a11yProps(index) {
   };
 }
 
-export default function AccidentalidadConsultas() {
+export default function AccidentesConsultas() {
   const [tabValue, setTabValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -121,9 +128,13 @@ export default function AccidentalidadConsultas() {
         </TabPanel>
       </Stack>
 
+      <Stack className='border-1 border-black'>
+        <AccidentesVariables />
+      </Stack>
+
       <Stack direction={'row'}>
         <Stack width={'50vw'} className='border-1 border-black'>
-          <AccidentalidadMap />
+          <AccidentesMap />
         </Stack>
         <Stack 
           width={'50vw'} 
@@ -137,8 +148,8 @@ export default function AccidentalidadConsultas() {
         </Stack>
       </Stack>
 
-      <Stack className='flex flex-1 border-1 border-black'>
-        <AccidentalidadEstadisticas />
+      <Stack className='flex flex-1 items-center border-1 border-black'>
+        <AccidentesEstadisticas />
       </Stack>
     </Box>
   );

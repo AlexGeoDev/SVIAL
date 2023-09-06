@@ -10,13 +10,6 @@ i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig = [
-  {
-    id: 'modulos',
-    title: 'modulos',
-    translate: 'MÓDULOS',
-    type: 'group',
-    icon: 'apps',
-    children: [
       // {
       //   id: 'dashboards',
       //   title: 'Dashboards',
@@ -38,6 +31,13 @@ const navigationConfig = [
       //     },
       //   ],
       // },
+  {
+    id: 'modulos',
+    title: 'modulos',
+    translate: 'MODULOS',
+    type: 'group',
+    icon: 'M',
+    children: [
       {
         id: 'Accidentalidad',
         title: 'Accidentalidad',
@@ -62,14 +62,16 @@ const navigationConfig = [
         icon: 'edit_road',
         url: 'apps/tapm',
       },
-    ],
+
+    ]
   },
   {
     id: 'accidentes',
     title: 'accidentes',
     translate: 'ACCIDENTES',
-    type: 'group',
-    // icon: 'apps',
+    type: 'item',
+    icon: 'close_fullscreen',
+    url: 'apps/accidentes',
   },
   {
     id: 'auditorias',
@@ -95,6 +97,14 @@ const navigationConfig = [
         url: 'apps/carga_datos',
       },
     ],
+  },
+  {
+    id: 'repositorio',
+    title: 'repositorio',
+    translate: 'REPOSITORIO',
+    type: 'item',
+    icon: 'R',
+    url: 'apps/repositorio',
   },
   {
     id: 'administracion',
@@ -137,6 +147,6 @@ const navigationConfig = [
       },
     ],
   },
-];
+]
 
 export default navigationConfig;

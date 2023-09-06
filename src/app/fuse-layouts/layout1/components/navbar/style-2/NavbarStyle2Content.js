@@ -6,8 +6,10 @@ import NavbarToggleButton from 'app/fuse-layouts/shared-components/NavbarToggleB
 import Navigation from 'app/fuse-layouts/shared-components/Navigation';
 import UserNavbarHeader from 'app/fuse-layouts/shared-components/UserNavbarHeader';
 import clsx from 'clsx';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Stack } from '@mui/material';
+import FooterNavbar from 'app/fuse-layouts/shared-components/FooterNavbar';
+// import miniProintecImage from 'assets/images/logos/miniProintec.png';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -38,17 +40,29 @@ const StyledContent = styled(FuseScrollbars)(({ theme }) => ({
 
 function NavbarStyle2Content(props) {
   const theme = useTheme();
+  const [showMiniProintec, setShowMiniProintec] = useState(false);
+
+  const handleMouseLeave = () => {
+    setShowMiniProintec(true);
+  };
+
+  const handleMouseEnter = () => {
+    setShowMiniProintec(false);
+  };
 
   return (
-    <Root className={clsx('flex flex-auto flex-col overflow-hidden h-full', props.className)}>
+    <Root 
+      onMouseLeave={handleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      className={clsx('flex flex-auto flex-col overflow-hidden h-full', props.className)}>
       <AppBar
         color="primary"
         position="relative"
         className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 shadow-0"
       >
-        {/* <div className="flex flex-1">
+        <div className="flex flex-1">
           <Logo />
-        </div> */}
+        </div>
 
         <Stack ml={1.5}> 
           <NavbarToggleButton className="w-40 h-40 p-0" />
@@ -59,8 +73,16 @@ function NavbarStyle2Content(props) {
       <StyledContent option={{ suppressScrollX: true, wheelPropagation: false }}>
         {/* <UserNavbarHeader /> */}
 
-        <Navigation layout="vertical" />
+        <Stack mt={5}>
+          <Navigation layout="vertical" />
+        </Stack>
+        
+        <Stack mt={5}>
+          <FooterNavbar showMiniProintec={showMiniProintec} />
+        </Stack>
       </StyledContent>
+      
+
     </Root>
   );
 }

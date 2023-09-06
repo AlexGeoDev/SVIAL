@@ -5,8 +5,7 @@ import Tabla1 from './components/Tabla1';
 
 export default function Accidentabilidad() {
   return (
-    <Stack 
-      border={1} 
+    <Stack
       marginX={3}
       padding={5}
       spacing={2}
