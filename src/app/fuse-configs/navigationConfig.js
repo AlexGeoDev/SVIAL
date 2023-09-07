@@ -119,7 +119,7 @@ const navigationConfig = [
         translate: 'Usuarios',
         type: 'item',
         icon: 'people',
-        url: 'apps/usuarios',
+        url: 'apps/contacts/all',
       },
       {
         id: 'datos',

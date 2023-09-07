@@ -6,7 +6,7 @@ export const getContacts = createAsyncThunk(
   'contactsApp/contacts/getContacts',
   async (routeParams, { getState }) => {
     routeParams = routeParams || getState().contactsApp.contacts.routeParams;
-    const response = await axios.get('/api/contacts-app/contacts', {
+    const response = await axios.get('/user', {
       params: routeParams,
     });
     const data = await response.data;
@@ -18,7 +18,7 @@ export const getContacts = createAsyncThunk(
 export const addContact = createAsyncThunk(
   'contactsApp/contacts/addContact',
   async (contact, { dispatch, getState }) => {
-    const response = await axios.post('/api/contacts-app/add-contact', { contact });
+    const response = await axios.post('/user', { contact });
     const data = await response.data;
 
     dispatch(getContacts());
@@ -26,6 +26,17 @@ export const addContact = createAsyncThunk(
     return data;
   }
 );
+// export const addContact = createAsyncThunk(
+//   'contactsApp/contacts/addContact',
+//   async (contact, { dispatch, getState }) => {
+//     const response = await axios.post('/api/contacts-app/add-contact', { contact });
+//     const data = await response.data;
+
+//     dispatch(getContacts());
+
+//     return data;
+//   }
+// );
 
 export const updateContact = createAsyncThunk(
   'contactsApp/contacts/updateContact',

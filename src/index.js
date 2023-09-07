@@ -9,8 +9,14 @@ import ReactDOM from 'react-dom';
 import App from 'app/App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+axios.defaults.baseURL = 'https://svial-prointec.com/api'
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('root')
+);
 
 reportWebVitals();
 
