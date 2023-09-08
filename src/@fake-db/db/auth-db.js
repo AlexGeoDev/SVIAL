@@ -56,7 +56,7 @@ const authDB = {
 			uuid: 'XgbuVEXBU6gtSKdbTYR1Zbbby1i3',
 			from: 'custom-db',
 			password: 'staff',
-			role: 'staff',
+			role: 'user',
 			data: {
 				displayName: 'Arnold Matlock',
 				photoURL: 'assets/images/avatars/Arnold.jpg',
@@ -65,19 +65,23 @@ const authDB = {
 					layout: {
 						style: 'layout1',
 						config: {
-							mode: 'boxed',
 							scroll: 'content',
 							navbar: {
-								display: true
+								display: true,
+								folded: true,
+								position: 'left'
 							},
 							toolbar: {
 								display: true,
+								style: 'fixed',
 								position: 'below'
 							},
 							footer: {
 								display: false,
-								style: 'fixed'
-							}
+								style: 'fixed',
+								position: 'below'
+							},
+							mode: 'fullwidth'
 						}
 					},
 					customScrollbars: true,
