@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,20 +25,14 @@ import {
   closeNewContactDialog,
   closeEditContactDialog,
 } from './store/contactsSlice';
+import { MenuItem, Select } from '@mui/material';
 
 const defaultValues = {
-  id: '',
   name: '',
-  lastName: '',
-  avatar: 'assets/images/avatars/profile.jpg',
-  nickname: '',
-  company: '',
-  jobTitle: '',
-  email: '',
-  phone: '',
-  address: '',
-  birthday: '',
-  notes: '',
+  mail: '',
+  password: '',
+	isAdmin: false,
+	active: false,
 };
 
 /**
@@ -49,6 +43,7 @@ const schema = yup.object().shape({
 });
 
 function ContactDialog(props) {
+  const [selectedProjects, setSelectedProjects] = useState([]);
   const dispatch = useDispatch();
   const contactDialog = useSelector(({ contactsApp }) => contactsApp.contacts.contactDialog);
 
@@ -82,7 +77,7 @@ function ContactDialog(props) {
       reset({
         ...defaultValues,
         ...contactDialog.data,
-        id: FuseUtils.generateGUID(),
+        // id: FuseUtils.generateGUID(),
       });
     }
   }, [contactDialog.data, contactDialog.type, reset]);
@@ -99,10 +94,17 @@ function ContactDialog(props) {
   /**
    * Close Dialog
    */
+  // function closeComposeDialog() {
+  //   return contactDialog.type === 'edit'
+  //     ? dispatch(closeEditContactDialog())
+  //     : dispatch(closeNewContactDialog());
+  // }
+
   function closeComposeDialog() {
-    return contactDialog.type === 'edit'
-      ? dispatch(closeEditContactDialog())
-      : dispatch(closeNewContactDialog());
+    const closeAction = contactDialog.type === 'edit' 
+      ? closeEditContactDialog() 
+      : closeNewContactDialog();
+    dispatch(closeAction);
   }
 
   /**
@@ -112,7 +114,31 @@ function ContactDialog(props) {
     if (contactDialog.type === 'new') {
       dispatch(addContact(data));
     } else {
-      dispatch(updateContact({ ...contactDialog.data, ...data }));
+      dispatch(updateContact({ 
+        ...contactDialog.data, 
+        ...data 
+      }));
+    }
+    closeComposeDialog();
+  }
+
+  function onSubmit(data) {
+    const newContactData = {
+      name: data.name,
+      password: data.password,
+      mail: data.mail,
+      isAdmin: data.isAdmin,
+      active: data.active,
+      projects: selectedProjects,
+    };
+
+    if (contactDialog.type === 'new') {
+      dispatch(addContact(newContactData));
+    } else {
+      dispatch(updateContact({ 
+        ...contactDialog.data, 
+        ...data 
+      }));
     }
     closeComposeDialog();
   }
@@ -157,9 +183,6 @@ function ContactDialog(props) {
       >
         <DialogContent classes={{ root: 'p-24' }}>
           <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">account_circle</Icon>
-            </div>
             <Controller
               control={control}
               name="name"
@@ -167,7 +190,7 @@ function ContactDialog(props) {
                 <TextField
                   {...field}
                   className="mb-24"
-                  label="Name"
+                  label="Nombre"
                   id="name"
                   error={!!errors.name}
                   helperText={errors?.name?.message}
@@ -180,17 +203,15 @@ function ContactDialog(props) {
           </div>
 
           <div className="flex">
-            <div className="min-w-48 pt-20" />
-
             <Controller
               control={control}
-              name="lastName"
+              name="mail"
               render={({ field }) => (
                 <TextField
                   {...field}
                   className="mb-24"
-                  label="Last name"
-                  id="lastName"
+                  label="Correo electronico"
+                  id="mail"
                   variant="outlined"
                   fullWidth
                 />
@@ -198,172 +219,73 @@ function ContactDialog(props) {
             />
           </div>
 
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">star</Icon>
+          <div className='flex'>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  className="mb-24"
+                  label="Contraseña"
+                  id="password"
+                  variant="outlined"
+                  fullWidth
+                />
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col">
+              <Typography variant="body1" color="initial" sx={{ mb: 1 }}>
+                Perfil
+              </Typography>
+              <Controller
+                name="isAdmin"
+                control={control}
+                render={({ field: { onChange, value: formPerfilVal } }) => (
+                  <Select
+                    id="isAdmin"
+                    value={formPerfilVal}
+                    defaultValue={'Usuario'}
+                    onChange={(event) => onChange(event.target.value)}
+                  >
+                    <MenuItem value={false}>Usuario</MenuItem>
+                    <MenuItem value={true}>Administrador</MenuItem>
+                  </Select>
+                )}
+              />
             </div>
-            <Controller
-              control={control}
-              name="nickname"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Nickname"
-                  id="nickname"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
 
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">phone</Icon>
+            <div className="mb-16">
+              <div className="flex items-center justify-start p-12">
+                <Typography variant="body1" color="initial">
+                  Estado
+                </Typography>
+                <div className="flex">
+                  <Controller
+                    name="active"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <div className="flex">
+                        <IconButton
+                          tabIndex={-1}
+                          disableRipple
+                          onClick={(ev) => onChange(!value)}
+                          size="large"
+                        >
+                          {value ? (
+                            <Icon color="secondary">check_circle</Icon>
+                          ) : (
+                            <Icon color="action">radio_button_unchecked</Icon>
+                          )}
+                        </IconButton>
+                      </div>                      
+                    )}
+                  />
+                </div>
+              </div>
             </div>
-            <Controller
-              control={control}
-              name="phone"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Phone"
-                  id="phone"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">email</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Email"
-                  id="email"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">domain</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="company"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Company"
-                  id="company"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">work</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="jobTitle"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Job title"
-                  id="jobTitle"
-                  name="jobTitle"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">cake</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="birthday"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  id="birthday"
-                  label="Birthday"
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">home</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="address"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Address"
-                  id="address"
-                  variant="outlined"
-                  fullWidth
-                />
-              )}
-            />
-          </div>
-
-          <div className="flex">
-            <div className="min-w-48 pt-20">
-              <Icon color="action">note</Icon>
-            </div>
-            <Controller
-              control={control}
-              name="notes"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  className="mb-24"
-                  label="Notes"
-                  id="notes"
-                  variant="outlined"
-                  multiline
-                  rows={5}
-                  fullWidth
-                />
-              )}
-            />
-          </div>
         </DialogContent>
 
         {contactDialog.type === 'new' ? (

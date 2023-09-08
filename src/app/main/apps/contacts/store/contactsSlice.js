@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getUserData } from './userSlice';
 
 export const getContacts = createAsyncThunk(
-  'contactsApp/contacts/getContacts',
+  'Mostrar todos los usuarios',
   async (routeParams, { getState }) => {
     routeParams = routeParams || getState().contactsApp.contacts.routeParams;
     const response = await axios.get('/user', {
@@ -16,9 +16,9 @@ export const getContacts = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-  'contactsApp/contacts/addContact',
+  'Agregar un usuario',
   async (contact, { dispatch, getState }) => {
-    const response = await axios.post('/user', { contact });
+    const response = await axios.post('/user', contact);
     const data = await response.data;
 
     dispatch(getContacts());
@@ -26,22 +26,11 @@ export const addContact = createAsyncThunk(
     return data;
   }
 );
-// export const addContact = createAsyncThunk(
-//   'contactsApp/contacts/addContact',
-//   async (contact, { dispatch, getState }) => {
-//     const response = await axios.post('/api/contacts-app/add-contact', { contact });
-//     const data = await response.data;
-
-//     dispatch(getContacts());
-
-//     return data;
-//   }
-// );
 
 export const updateContact = createAsyncThunk(
-  'contactsApp/contacts/updateContact',
+  'Actualizar un usuario',
   async (contact, { dispatch, getState }) => {
-    const response = await axios.post('/api/contacts-app/update-contact', { contact });
+    const response = await axios.patch(`/user/${contact.id}`, contact);
     const data = await response.data;
 
     dispatch(getContacts());
@@ -51,11 +40,15 @@ export const updateContact = createAsyncThunk(
 );
 
 export const removeContact = createAsyncThunk(
-  'contactsApp/contacts/removeContact',
+  'Borrar un usuario',
   async (contactId, { dispatch, getState }) => {
-    await axios.post('/api/contacts-app/remove-contact', { contactId });
+    console.log('contacId: ' + contactId);
+    const response = await axios.delete(`/user/${contactId}` );
+    const data = await response.data;
 
-    return contactId;
+    dispatch(getContacts());
+
+    return data;
   }
 );
 
