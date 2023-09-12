@@ -5,69 +5,24 @@ import jwtService from 'app/services/jwtService';
 import { setUserData } from './userSlice';
 
 export const submitLogin =
-  ({ email, password }) =>
+  ({ username, password }) =>
   async (dispatch) => {
     return jwtService
-      .signInWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(username, password)
       .then((user) => {
         dispatch(setUserData(user));
 
         return dispatch(loginSuccess());
       })
-      .catch((errors) => {
-        return dispatch(loginError(errors));
-      });
-  };
-
-export const submitLoginWithFireBase =
-  ({ email, password }) =>
-  async (dispatch) => {
-    if (!firebaseService.auth) {
-      console.warn("Firebase Service didn't initialize, check your configuration");
-
-      return () => false;
-    }
-    return firebaseService.auth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        return dispatch(loginSuccess());
-      })
       .catch((error) => {
-        const emailErrorCodes = [
-          'auth/email-already-in-use',
-          'auth/invalid-email',
-          'auth/operation-not-allowed',
-          'auth/user-not-found',
-          'auth/user-disabled',
-        ];
-        const passwordErrorCodes = ['auth/weak-password', 'auth/wrong-password'];
-        const response = [];
-
-        if (emailErrorCodes.includes(error.code)) {
-          response.push({
-            type: 'email',
-            message: error.message,
-          });
-        }
-
-        if (passwordErrorCodes.includes(error.code)) {
-          response.push({
-            type: 'password',
-            message: error.message,
-          });
-        }
-
-        if (error.code === 'auth/invalid-api-key') {
-          dispatch(showMessage({ message: error.message }));
-        }
-
-        return dispatch(loginError(response));
+        console.log(error);
+        return dispatch(loginError(error.message));
       });
   };
 
 const initialState = {
   success: false,
-  errors: [],
+  error: '',
 };
 
 const loginSlice = createSlice({
@@ -76,11 +31,11 @@ const loginSlice = createSlice({
   reducers: {
     loginSuccess: (state, action) => {
       state.success = true;
-      state.errors = [];
+      state.error = '';
     },
     loginError: (state, action) => {
       state.success = false;
-      state.errors = action.payload;
+      state.error = action.payload;
     },
   },
   extraReducers: {},

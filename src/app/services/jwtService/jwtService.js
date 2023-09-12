@@ -1,7 +1,6 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-/* eslint-disable camelcase */
 
 class JwtService extends FuseUtils.EventEmitter {
   init() {
@@ -18,7 +17,12 @@ class JwtService extends FuseUtils.EventEmitter {
         return new Promise((resolve, reject) => {
           if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
             // if you ever get an unauthorized response, logout the user
-            this.emit('onAutoLogout', 'Invalid access_token');
+            const accesssToken= this.getAccessToken();
+            if (accesssToken && !this.isAuthTokenValid(accesssToken)){
+              this.emit('onAutoLogout', 'La sesión ha expirado');
+            } else if (accessToken) {
+              this.emit('onAutoLogout', 'Token de acceso no  válido');
+            }
             this.setSession(null);
           }
           throw err;
@@ -28,123 +32,89 @@ class JwtService extends FuseUtils.EventEmitter {
   };
 
   handleAuthentication = () => {
-    const access_token = this.getAccessToken();
+    const accessToken = this.getAccessToken();
 
-    if (!access_token) {
+    if (!accessToken) {
       this.emit('onNoAccessToken');
 
       return;
     }
 
-    if (this.isAuthTokenValid(access_token)) {
-      this.setSession(access_token);
+    if (this.isAuthTokenValid(accessToken)) {
+      this.setSession(accessToken);
       this.emit('onAutoLogin', true);
     } else {
       this.setSession(null);
-      this.emit('onAutoLogout', 'access_token expired');
+      this.emit('onAutoLogout', 'accessToken expired');
     }
   };
 
-  createUser = (data) => {
-    return new Promise((resolve, reject) => {
-      axios.post('/api/auth/register', data).then((response) => {
-        if (response.data.user) {
-          this.setSession(response.data.access_token);
-          resolve(response.data.user);
-        } else {
-          reject(response.data.error);
-        }
-      });
-    });
-  };
-
-  // signInWithEmailAndPassword = (email, password) => {
-  //   return new Promise((resolve, reject) => {
-  //     axios
-  //       .get('/api/auth', {
-  //         data: {
-  //           email,
-  //           password,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         if (response.data.user) {
-  //           this.setSession(response.data.access_token);
-  //           resolve(response.data.user);
-  //         } else {
-  //           reject(response.data.error);
-  //         }
-  //       });
-  //   });
-  // };
-
-    signInWithEmailAndPassword = (email, password) => {
-      let token;
+    signInWithEmailAndPassword = (username, password) => {
       return new Promise((resolve, reject) => {
         axios
           .post("/login", {
-            username: "master",
-            password: "*m4st3rPass*"
-          })
-          .then(response => {
-            console.log(response)
-            token = response.data;
-            return axios.get('/api/auth', {
-              data: {
-                email,
-                password,
-              },
-            });
+            username,
+            password,
           })
           
           .then((response) => {
-            if (response.data.user) {
-              console.log(response);
-              this.setSession( token );
-              resolve(response.data.user);
+            if (response.data) {
+              const decoded = jwtDecode(response.data);
+              this.setSession(response.data);
+              resolve({
+                id: decoded.id,
+                role: decoded.isAdmin ? 'admin' : 'user',
+                data: {
+                  displayName: decoded.name,
+                  email: decoded.mail,
+                },
+              });
             } else {
-              reject(response.data.error);
+              reject(new Error('Respuesta del servidor no válida'));
             }
-          });
+          })
+          .catch((e) => {
+            reject(new Error(e.response.data.message));
+          })
       });
     };
 
   signInWithToken = () => {
     return new Promise((resolve, reject) => {
+      const accessToken = this.getAccessToken();
+      const decoded = jwtDecode(accessToken);
+      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
       axios
-        .get('/api/auth/access-token', {
-          data: {
-            access_token: this.getAccessToken(),
-          },
-        })
+        .get(`/user/${decoded.id}`)
         .then((response) => {
-          if (response.data.user) {
-            this.setSession(response.data.access_token);
-            resolve(response.data.user);
+          if (response.data) {
+            this.setSession(accessToken);
+            resolve({
+              uuid: decoded.id,
+              role: decoded.isAdmin ? 'admin' : 'user',
+              data: {
+                displayName: decoded.name,
+                email: decoded.mail,
+              }
+            });
           } else {
             this.logout();
-            reject(new Error('Failed to login with token.'));
+            reject(new Error('El login no proporcionó los datos del usuario.'));
           }
         })
-        .catch((error) => {
+        .catch(() => {
           this.logout();
-          reject(new Error('Failed to login with token.'));
+          reject(new Error('Token no válido.'));
         });
     });
   };
 
-  updateUserData = (user) => {
-    return axios.post('/api/auth/user/update', {
-      user,
-    });
-  };
-
-  setSession = (access_token) => {
-    if (access_token) {
-      localStorage.setItem('jwt_access_token', access_token);
-      axios.defaults.headers.common.Authorization = `Bearer ${access_token}`;
+  setSession = (accessToken) => {
+    if (accessToken) {
+      localStorage.setItem('svial_access_token', accessToken);
+      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     } else {
-      localStorage.removeItem('jwt_access_token');
+      localStorage.removeItem('svial_access_token');
       delete axios.defaults.headers.common.Authorization;
     }
   };
@@ -153,11 +123,11 @@ class JwtService extends FuseUtils.EventEmitter {
     this.setSession(null);
   };
 
-  isAuthTokenValid = (access_token) => {
-    if (!access_token) {
+  isAuthTokenValid = (accessToken) => {
+    if (!accessToken) {
       return false;
     }
-    const decoded = jwtDecode(access_token);
+    const decoded = jwtDecode(accessToken);
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
       console.warn('access token expired');
@@ -168,7 +138,7 @@ class JwtService extends FuseUtils.EventEmitter {
   };
 
   getAccessToken = () => {
-    return window.localStorage.getItem('jwt_access_token');
+    return window.localStorage.getItem('svial_access_token');
   };
 }
 
