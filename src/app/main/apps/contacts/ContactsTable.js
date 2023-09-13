@@ -59,21 +59,21 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
           // be server side pagination.  For one, the clients should not download all
           // rows in most cases.  The client should only download data for the current page.
           // In that case, getToggleAllRowsSelectedProps works fine.
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
+          // Header: ({ getToggleAllRowsSelectedProps }) => (
+          //   <div style={{border: '1px red solid'}}>
+          //     <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          //   </div>
+          // ),
           // The cell can use the individual row's getToggleRowSelectedProps method
           // to the render a checkbox
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
-                {...row.getToggleRowSelectedProps()}
-                onClick={(ev) => ev.stopPropagation()}
-              />
-            </div>
-          ),
+          // Cell: ({ row }) => (
+          //   <div style={{border: '3px violet solid'}}>
+          //     <IndeterminateCheckbox
+          //       {...row.getToggleRowSelectedProps()}
+          //       onClick={(ev) => ev.stopPropagation()}
+          //     />
+          //   </div>
+          // ),
         },
         ..._columns,
       ]);

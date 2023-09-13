@@ -8,13 +8,12 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { logoutUser } from 'app/auth/store/userSlice';
 
 function UserMenu(props) {
   const dispatch = useDispatch();
   const user = useSelector(({ auth }) => auth.user);
-  const navigate = useNavigate();
 
   const [userMenu, setUserMenu] = useState(null);
 
@@ -37,8 +36,9 @@ function UserMenu(props) {
           <Typography component="span" className="font-semibold flex">
             {user.data.displayName}
           </Typography>
-          <Typography className="text-11 font-medium capitalize" color="textSecondary">
-            {user.role.toString()}
+          <Typography className="text-11 font-medium capitalize" color="whitesmoke">
+            {/* {user.role.toString()} */}
+            {user.role === 'admin' ? 'Administrador' : 'Usuario'}
             {(!user.role || (Array.isArray(user.role) && user.role.length === 0)) && 'Guest'}
           </Typography>
         </div>
@@ -83,7 +83,7 @@ function UserMenu(props) {
           </>
         ) : (
           <>
-            <MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
+            {/* <MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
               <ListItemIcon className="min-w-40">
                 <Icon>account_circle</Icon>
               </ListItemIcon>
@@ -94,7 +94,7 @@ function UserMenu(props) {
                 <Icon>mail</Icon>
               </ListItemIcon>
               <ListItemText primary="Inbox" />
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               onClick={() => {
                 dispatch(logoutUser());

@@ -15,6 +15,9 @@ import {
   selectContacts,
 } from './store/contactsSlice';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 function ContactsList(props) {
   const dispatch = useDispatch();
@@ -51,7 +54,7 @@ function ContactsList(props) {
         accessor: 'active',
         sortable: true,
         Cell: ({ row }) => (
-          <div className="flex items-center">
+          <div className="flex flex-1 items-center justify-center">
             <IconButton
               onClick={(ev) => {
                 ev.stopPropagation();
@@ -60,9 +63,9 @@ function ContactsList(props) {
               size="large"
             >
               {row.original.active ? (
-                <Icon color="secondary">check_circle</Icon>
+                <ManageAccountsIcon sx={{color: 'green'}} fontSize='large' />
               ) : (
-                <Icon color="action">radio_button_unchecked</Icon>
+                <PersonOutlineIcon sx={{color: 'orange'}} fontSize='large'/>
               )}
             </IconButton>
           </div>
@@ -115,7 +118,6 @@ function ContactsList(props) {
                 // dispatch(removeContact(true));
                 setDeleteDialogOpen(true);
               }}
-              size="large"
             >
               <Icon>delete</Icon>
             </IconButton>

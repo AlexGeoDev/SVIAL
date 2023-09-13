@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { setContactsSearchText } from './store/contactsSlice';
+import GroupIcon from '@mui/icons-material/Group';
 
 function ContactsHeader(props) {
   const dispatch = useDispatch();
@@ -16,7 +17,9 @@ function ContactsHeader(props) {
   const mainTheme = useSelector(selectMainTheme);
 
   return (
-    <div className="flex flex-1 items-center justify-between p-4 sm:p-24">
+    <div 
+      style={{backgroundColor: '#9eccf9'}}
+      className="flex flex-1 items-center justify-between p-4 sm:p-24">
       <div className="flex shrink items-center sm:w-224">
         <Hidden lgUp>
           <IconButton
@@ -31,22 +34,17 @@ function ContactsHeader(props) {
         </Hidden>
 
         <div className="flex items-center">
-          <Icon
-            component={motion.span}
-            initial={{ scale: 0 }}
-            animate={{ scale: 1, transition: { delay: 0.2 } }}
-            className="text-24 md:text-32"
-          >
-            account_box
-          </Icon>
+          <GroupIcon fontSize='large'/>
           <Typography
             component={motion.span}
             initial={{ x: -20 }}
             animate={{ x: 0, transition: { delay: 0.2 } }}
             delay={300}
+            color={'black'}
+            width={'250px'}
             className="hidden sm:flex text-16 md:text-24 mx-12 font-semibold"
           >
-            Contacts
+            Gestión de usuarios
           </Typography>
         </div>
       </div>
@@ -62,7 +60,7 @@ function ContactsHeader(props) {
             <Icon color="action">search</Icon>
 
             <Input
-              placeholder="Search for anything"
+              placeholder="Buscar..."
               className="flex flex-1 px-16"
               disableUnderline
               fullWidth

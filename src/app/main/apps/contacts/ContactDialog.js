@@ -161,20 +161,20 @@ function ContactDialog(props) {
       fullWidth
       maxWidth="xs"
     >
-      <AppBar position="static" elevation={0}>
+      <AppBar position="static" elevation={0} sx={{backgroundColor: '#429df0'}}>
         <Toolbar className="flex w-full">
-          <Typography variant="subtitle1" color="inherit">
-            {contactDialog.type === 'new' ? 'New Contact' : 'Edit Contact'}
+          <Typography variant="subtitle1" color="inherit" fontWeight={'bold'}>
+            {contactDialog.type === 'new' ? 'NUEVO USUARIO' : 'EDITAR USUARIO'}
           </Typography>
         </Toolbar>
-        <div className="flex flex-col items-center justify-center pb-24">
+        {/* <div className="flex flex-col items-center justify-center pb-24">
           <Avatar className="w-96 h-96" alt="contact avatar" src={avatar} />
           {contactDialog.type === 'edit' && (
             <Typography variant="h6" color="inherit" className="pt-8">
               {name}
             </Typography>
           )}
-        </div>
+        </div> */}
       </AppBar>
       <form
         noValidate
@@ -297,7 +297,7 @@ function ContactDialog(props) {
                 type="submit"
                 disabled={_.isEmpty(dirtyFields) || !isValid}
               >
-                Add
+                Agregar
               </Button>
             </div>
           </DialogActions>
@@ -310,12 +310,12 @@ function ContactDialog(props) {
                 type="submit"
                 disabled={_.isEmpty(dirtyFields) || !isValid}
               >
-                Save
+                Guardar
               </Button>
             </div>
-            <IconButton onClick={handleRemove} size="large">
+            {/* <IconButton onClick={handleRemove} size="large">
               <Icon>delete</Icon>
-            </IconButton>
+            </IconButton> */}
           </DialogActions>
         )}
       </form>
