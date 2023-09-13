@@ -42,7 +42,7 @@ function FuseNavVerticalGroup(props) {
           end={item.end}
           role="button"
         >
-          <span className="fuse-list-subheader-text uppercase text-12">{item.title}</span>
+          <span className="fuse-list-subheader-text uppercase text-12" style={{color: '#000000'}}>{item.title}</span>
         </Root>
         {item.children && (
           <>

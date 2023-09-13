@@ -12,22 +12,21 @@ import FuseNavBadge from '../../FuseNavBadge';
 const Root = styled(ListItem)(({ theme, ...props }) => ({
   height: 40,
   width: '100%',
+  fontSize: '1.5rem',
   borderRadius: '6px',
   margin: '0 0 4px 0',
   paddingRight: 12,
   paddingLeft: props.itempadding,
-  color: alpha(theme.palette.text.primary, 0.7),
+  color: '#646464',
   cursor: 'pointer',
   textDecoration: 'none!important',
   '&:hover': {
-    color: theme.palette.text.primary,
+    color: 'black',
+    backgroundColor: '#9fcdf9 !important',
   },
   '&.active': {
-    color: theme.palette.text.primary,
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? 'rgba(0, 0, 0, .05)!important'
-        : 'rgba(255, 255, 255, .1)!important',
+    color: 'black',
+    backgroundColor: '#9fcdf9',
     pointerEvents: 'none',
     transition: 'border-radius .15s cubic-bezier(0.4,0.0,0.2,1)',
     '& > .fuse-list-item-text-primary': {

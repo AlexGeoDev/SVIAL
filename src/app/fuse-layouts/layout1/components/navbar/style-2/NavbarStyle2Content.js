@@ -12,8 +12,8 @@ import FooterNavbar from 'app/fuse-layouts/shared-components/FooterNavbar';
 // import miniProintecImage from 'assets/images/logos/miniProintec.png';
 
 const Root = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  color: theme.palette.text.primary,
+  backgroundColor: 'white',
+  // color: 'black !important',
   '& ::-webkit-scrollbar-thumb': {
     boxShadow: `inset 0 0 0 20px ${
       theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.24)' : 'rgba(255, 255, 255, 0.24)'
