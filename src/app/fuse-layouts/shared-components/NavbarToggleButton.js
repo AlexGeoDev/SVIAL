@@ -40,7 +40,7 @@ function NavbarToggleButton(props) {
 
 NavbarToggleButton.defaultProps = {
   children: (
-    <Icon fontSize="inherit" className="text-16">
+    <Icon fontSize="inherit" className="text-28">
       menu_open
     </Icon>
   ),

@@ -9,11 +9,9 @@ import clsx from 'clsx';
 import { memo, useState } from 'react';
 import { Stack } from '@mui/material';
 import FooterNavbar from 'app/fuse-layouts/shared-components/FooterNavbar';
-// import miniProintecImage from 'assets/images/logos/miniProintec.png';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: 'white',
-  // color: 'black !important',
   '& ::-webkit-scrollbar-thumb': {
     boxShadow: `inset 0 0 0 20px ${
       theme.palette.mode === 'light' ? 'rgba(0, 0, 0, 0.24)' : 'rgba(255, 255, 255, 0.24)'
@@ -58,14 +56,15 @@ function NavbarStyle2Content(props) {
       <AppBar
         color="primary"
         position="relative"
+        sx={{backgroundColor: '#9ecdf8'}}
         className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 shadow-0"
       >
-        <div className="flex flex-1">
+        <div>
           <Logo />
         </div>
 
-        <Stack ml={1.5}> 
-          <NavbarToggleButton className="w-40 h-40 p-0" />
+        <Stack alignItems={'center'} flex={1}>
+          <NavbarToggleButton className="w-60 h-60 p-0" />
         </Stack>
       </AppBar>
 

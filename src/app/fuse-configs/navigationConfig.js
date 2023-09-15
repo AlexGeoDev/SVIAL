@@ -10,31 +10,18 @@ i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
 const navigationConfig = [
-      // {
-      //   id: 'dashboards',
-      //   title: 'Dashboards',
-      //   translate: 'Accidentalidad',
-      //   type: 'collapse',
-      //   icon: 'dashboard',
-      //   children: [
-      //     {
-      //       id: 'analytics-dashboard',
-      //       title: 'Analytics',
-      //       type: 'item',
-      //       url: 'apps/dashboards/analytics',
-      //     },
-      //     {
-      //       id: 'project-dashboard',
-      //       title: 'Project',
-      //       type: 'item',
-      //       url: 'apps/dashboards/project',
-      //     },
-      //   ],
-      // },
+  {
+    id: 'general',
+    title: 'general',
+    translate: 'GENERAL',
+    type: 'item',
+    icon: 'home',
+    url: 'apps/dashboards/analytics',
+  },
   {
     id: 'modulos',
     title: 'modulos',
-    translate: 'MODULOS',
+    translate: 'MODULOS1',
     type: 'group',
     icon: 'M',
     children: [

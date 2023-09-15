@@ -36,7 +36,7 @@ const routes = [
   ),
   {
     path: '/',
-    element: <Navigate to="apps/accidentalidad" />,
+    element: <Navigate to="apps/dashboards/analytics" />,
   },
   {
     path: 'loading',
