@@ -7,21 +7,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
-import { Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 function Widget01(){
   return (
-    <Stack 
-      width={800} 
-      height={250}
-      paddingX={3}
+    <Grid container sm={11} md={12}    
       sx={{
+        margin: '0 auto',
+        padding: '0px 24px 16px 24px',
         borderRadius: '15px',
-        border: '2px #429df0 solid', 
         backgroundColor: 'white',
+        border: '2px #429df0 solid', 
       }} 
     >
-      <Stack className='flex flex-1 items-center mt-10'>
+      <Stack className='flex items-center mt-10'>
         <Typography variant="h6" gutterBottom>
           Resúmen de la evolución de la accidentalidad
         </Typography>
@@ -32,44 +31,49 @@ function Widget01(){
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
-              <TableCell>2023</TableCell>
-              <TableCell>2022</TableCell>
-              <TableCell>2021</TableCell>
-              <TableCell>2020</TableCell>
-              <TableCell>2019</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>2023</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>2022</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>2021</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>2020</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>2019</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {/* Fila 1 */}
             <TableRow>
-              <TableCell>
+              <TableCell 
+                sx={{ 
+                  width: '90px',
+                  textAlign: 'center'
+                }}
+              >
                 <Typography fontWeight={'bold'}>
                   Accidentes mortales
                 </Typography>
               </TableCell>
-              <TableCell>451</TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>451</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#88dc65">
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#ff6961">
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography>
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#88dc65">
@@ -81,34 +85,34 @@ function Widget01(){
 
             {/* Fila 2 */}
             <TableRow>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 <Typography fontWeight={'bold'}>
                   Víctimas mortales
                 </Typography>
               </TableCell>
-              <TableCell>500</TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>500</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#88dc65">
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#ff6961">
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography>
                 (-34, -7.0%)
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textAlign: 'center'}}>
                 417 
                 <br /> 
                 <Typography color="#88dc65">
@@ -121,7 +125,7 @@ function Widget01(){
           </TableBody>
         </Table>
       </TableContainer>
-    </Stack>
+    </Grid>
   );
 }
 

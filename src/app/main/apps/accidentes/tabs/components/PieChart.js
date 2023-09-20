@@ -7,8 +7,8 @@ const data = [
   { label: 'C', value: 50 },
 ];
 
-const width = 300;
-const height = 300;
+const width = 200;
+const height = 200;
 const radius = Math.min(width, height) / 2;
 
 const PieChart = () => {

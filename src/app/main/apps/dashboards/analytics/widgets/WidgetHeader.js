@@ -9,7 +9,8 @@ const WidgetHeader = () => {
       paddingY={3}
       alignItems={'center'}
       justifyContent={'space-around'}
-      sx={{backgroundColor: 'white'}}
+      sx={{backgroundColor: 'white', border: '1px red solid'}}
+      sm={4}
       className='flex flex-1 flex-row px-10'
     >
       <Grid className='flex flex-row justify-around items-center' maxWidth={450} width={450}>
