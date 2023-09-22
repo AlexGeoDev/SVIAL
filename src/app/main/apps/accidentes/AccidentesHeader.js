@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Stack, TextField, Typography, Button } from '@mui/material';
+import { Grid, Stack, TextField, Typography, Button, useMediaQuery } from '@mui/material';
 import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -28,11 +28,15 @@ const ReportButton = styled(Button)(({ theme }) => ({
 }));
 
 const AccidentesHeader = () => {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isMediumScreen = useMediaQuery('(min-width:601px) and (max-width:900px)');
+
+  const titleVariant = isSmallScreen ? 'h6' : isMediumScreen ? 'h6' : 'h4';
   return (
-    <HeaderContainer className='flex border-1 border-black'>
+    <HeaderContainer height={{sm: 100}} className='flex border-1 border-black'>
       <Stack direction="row" width="30vw" className="flex items-center" spacing={1}>
         <TaxiAlertIcon style={{ fontSize: '34px', color: 'white' }} />
-        <Typography variant="h5" color="initial" style={{ fontWeight: 'bold', height: '36px' }}>
+        <Typography variant={titleVariant} color="initial" style={{ fontWeight: 'bold', height: '36px' }}>
           Accidentes
         </Typography>
       </Stack>
@@ -45,28 +49,41 @@ const AccidentesHeader = () => {
           size="small"
           style={{ backgroundColor: 'white', borderRadius: '5px', width: '24vw' }}
         />
-        <Button
-          variant="contained"
-          endIcon={<SearchIcon />}
-          sx={{ backgroundColor: '#439cf0', maxHeight: '44px', borderRadius: '4px' }}
+        <Grid 
+          height={{sm: 100}}
+          direction={{sm: 'column', lg: 'row'}} 
+          sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}} 
         >
-          CONSULTAR
-        </Button>
-        <Button
-          variant="contained"
-          endIcon={<BackspaceIcon />}
-          sx={{ backgroundColor: '#cfe6fa', maxHeight: '44px', borderRadius: '4px' }}
+          <Button
+            width={135}
+            variant="contained"
+            endIcon={<SearchIcon />}
+            sx={{ backgroundColor: '#439cf0', maxHeight: '44px', borderRadius: '4px', marginX: 1 }}
+          >
+            CONSULTAR
+          </Button>
+          <Button
+            variant="contained"
+            endIcon={<BackspaceIcon />}
+            sx={{ backgroundColor: '#cfe6fa', maxHeight: '44px', borderRadius: '4px', minWidth: 135, marginX: 1 }}
+          >
+            LIMPIAR
+          </Button>
+        </Grid>
+        <Grid
+          height={{sm: 100}}
+          direction={{sm: 'column', lg: 'row'}} 
+          sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}} 
         >
-          LIMPIAR
-        </Button>
-        <ReportButton variant="contained" aria-label="download">
-          <DownloadIcon />
-          <img src="assets/images/icons/pdfIcon.png" alt="PDF Icon" />
-        </ReportButton>
-        <ReportButton variant="contained" aria-label="download">
-          <DownloadIcon />
-          <img src="assets/images/icons/excelIcon.png" alt="Excel Icon" />
-        </ReportButton>
+          <ReportButton variant="contained" aria-label="download" sx={{marginX: 1}}>
+            <DownloadIcon />
+            <img src="assets/images/icons/pdfIcon.png" alt="PDF Icon" />
+          </ReportButton>
+          <ReportButton variant="contained" aria-label="download" sx={{marginX: 1}}>
+            <DownloadIcon />
+            <img src="assets/images/icons/excelIcon.png" alt="Excel Icon" />
+          </ReportButton>
+        </Grid>
       </Grid>
     </HeaderContainer>
   );

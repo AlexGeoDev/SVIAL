@@ -4,8 +4,9 @@ import React from 'react'
 const Widget04 = () => {
   return (
     <Grid 
-      sm={6.5}
+      sm={11}
       md={12}
+      margin={'10px auto'}
       sx={{
         display: 'flex',
         alignItems: 'center',
@@ -15,7 +16,7 @@ const Widget04 = () => {
       }} 
     >
       <img 
-        style={{width: '450px', padding: '50px 0px'}} 
+        style={{ padding: '50px 0px'}} 
         src="assets/images/mapWithtags.png" 
         alt="mapa con cada estado y equiquetas"
       />

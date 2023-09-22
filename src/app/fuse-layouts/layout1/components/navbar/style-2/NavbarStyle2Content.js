@@ -57,7 +57,7 @@ function NavbarStyle2Content(props) {
         color="primary"
         position="relative"
         sx={{backgroundColor: '#9ecdf8'}}
-        className="flex flex-row items-center shrink h-48 md:h-64 min-h-48 md:min-h-64 shadow-0"
+        className="flex flex-row items-center shrink h-64 md:h-64 min-h-64 md:min-h-64 shadow-0"
       >
         <div>
           <Logo />

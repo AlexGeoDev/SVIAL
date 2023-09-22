@@ -64,7 +64,6 @@ export default function AccidentalidadConsultas() {
     <Box className='flex flex-col'>
       <Stack direction={'row'} className='flex flex-1 border-1 border-black'>
         <Tabs
-          // className='border-1'
           orientation='vertical'
           value={tabValue}
           onChange={handleChange}
@@ -72,7 +71,8 @@ export default function AccidentalidadConsultas() {
           sx={{ 
             borderRight: 1, 
             borderColor: 'divider', 
-            minWidth: '170px', 
+            minWidth: '90px',
+            width: {sm: '90px', md: '170px'},
             '& .Mui-selected': {
               backgroundColor: '#9fccf8',
             },
@@ -84,7 +84,7 @@ export default function AccidentalidadConsultas() {
             },
           }}
         >
-          <Tab 
+          <Tab
             label="Consulta por tramo" 
             style={tabLabelStyles}
             {...a11yProps(0)} 
@@ -100,20 +100,20 @@ export default function AccidentalidadConsultas() {
             {...a11yProps(2)} 
           />
         </Tabs>
-        <TabPanel 
-          value={tabValue} 
-          index={0} 
-          className='flex flex-1 justify-center max-h-145'>
-          <ConsultaTramo />
-        </TabPanel>
-        
-        <TabPanel 
-          value={tabValue} 
-          index={1}
-          className='flex flex-1 justify-center w-max-170'
-        >
-          <ConsultaAmbito />
-        </TabPanel>
+          <TabPanel 
+            value={tabValue} 
+            index={0} 
+            className='flex flex-1 justify-center max-h-145'>
+            <ConsultaTramo />
+          </TabPanel>
+          
+          <TabPanel 
+            value={tabValue} 
+            index={1}
+            className='flex flex-1 justify-center w-max-170'
+          >
+            <ConsultaAmbito />
+          </TabPanel>
         <TabPanel 
           value={tabValue} 
           index={2}>
@@ -121,12 +121,13 @@ export default function AccidentalidadConsultas() {
         </TabPanel>
       </Stack>
 
-      <Stack direction={'row'}>
-        <Stack width={'50vw'} className='border-1 border-black'>
+      <Stack direction={{sm: 'column', md: 'row'}}>
+        <Stack width={{sm: '100vw', md: '50vw'}} className='border-1 border-black'>
           <AccidentalidadMap />
         </Stack>
         <Stack 
-          width={'50vw'} 
+          width={{sm: '100vw', md: '50vw'}} 
+          padding={2}
           direction={'row'} 
           alignItems={'center'}
           justifyContent={'center'}
