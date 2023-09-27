@@ -5,11 +5,9 @@ const Widget06 = () => {
   return (
     <Grid container
       sm={11}
-      // md={12}
-      // lg={6}
+      md={12}
       sx={{
         margin: '0 auto',
-        // width: 390,
         borderRadius: '15px',
         backgroundColor: 'white',
         border: '2px #429df0 solid', 

@@ -6,8 +6,9 @@ import { Grid } from '@mui/material';
 const Widget02 = () => {
   return (
     <Grid container
-      sm={5}
+      sm={11}
       md={12}
+      margin={'10px auto'}
       style={{
         padding: '50px 50px',
         borderRadius: '15px',

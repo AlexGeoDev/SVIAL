@@ -8,7 +8,9 @@ import {
   MenuItem, 
   Chip, 
   IconButton, 
-  TextField 
+  TextField, 
+  Grid,
+  useMediaQuery,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker } from '@mui/lab';
@@ -78,27 +80,37 @@ const ConsultaMapa = () => {
     setSelectedDate(date);
   };
 
-  // const handleChangeLocation = (event) => {
-  //   setSelectedLocation(event.target.value);
-  // };
+  const isMediumScreen = useMediaQuery('(min-width: 1200px) and (max-width: 1400px)');
 
-  // const handleClearLocation = () => {
-  //   setSelectedLocation('');
-  // };
-
+  const formControlStyle = {
+    width: isMediumScreen ? '130px' : '200px', 
+  };
 
   return (
     <Stack
-      width={'calc(100vw - 231px)'}
-      className='flex flex-1 flex-row items-center justify-around'
+      sx={{
+        width: '80vw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: {sm: 3, lg: 0,},
+        flexDirection: {sm: 'column', lg: 'row'},
+      }}
     >
       <Stack direction={'row'} spacing={1} paddingX={1}>
-        <Stack>
-          <Stack direction={'row'} spacing={2}>
+        <Grid
+          sx={{
+            display: 'flex',
+            flexDirection: {sm: 'column', md: 'row'},
+            justifyContent: {sm: 'center', lg: 'space-evenly'}
+          }}
+        >
+          <Stack direction={{sm: 'row', md: 'column'}} spacing={2}>
             <Stack
               spacing={1}
-              className='flex w-200' 
+              // className='flex w-200' 
               paddingY={0.5}
+              sx={formControlStyle}
             >
               <Typography fontWeight={'bold'}>
                 Provincia inicial:
@@ -151,8 +163,8 @@ const ConsultaMapa = () => {
 
             <Stack 
               spacing={1}
-              className='flex w-200' 
               paddingY={0.5}
+              sx={formControlStyle}
             >
               <Typography fontWeight={'bold'}>
                 Provincia final:
@@ -204,11 +216,11 @@ const ConsultaMapa = () => {
             </Stack>
           </Stack>
           
-          <Stack direction={'row'} spacing={2}>
+          <Stack direction={{sm: 'row', md: 'column'}} spacing={2}>
             <Stack 
               spacing={1}
-              className='flex w-200' 
               paddingY={0.5}
+              sx={formControlStyle}
             >
               <Typography fontWeight={'bold'}>
                 Población inicial:
@@ -261,8 +273,8 @@ const ConsultaMapa = () => {
 
             <Stack 
               spacing={1}
-              className='flex w-200' 
               paddingY={0.5}
+              sx={formControlStyle}
             >
               <Typography fontWeight={'bold'}>
                 Población final:
@@ -313,132 +325,142 @@ const ConsultaMapa = () => {
               </Stack>
             </Stack>
           </Stack>
-        </Stack>
 
-        <Stack direction={'row'} spacing={2}>
-          <Stack
-            className='flex w-200'
-            paddingX={1}
-            paddingY={0.5}
-          >
-            <Typography fontWeight={'bold'}>
-              Carretera:
-            </Typography>
+          <Stack direction={{sm: 'row', md: 'column'}} spacing={2}>
             <Stack
-              mt={1}
-              spacing={0.5}
-              direction={'row'} 
-              className='flex flex-1 items-start'
+              paddingX={1}
+              paddingY={0.5}
+              sx={formControlStyle}
             >
-              <Stack spacing={0.5} className='flex flex-1'>
-                <FormControl fullWidth>
-                  <InputLabel>Carretera...</InputLabel>
-                  <Select
-                    size='small'
-                    labelId="Elegir carretera"
-                    id="elegir-carretera"
-                    value={selectHighway}
-                    label="Elegir carretera"
-                    onChange={handleChangeHigway}
-                  >
-                    <MenuItem value={'Carretera 1'}>Carretera 1</MenuItem>
-                    <MenuItem value={'Carretera 2'}>Carretera 2</MenuItem>
-                    <MenuItem value={'Carretera 3'}>Carretera 3</MenuItem>
-                  </Select>
-                </FormControl>
-                <Stack>
-                  {selectHighway && (
-                      <Chip 
-                        label={selectHighway}
-                        onDelete={handleClearHighway}
-                        deleteIcon={
-                          <IconButton>
-                            <CloseIcon />
-                          </IconButton>
-                        }
-                        style={{
-                          backgroundColor:'#afdd95',
-                          borderRadius: '3px',
-                          fontWeight: 'bold',
-                        }}
-                        />
-                  )}
+              <Typography fontWeight={'bold'}>
+                Carretera:
+              </Typography>
+              <Stack
+                mt={1}
+                spacing={0.5}
+                direction={'row'} 
+                className='flex flex-1 items-start'
+              >
+                <Stack spacing={0.5} className='flex flex-1'>
+                  <FormControl fullWidth>
+                    <InputLabel>Carretera...</InputLabel>
+                    <Select
+                      size='small'
+                      labelId="Elegir carretera"
+                      id="elegir-carretera"
+                      value={selectHighway}
+                      label="Elegir carretera"
+                      onChange={handleChangeHigway}
+                    >
+                      <MenuItem value={'Carretera 1'}>Carretera 1</MenuItem>
+                      <MenuItem value={'Carretera 2'}>Carretera 2</MenuItem>
+                      <MenuItem value={'Carretera 3'}>Carretera 3</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <Stack>
+                    {selectHighway && (
+                        <Chip 
+                          label={selectHighway}
+                          onDelete={handleClearHighway}
+                          deleteIcon={
+                            <IconButton>
+                              <CloseIcon />
+                            </IconButton>
+                          }
+                          style={{
+                            backgroundColor:'#afdd95',
+                            borderRadius: '3px',
+                            fontWeight: 'bold',
+                          }}
+                          />
+                    )}
+                  </Stack>
+                </Stack>
+                <Stack className='h-36 justify-center items-center'>
+                  <AddLocationIcon fontSize='large' style={{ color: '#4dd7fa' }} />
                 </Stack>
               </Stack>
-              <Stack className='h-36 justify-center items-center'>
-                <AddLocationIcon fontSize='large' style={{ color: '#4dd7fa' }} />
-              </Stack>
             </Stack>
-          </Stack>          
-        </Stack>
+
+            <Stack 
+              spacing={1}
+              paddingY={0.5}
+              sx={formControlStyle}
+            >
+            </Stack>
+          </Stack>
+        </Grid>
       </Stack>
 
-      <Stack className='flex flex-1' spacing={1} justifyContent={'center'} paddingY={1}>
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Typography fontWeight={'bold'} width={60}>
-            PK inicio:
-          </Typography>
-          <TextField size='small'/>
-        </Stack>
-        <Stack direction={'row'} spacing={2} alignItems={'center'}>
-          <Typography fontWeight={'bold'} width={60}>
-            PK final:
-          </Typography>
-          <TextField size='small'/>
-        </Stack>
-      </Stack>
-
-      <Stack className='flex' spacing={1} marginX={1}>
-        <Stack direction={'row'} spacing={1} className='flex flex-1' alignItems={'center'}>
-          <Typography fontWeight={'bold'} width={80}>
-            Fecha inicio:
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              value={selectedDate}
-              onChange={handleDateChange}
-              views={['day']}
-              renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
-            />
-            <DatePicker
-              value={selectedMonth}
-              onChange={handleMonthChange}
-              views={['month', 'year']}
-              renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small' placeholder="mm/yy"/>}
-            />
-            <DatePicker
-              value={selectedYear}
-              onChange={handleYearChange}
-              views={['year']}
-              renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
-            />
-          </LocalizationProvider>
+      <Stack direction={{sm: 'column'}} marginRight={{lg: 5}}>
+        <Stack direction={{sm: 'row'}} spacing={1} justifyContent={'center'} paddingY={1}>
+          <Stack direction={'row'} spacing={2} alignItems={'center'}>
+            <Typography fontWeight={'bold'} width={60}>
+              PK inicio:
+            </Typography>
+            <TextField size='small'/>
+          </Stack>
+          
+          <Stack direction={'row'} spacing={2} alignItems={'center'}>
+            <Typography fontWeight={'bold'} width={60}>
+              PK final:
+            </Typography>
+            <TextField size='small'/>
+          </Stack>
         </Stack>
 
-        <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Typography fontWeight={'bold'} width={80}>
-            Fecha final:
-          </Typography>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              value={selectedDate}
-              onChange={handleDateChange}
-              views={['day']}
-              renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
-            />
-            <DatePicker
-              value={selectedMonth}
-              onChange={handleMonthChange}
-              views={['year', 'month']}
-              renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small'/>}
-            />
-            <DatePicker
-              value={selectedYear}
-              onChange={handleYearChange}
-              views={['year']}
-              renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
-            />
-          </LocalizationProvider>
+        <Stack spacing={1} margin={1}>
+          <Stack direction={'row'} spacing={1} className='flex flex-1' alignItems={'center'}>
+            <Typography fontWeight={'bold'} width={80}>
+              Fecha inicio:
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={selectedDate}
+                onChange={handleDateChange}
+                views={['day']}
+                renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
+              />
+              <DatePicker
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                views={['month', 'year']}
+                renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small' placeholder="mm/yy"/>}
+              />
+              <DatePicker
+                value={selectedYear}
+                onChange={handleYearChange}
+                views={['year']}
+                renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
+              />
+            </LocalizationProvider>
+          </Stack>
+
+          <Stack direction={'row'} spacing={1} alignItems={'center'}>
+            <Typography fontWeight={'bold'} width={80}>
+              Fecha final:
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={selectedDate}
+                onChange={handleDateChange}
+                views={['day']}
+                renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
+              />
+              <DatePicker
+                value={selectedMonth}
+                onChange={handleMonthChange}
+                views={['year', 'month']}
+                renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small'/>}
+              />
+              <DatePicker
+                value={selectedYear}
+                onChange={handleYearChange}
+                views={['year']}
+                renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
+              />
+            </LocalizationProvider>
+          </Stack>
         </Stack>
       </Stack>
 

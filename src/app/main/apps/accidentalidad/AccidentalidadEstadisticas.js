@@ -97,6 +97,7 @@ export default function AccidentalidadEstadisticas() {
             sx={{
               borderRight: 1, 
               borderColor: 'divider', 
+              minWidth: '49px',
               '& .Mui-selected': {
                 backgroundColor: '#9fccf8',
               },
@@ -134,7 +135,7 @@ export default function AccidentalidadEstadisticas() {
           <TabPanel 
             value={tabValue} 
             index={1}
-            className='flex flex-1 justify-center w-max-170'
+            className='flex flex-1 justify-center w-max-170 w-min-170'
           >
             <Actuaciones />
           </TabPanel>

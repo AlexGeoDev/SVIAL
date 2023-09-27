@@ -71,7 +71,6 @@ export default function AccidentesConsultas() {
     <Box className='flex flex-col'>
       <Stack direction={'row'} className='flex flex-1 border-1 border-black'>
         <Tabs
-          // className='border-1'
           orientation='vertical'
           value={tabValue}
           onChange={handleChange}
@@ -79,7 +78,8 @@ export default function AccidentesConsultas() {
           sx={{ 
             borderRight: 1, 
             borderColor: 'divider', 
-            minWidth: '170px', 
+            minWidth: '90px',
+            width: {sm: '90px', md: '170px'},
             '& .Mui-selected': {
               backgroundColor: '#9fccf8',
             },

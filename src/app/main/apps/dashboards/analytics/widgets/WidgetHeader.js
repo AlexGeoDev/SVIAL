@@ -1,49 +1,65 @@
 import React from 'react';
 import Typography from '@mui/material/Typography'
-import { Box, Divider, Grid, Stack } from '@mui/material';
+import { Box, Divider, Grid, Stack, useMediaQuery } from '@mui/material';
 import ReportGmailerrorredTwoToneIcon from '@mui/icons-material/ReportGmailerrorredTwoTone';
 
 const WidgetHeader = () => {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+  const isMediumScreen = useMediaQuery('(min-width:601px) and (max-width:900px)');
+
+  const titleVariant = isSmallScreen ? 'h6' : isMediumScreen ? 'h6' : 'h4';
+  const title2Variant = isSmallScreen ? 'h4' : isMediumScreen ? 'h3' : 'h2';
   return (
     <Box 
       paddingY={3}
       alignItems={'center'}
       justifyContent={'space-around'}
-      sx={{backgroundColor: 'white', border: '1px red solid'}}
+      sx={{backgroundColor: 'white'}}
       sm={4}
       className='flex flex-1 flex-row px-10'
     >
-      <Grid className='flex flex-row justify-around items-center' maxWidth={450} width={450}>
-        <Typography variant="h2" fontWeight={'bold'}>SVIAL</Typography>
+      <Grid 
+        width={450}
+        maxWidth={450}
+        direction={{sm: 'column', md: 'row'}} 
+        className='flex justify-around items-center' 
+      >
+        <Typography variant={title2Variant} fontWeight={'bold'}>SVIAL</Typography>
 
         <Divider orientation='vertical' flexItem/>
 
-        <Stack  alignItems={'space-between'} justifyContent={'space-between'}>
-          <Stack>
-            <img width={215} src='assets/images/logos/logo.png' alt='logo ministreio de transporte' />
+        <Stack 
+          spacing={1}
+          marginTop={{sm: 1, md: 0}} 
+          alignItems={'space-between'} 
+          justifyContent={'space-between'}
+        >
+          <Stack width={{sm: 142, lg: 215}}>
+            <img src='assets/images/logos/logo.png' alt='logo ministreio de transporte' />
           </Stack>
-          <Stack mt={1.5}>
-            <img width={114} src='assets/images/logos/prointec.png' alt='log prointec' />
+          <Stack mt={1.5} width={{sm: 75, lg: 114}}>
+            <img src='assets/images/logos/prointec.png' alt='log prointec' />
           </Stack>
         </Stack>
       </Grid>
 
-      <Stack direction={'row'}>
+      <Stack direction={'row'} spacing={1} alignItems={'center'} marginLeft={{md: 5, lg: 1}}>
         <ReportGmailerrorredTwoToneIcon 
-          style={{
-            marginRight: 2,
-            width: '80px', 
-            height: '80px', 
+          sx={{
+            width: {sm: '60px', md: '80px'},
+            height: {sm: '60px', md: '80px'},
             fontWeight: 'light !important',
           }}
         />
-        <Typography 
-          variant="h4"
-          fontWeight={'bold'} 
-          maxWidth={'730px'}
-          className='flex flex-1 items-center '>
-          Resúmen de la evolución de la accidentabilidad de la Red de Carreteras del Estado
-        </Typography>
+        <Grid sm={9} md={11}>
+          <Typography 
+            variant={titleVariant}
+            fontWeight={'bold'} 
+            maxWidth={'730px'}
+            className='flex flex-1 items-center '>
+            Resúmen de la evolución de la accidentabilidad de la Red de Carreteras del Estado
+          </Typography>
+        </Grid>
       </Stack>
     </Box>
   )

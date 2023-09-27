@@ -11,7 +11,19 @@ const ContactsAppConfig = {
   },
   routes: [
     {
-      path: 'apps/contacts/:id',
+      path: 'apps/contacts/:filter',
+      element: <ContactsApp />,
+    },
+    {
+      path: 'apps/contacts/all',
+      element: <ContactsApp />,
+    },
+    {
+      path: 'apps/contacts/status/:state',
+      element: <ContactsApp />,
+    },
+    {
+      path: 'apps/contacts/profiles/:profile',
       element: <ContactsApp />,
     },
     {

@@ -22,6 +22,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 function ContactsList(props) {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
+  const routeParams = useSelector(({ contactsApp }) => contactsApp.contacts.routeParams);
   const searchText = useSelector(({ contactsApp }) => contactsApp.contacts.searchText);
   const user = useSelector(({ contactsApp }) => contactsApp.user);
 
@@ -86,11 +87,14 @@ function ContactsList(props) {
         Header: 'Perfil',
         accessor: 'isAdmin',
         sortable: false,
-        Cell: ({ value }) => (
-          <div>
-            {value ? <span>Administrador</span> : <span>Usuario</span>}
-          </div>
-        ),
+        // Cell: ({ value }) => (
+        //   <div>
+        //     {value ? <span>Administrador</span> : <span>Usuario</span>}
+        //   </div>
+        // ),
+        Cell: ({ value }) => <div>{
+          value ? <span>Administrador</span> : <span>Usuario</span>
+          }</div>,
       },
       {
         id: 'action',
@@ -131,15 +135,32 @@ function ContactsList(props) {
   useEffect(() => {
     function getFilteredArray(entities, _searchText) {
       if (_searchText.length === 0) {
-        return contacts;
+        return entities;
       }
-      return FuseUtils.filterArrayByString(contacts, _searchText);
+      return FuseUtils.filterArrayByString(entities, _searchText);
+    }
+
+    function filterByParams(entities, params) {
+      if (params.state) {
+        return entities.filter((item) => {
+          if (params.state === 'activos') return item.active;
+          return !item.active;
+        });
+      }
+      if (params.profile) {
+        return entities.filter((item) => {
+          if (params.profile === 'admin') return item.isAdmin;
+          return !item.isAdmin;
+        });
+      }
+      return entities;
     }
 
     if (contacts) {
-      setFilteredData(getFilteredArray(contacts, searchText));
+      const _contacts = filterByParams(contacts, routeParams);
+      setFilteredData(getFilteredArray(_contacts, searchText));
     }
-  }, [contacts, searchText]);
+  }, [contacts, searchText, routeParams]);
 
   const handleDeleteContact = () => {
     dispatch(removeContact(selectedContactId));
@@ -163,6 +184,7 @@ function ContactsList(props) {
       </div>
     );
   }
+  console.log(filteredData)
 
   return (
     <>
