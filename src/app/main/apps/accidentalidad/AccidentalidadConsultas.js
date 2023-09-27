@@ -84,7 +84,7 @@ export default function AccidentalidadConsultas() {
             },
           }}
         >
-          <Tab 
+          <Tab
             label="Consulta por tramo" 
             style={tabLabelStyles}
             {...a11yProps(0)} 
