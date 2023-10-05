@@ -125,6 +125,14 @@ export default function AccidentalidadEstadisticas() {
               style={tabLabelStyles}
               {...a11yProps(1)} 
             />
+            <Tab 
+              label={<Typography 
+                style={tabLabelStyles}
+                sx={{transform: 'rotate(180deg)', marginRight: '35px'}}
+              >TCA</Typography>}
+              style={tabLabelStyles}
+              {...a11yProps(1)} 
+            />
           </Tabs>
           <TabPanel 
             value={tabValue} 
@@ -138,6 +146,13 @@ export default function AccidentalidadEstadisticas() {
             className='flex flex-1 justify-center w-max-170 w-min-170'
           >
             <Actuaciones />
+          </TabPanel>
+          <TabPanel 
+            value={tabValue} 
+            index={2}
+            className='flex flex-1 justify-center w-max-170 w-min-170'
+          >
+            TCA
           </TabPanel>
         </Stack>
       </Box>

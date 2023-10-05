@@ -21,7 +21,7 @@ const navigationConfig = [
   {
     id: 'modulos',
     title: 'modulos',
-    translate: 'MODULOS',
+    translate: 'MENÚ\tPRIINCIPAL',
     type: 'group',
     icon: 'M',
     children: [
@@ -30,8 +30,16 @@ const navigationConfig = [
         title: 'Accidentalidad',
         translate: 'Accidentalidad',
         type: 'item',
-        icon: 'report',
+        icon: 'report_problem',
         url: 'apps/accidentalidad',
+      },
+      {
+        id: 'accidentes',
+        title: 'accidentes',
+        translate: 'Accidentes',
+        type: 'item',
+        icon: 'close_fullscreen',
+        url: 'apps/accidentes',
       },
       {
         id: 'tca',
@@ -49,16 +57,7 @@ const navigationConfig = [
         icon: 'edit_road',
         url: 'apps/tapm',
       },
-
     ]
-  },
-  {
-    id: 'accidentes',
-    title: 'accidentes',
-    translate: 'ACCIDENTES',
-    type: 'item',
-    icon: 'close_fullscreen',
-    url: 'apps/accidentes',
   },
   {
     id: 'auditorias',
@@ -75,14 +74,6 @@ const navigationConfig = [
         icon: 'plagiarism',
         url: 'apps/auditorias',
       },
-      {
-        id: 'carga_datos',
-        title: 'carga_datos',
-        translate: 'carga_datos',
-        type: 'item',
-        icon: 'note_add',
-        url: 'apps/carga_datos',
-      },
     ],
   },
   {
@@ -90,7 +81,7 @@ const navigationConfig = [
     title: 'repositorio',
     translate: 'REPOSITORIO',
     type: 'item',
-    icon: 'R',
+    icon: 'device_hub',
     url: 'apps/repositorio',
   },
   {
@@ -118,6 +109,14 @@ const navigationConfig = [
         auth: authRoles.admin,
         icon: 'content_paste',
         url: 'apps/datos',
+      },
+      {
+        id: 'carga_datos',
+        title: 'carga_datos',
+        translate: 'carga_datos',
+        type: 'item',
+        icon: 'note_add',
+        url: 'apps/carga_datos',
       },
       {
         id: 'avisos',

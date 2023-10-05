@@ -54,7 +54,7 @@ function JWTLoginTab() {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full p-20" style={{backgroundColor: 'white', borderRadius: '20px', opacity: 0.9}}>
       <form className="flex flex-col justify-center w-full" onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="username"

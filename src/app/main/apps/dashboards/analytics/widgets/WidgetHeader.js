@@ -2,6 +2,8 @@ import React from 'react';
 import Typography from '@mui/material/Typography'
 import { Box, Divider, Grid, Stack, useMediaQuery } from '@mui/material';
 import ReportGmailerrorredTwoToneIcon from '@mui/icons-material/ReportGmailerrorredTwoTone';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 
 const WidgetHeader = () => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
@@ -26,9 +28,9 @@ const WidgetHeader = () => {
       >
         <Typography variant={title2Variant} fontWeight={'bold'}>SVIAL</Typography>
 
-        <Divider orientation='vertical' flexItem/>
+        {/* <Divider orientation='vertical' flexItem/> */}
 
-        <Stack 
+        {/* <Stack 
           spacing={1}
           marginTop={{sm: 1, md: 0}} 
           alignItems={'space-between'} 
@@ -40,24 +42,31 @@ const WidgetHeader = () => {
           <Stack mt={1.5} width={{sm: 75, lg: 114}}>
             <img src='assets/images/logos/prointec.png' alt='log prointec' />
           </Stack>
-        </Stack>
+        </Stack> */}
       </Grid>
 
-      <Stack direction={'row'} spacing={1} alignItems={'center'} marginLeft={{md: 5, lg: 1}}>
-        <ReportGmailerrorredTwoToneIcon 
+      <Stack direction={'row'} spacing={2} alignItems={'center'} marginLeft={{md: 5, lg: 1}}>
+        {/* <ReportProblemOutlinedIcon 
           sx={{
             width: {sm: '60px', md: '80px'},
             height: {sm: '60px', md: '80px'},
             fontWeight: 'light !important',
           }}
         />
+        <CampaignOutlinedIcon
+          sx={{
+            width: {sm: '60px', md: '80px'},
+            height: {sm: '60px', md: '80px'},
+            fontWeight: 'light !important',
+          }}
+        /> */}
         <Grid sm={9} md={11}>
           <Typography 
             variant={titleVariant}
             fontWeight={'bold'} 
             maxWidth={'730px'}
             className='flex flex-1 items-center '>
-            Resúmen de la evolución de la accidentabilidad de la Red de Carreteras del Estado
+            Resúmen de la accidentalidad mortal en la Red de Carreteras de Estado. Año 2023
           </Typography>
         </Grid>
       </Stack>

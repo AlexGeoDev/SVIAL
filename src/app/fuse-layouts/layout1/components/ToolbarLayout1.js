@@ -1,4 +1,3 @@
-import FuseSearch from '@fuse/core/FuseSearch';
 import { ThemeProvider } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Hidden from '@mui/material/Hidden';
@@ -12,6 +11,10 @@ import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import Typography from '@mui/material/Typography'
 import { Stack, Grid } from '@mui/material';
+import MapButton from './buttons/MapButton';
+import MenuButton from './buttons/MenuButton';
+import PieButton from './buttons/PieButton';
+import SearchButton from './buttons/SearchButton';
 
 function ToolbarLayout1(props) {
   const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
@@ -45,16 +48,22 @@ function ToolbarLayout1(props) {
 
                   <Hidden lgUp>
                     <NavbarToggleButton className="w-40 p-0 mx-0 sm:mx-8" />
-                  </Hidden>
+                  </Hidden>                  
                 </>
               )}
+
+              <Stack sx={{ml: 2}} direction={'row'} spacing={2}>
+                <SearchButton />
+                <MapButton />
+                <MenuButton />
+                <PieButton />
+              </Stack>
 
               <Stack className='flex flex-1 items-center justify-center'>
                 <Typography variant="h4" color="white" fontWeight={'bold'}>SVIAL</Typography>
               </Stack>
 
               <FullScreenToggle />
-              <FuseSearch />
               <UserMenu />
             </div>
             {config.navbar.display && config.navbar.position === 'right' && (

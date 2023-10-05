@@ -5,6 +5,11 @@ import JWTLoginTab from './tabs/JWTLoginTab';
 import { Grid, Stack } from '@mui/material';
 
 const Root = styled('div')(({ theme }) => ({
+  backgroundImage: 'url(assets/images/backgrounds/A-32_Villacarrillo-VillanuevaDelArzobispo.jpeg)',
+  backgroundSize: 'cover', // Ajusta el tamaño de la imagen al contenedor
+  backgroundRepeat: 'no-repeat', // Evita que la imagen de fondo se repita
+  
+
   '& .Login-leftSection': {},
 
   '& .Login-rightSection': {
@@ -24,20 +29,14 @@ function Login() {
   }
 
   return (
-    <Root className="flex flex-col items-center justify-center shrink-0">
-      <Grid
-        className='flex flex-1' width={'100vw'}
-        backgroundColor={'#429df0'}
-      >
-          <img 
-            className="logo-icon" 
-            src="assets/images/logos/logo.png" 
-            alt="logo ministerio de transporte de España"
-            style={{ maxHeight: '66px' }}
-          />
-        
-      </Grid>
-      <Stack mt={4} spacing={7} className='flex flex-col flex-auto items-center justify-center shrink-0'>
+    <Root className="flex flex-col items-center justify-center h-screen">
+      <Stack spacing={7}  
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        className='shrink-0'>
         <Stack direction={'column'} maxWidth={530} className="flex items-center">
             <Typography variant="h1" fontWeight={'bold'} >
               SVIAL
@@ -64,11 +63,12 @@ function Login() {
         <Stack>
           {selectedTab === 0 && <JWTLoginTab />}
         </Stack>
-        <Stack maxWidth={250}>
+        <Stack maxWidth={200}>
           <img 
-            className="logo-icon w-250" 
-              src="assets/images/logos/prointec.png" 
-              alt="logo ministerio de transporte de España"
+            className="logo-icon w-200" 
+            src="assets/images/logos/prointec.png" 
+            alt="logo ministerio de transporte de España"
+            style={{padding: 10, backgroundColor: 'white', borderRadius: 10}}
           />
         </Stack>
       </Stack>

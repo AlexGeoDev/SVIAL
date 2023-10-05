@@ -1,10 +1,12 @@
 import React from 'react';
 import { Grid, Stack, TextField, Typography, Button, useMediaQuery } from '@mui/material';
-import TaxiAlertIcon from '@mui/icons-material/TaxiAlert';
+import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
+import CloseFullscreenOutlinedIcon from '@mui/icons-material/CloseFullscreenOutlined';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled(Grid)(({ theme }) => ({
   backgroundColor: '#9ecdf8',
@@ -31,14 +33,49 @@ const AccidentesHeader = () => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const isMediumScreen = useMediaQuery('(min-width:601px) and (max-width:900px)');
 
+  const buttonStyle = {
+    width: '44px',
+    height: '44px',
+    backgroundColor: 'transparent',
+    borderRadius: '15%',
+    padding: 0,
+    minWidth: 0,
+    border: '1px solid white',
+  };
+
+  const button2Style = {
+    width: '44px',
+    height: '44px',
+    backgroundColor: 'white' ,
+    borderRadius: '15%',
+    padding: 0,
+    minWidth: 0,
+  }
+
+  const iconStyle = {
+    color: 'white',
+  };
+
   const titleVariant = isSmallScreen ? 'h6' : isMediumScreen ? 'h6' : 'h4';
   return (
     <HeaderContainer height={{sm: 100}} className='flex border-1 border-black'>
-      <Stack direction="row" width="30vw" className="flex items-center" spacing={1}>
-        <TaxiAlertIcon style={{ fontSize: '34px', color: 'white' }} />
-        <Typography variant={titleVariant} color="initial" style={{ fontWeight: 'bold', height: '36px' }}>
-          Accidentes
-        </Typography>
+      <Stack direction="row" width="30vw" className="flex justify-evenly items-center" spacing={1}>
+        <Stack direction={'row'}>
+          <Button style={button2Style} disabled={true}>
+            <CloseFullscreenOutlinedIcon sx={{  color: 'black' }}/>
+          </Button>
+          <Typography variant={titleVariant} color="initial" style={{marginLeft: 10, fontWeight: 'bold', height: '36px' }}>
+            Accidentes
+          </Typography>
+        </Stack>
+        <Stack>
+          <Link to="/apps/accidentalidad">
+            <Button style={buttonStyle} variant='outlined'>
+              <ReportProblemOutlinedIcon style={iconStyle}/>
+            </Button>          
+          </Link>
+        </Stack>
+
       </Stack>
 
       <Grid className="flex flex-1" justifyContent="space-around" alignItems={'center'}>
