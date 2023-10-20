@@ -8,9 +8,21 @@ import Widget01 from './widgets/Widget01';
 import Widget02 from './widgets/Widget02';
 import Widget03 from './widgets/Widget03';
 import Widget04 from './widgets/Widget04';
-import Widget05 from './widgets/Widget05';
-import Widget06 from './widgets/Widget06';
+import Widget05 from './widgets/Widget06';
+import Widget06 from './widgets/Widget05';
 import Grid from '@mui/material/Grid';
+
+const data = [
+  {name: 'A', title: 'A: Salida de vía', value: 1.47},
+  {name: 'B', title: 'B: Alcances y colisiones multiples', value: 1.47},
+  {name: 'C', title: 'C: Colisión frontal', value: 1.47},
+  {name: 'D', title: 'D: Atropello de peatón', value: 2.58},
+  {name: 'E', title: 'D: Colisión lateral y frontolateral', value: 10.18},
+  {name: 'F', title: 'F: Choque con obstaculo', value: 15.46},
+  {name: 'G', title: 'G: Vuelco en calzada', value: 17.42},
+  {name: 'H', title: 'H: Sin especificar', value: 18.22},
+  {name: 'I', title: 'I: Choque con barrera', value: 30.98},
+]
 
 function AnalyticsDashboardApp() {
   const dispatch = useDispatch();
@@ -60,8 +72,7 @@ function AnalyticsDashboardApp() {
             </Grid>
           </Grid>
 
-          <Grid sm={11.5} md={4.4} direction={{sm: 'row', md: 'column'}}
-
+          <Grid sm={11.5} md={4.4} direction={'column'}
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -69,7 +80,7 @@ function AnalyticsDashboardApp() {
             }}
           >
             <Grid item sm={6} md={12}>
-              <Widget02 />
+              <Widget02 data={data}  />
             </Grid>
             <Grid item sm={6} md={12}>
               <Widget04 />

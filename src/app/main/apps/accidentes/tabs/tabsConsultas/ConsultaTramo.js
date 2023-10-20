@@ -63,6 +63,7 @@ const ConsultaTramo = () => {
       marginLeft={3}
       sx={{
         width:{sm: '85vw', md: '80vw'},
+        marginBottom: '10px',
         display: 'flex',
         flexDirection: {
           sm: 'column',

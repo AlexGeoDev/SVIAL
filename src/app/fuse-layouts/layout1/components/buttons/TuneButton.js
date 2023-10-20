@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-// import { accidentalidadSlice } from 'app/main/apps/accidentalidad/store/accidentalidadSlice';
-import { toggleTabsVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadSlice';
-// import { verMiNombre } from 'app/main/apps/accidentalidad/store/accidentalidadSlice';
+// import { tablesVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadTablesSlice';
+import { tuneVisibility } from 'app/main/apps/store/appsSlice';
 
-const SearchButton = () => {
+
+const TuneButton = () => {
   const dispatch = useDispatch();
-  // const isTabVisible = useSelector((state) => state.accidentalidad.accidentalidad.showTabs)
   const [isClicked, setIsClicked] = useState(false);
-
-  const handleShowTabs = () => {
-    dispatch(toggleTabsVisibility());
-  };
 
   const handleClick = () => {
     setIsClicked((prevState) => !prevState);
   };
+
+  const handleShowTune = () => {
+    dispatch(tuneVisibility());
+  }
 
   const buttonStyle = {
     width: '44px',
@@ -35,16 +34,16 @@ const SearchButton = () => {
 
   return (
     <Button 
-      style={buttonStyle} 
+      style={buttonStyle}
       onClick={() => {
         handleClick();
-        handleShowTabs();
-      }}
+        handleShowTune();
+      }
+      } 
       disabled={false}>
-      <SearchTwoToneIcon style={iconStyle} />
-      {/* {Name} */}
+      <TuneRoundedIcon style={iconStyle} />
     </Button>
   );
 };
 
-export default SearchButton;
+export default TuneButton;

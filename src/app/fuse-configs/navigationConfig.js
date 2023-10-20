@@ -21,7 +21,7 @@ const navigationConfig = [
   {
     id: 'modulos',
     title: 'modulos',
-    translate: 'MENÚ\tPRIINCIPAL',
+    translate: 'MENÚ\tPRINCIPAL',
     type: 'group',
     icon: 'M',
     children: [

@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
-// import MapIcon from '@mui/icons-material/Map';
 import { Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { tablesVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadTablesSlice';
 
-const MenuButton = () => {
+
+const TablesButton = () => {
+  const dispatch = useDispatch();
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
     setIsClicked((prevState) => !prevState);
   };
+
+  const handleShowTables = () => {
+    dispatch(tablesVisibility());
+  }
 
   const buttonStyle = {
     width: '44px',
@@ -25,10 +32,17 @@ const MenuButton = () => {
   };
 
   return (
-    <Button style={buttonStyle} onClick={handleClick} disabled={true}>
+    <Button 
+      style={buttonStyle}
+      onClick={() => {
+        handleClick();
+        handleShowTables();
+      }
+      } 
+      disabled={false}>
       <MenuRoundedIcon style={iconStyle} />
     </Button>
   );
 };
 
-export default MenuButton;
+export default TablesButton;

@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import MapIcon from '@mui/icons-material/Map';
 import { Button } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { mapVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadMapSlice';
 
 const MapButton = () => {
+  const dispatch = useDispatch();
   const [isClicked, setIsClicked] = useState(false);
 
   const handleClick = () => {
     setIsClicked((prevState) => !prevState);
   };
+
+  const handleShowMap = () => {
+    dispatch(mapVisibility());
+  }
 
   const buttonStyle = {
     width: '44px',
@@ -24,7 +31,13 @@ const MapButton = () => {
   };
 
   return (
-    <Button style={buttonStyle} onClick={handleClick} disabled={true}>
+    <Button 
+      style={buttonStyle} 
+      onClick={() => {
+        handleClick();
+        handleShowMap();  
+      }}
+      disabled={false}>
       <MapIcon style={iconStyle} />
     </Button>
   );

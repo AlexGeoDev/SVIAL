@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { 
   Box,
-  Button,
   Stack, 
   Tab, 
   Tabs, 
@@ -15,6 +14,7 @@ import ConsultaAmbito from './tabs/ConsultaAmbito';
 import BarChart from './tabs/components/BarChart';
 import PieChart from './tabs/components/PieChart';
 import AccidentalidadEstadisticas from './AccidentalidadEstadisticas';
+import { useSelector } from 'react-redux';
 
 const tabLabelStyles = {
   fontWeight: 'bold', // Texto en negrilla
@@ -56,20 +56,18 @@ function a11yProps(index) {
 
 export default function AccidentalidadConsultas() {
   const [tabValue, setTabValue] = useState(0);
-  const [tabsVisible, setTabsVisible] = useState(true);
+  const tabsVisibles = useSelector((state) => state.accidentalidad.accidentalidad.showTabs);
+  const mapVisible = useSelector((state) => state.accidentalidad.accidentalidadMap.showMap);
+  const dataVisible = useSelector((state) => state.accidentalidad.accidentalidadData.showData);
+  const tablesVisible = useSelector((state) => state.accidentalidad.accidentalidadTables.showTables); 
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
-  const toggleTabsVisibility = () => {
-    setTabsVisible((prevVisible) => !prevVisible);
-  };
   
   return (
     <Box className='flex flex-col'>
-      <Button onClick={toggleTabsVisibility}>Oculltar tabs</Button>
-      {tabsVisible && (
+      {tabsVisibles && (
         <Stack direction={'row'} className='tabs flex flex-1 border-1 border-black'>
 
           <Tabs
@@ -136,25 +134,31 @@ export default function AccidentalidadConsultas() {
       )}
 
       <Stack direction={{sm: 'column', md: 'row'}}>
-        <Stack width={{sm: '100vw', md: '50vw'}} className='border-1 border-black'>
-          <AccidentalidadMap />
-        </Stack>
-        <Stack 
-          width={{sm: '100vw', md: '50vw'}}
-          padding={2}
-          direction={'row'} 
-          alignItems={'center'}
-          justifyContent={'center'}
-          className='border-1 border-black'
-        >
-          <BarChart />
-          <PieChart />
-        </Stack>
+        {mapVisible && (
+          <Stack width={{sm: '100vw', md: '50vw'}} className='border-1 border-black'>
+            <AccidentalidadMap />
+          </Stack>
+        )}
+        {dataVisible && (
+          <Stack 
+            width={{sm: '100vw', md: '50vw'}}
+            padding={2}
+            direction={'row'} 
+            alignItems={'center'}
+            justifyContent={'center'}
+            className='border-1 border-black'
+          >
+            <BarChart />
+            <PieChart />
+          </Stack>
+        )}
       </Stack>
 
-      <Stack className='flex flex-1 border-1 border-black'>
-        <AccidentalidadEstadisticas />
-      </Stack>
+      {tablesVisible && (
+        <Stack className='flex flex-1 border-1 border-black'>
+          <AccidentalidadEstadisticas />
+        </Stack>
+      )}
     </Box>
   );
 }

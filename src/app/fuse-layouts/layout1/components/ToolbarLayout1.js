@@ -12,9 +12,10 @@ import FullScreenToggle from '../../shared-components/FullScreenToggle';
 import Typography from '@mui/material/Typography'
 import { Stack, Grid } from '@mui/material';
 import MapButton from './buttons/MapButton';
-import MenuButton from './buttons/MenuButton';
-import PieButton from './buttons/PieButton';
 import SearchButton from './buttons/SearchButton';
+import DataButton from './buttons/DataButton';
+import TablesButton from './buttons/TablesButton';
+import TuneButton from './buttons/TuneButton';
 
 function ToolbarLayout1(props) {
   const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
@@ -55,8 +56,9 @@ function ToolbarLayout1(props) {
               <Stack sx={{ml: 2}} direction={'row'} spacing={2}>
                 <SearchButton />
                 <MapButton />
-                <MenuButton />
-                <PieButton />
+                <TablesButton />
+                <DataButton />
+                <TuneButton />
               </Stack>
 
               <Stack className='flex flex-1 items-center justify-center'>
