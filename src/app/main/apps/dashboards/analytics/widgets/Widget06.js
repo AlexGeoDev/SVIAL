@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Grid } from '@mui/material';
+import dataApiService from 'app/services/dataApiService';
 
 const Widget06 = () => {
   const data = [
@@ -18,8 +19,17 @@ const Widget06 = () => {
     { city: 'La Rioja', 'Accidentes mortales': 27, 'Víctimas mortales': 31, 'Heridos graves': 18 },
     { city: 'Madrid', 'Accidentes mortales': 108, 'Víctimas mortales': 122, 'Heridos graves': 27 },
     { city: 'Murcia', 'Accidentes mortales': 53, 'Víctimas mortales': 57, 'Heridos graves': 27 },
-    { city: 'Valencia', 'Accidentes mortales': 173, 'Víctimas mortales': 191, 'Heridos graves': 61 },
+    { city: 'Valencia', 'Accidentes mortales': 173, 'Víctimas mortales': 191, 'Heridos graves': 1000 },
   ];
+
+
+  useEffect(async()=>{
+
+    const data2 = await dataApiService.get_demarcaciones();
+    console.log(data2);
+  })
+
+
 
   const chartRef = useRef();
 
