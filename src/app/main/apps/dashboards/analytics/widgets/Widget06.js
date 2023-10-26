@@ -1,29 +1,37 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Grid } from '@mui/material';
+import dataApiService from 'app/services/dataApiService';
+import { DateTimePicker } from '@mui/lab';
 
 const Widget06 = () => {
-  const data = [
-    { city: 'Andalucía Occidental', 'Accidentes mortales': 92, 'Víctimas mortales': 98, 'Heridos graves': 25 },
-    { city: 'Andalucía Oriental', 'Accidentes mortales': 175, 'Víctimas mortales': 195, 'Heridos graves': 62 },
-    { city: 'Aragon', 'Accidentes mortales': 113, 'Víctimas mortales': 128, 'Heridos graves': 28 },
-    { city: 'Asturias', 'Accidentes mortales': 27, 'Víctimas mortales': 29, 'Heridos graves': 18 },
-    { city: 'Cantabria', 'Accidentes mortales': 28, 'Víctimas mortales': 28, 'Heridos graves': 18 },
-    { city: 'Castilla y Leon Occidental', 'Accidentes mortales': 109, 'Víctimas mortales': 125, 'Heridos graves': 41 },
-    { city: 'Castilla y Leon Oriental', 'Accidentes mortales': 87, 'Víctimas mortales': 100, 'Heridos graves': 46 },
-    { city: 'Castilla-La Mancha', 'Accidentes mortales': 142, 'Víctimas mortales': 155, 'Heridos graves': 70 },
-    { city: 'Cataluña', 'Accidentes mortales': 188, 'Víctimas mortales': 207, 'Heridos graves': 59 },
-    { city: 'Extremadura', 'Accidentes mortales': 47, 'Víctimas mortales': 50, 'Heridos graves': 20 },
-    { city: 'Galicia', 'Accidentes mortales': 98, 'Víctimas mortales': 114, 'Heridos graves': 29 },
-    { city: 'La Rioja', 'Accidentes mortales': 27, 'Víctimas mortales': 31, 'Heridos graves': 18 },
-    { city: 'Madrid', 'Accidentes mortales': 108, 'Víctimas mortales': 122, 'Heridos graves': 27 },
-    { city: 'Murcia', 'Accidentes mortales': 53, 'Víctimas mortales': 57, 'Heridos graves': 27 },
-    { city: 'Valencia', 'Accidentes mortales': 173, 'Víctimas mortales': 191, 'Heridos graves': 61 },
-  ];
+  
 
   const chartRef = useRef();
+  useEffect(async () => {
 
-  useEffect(() => {
+    const date = new Date()
+    const year = 2021 //date.getFullYear();
+
+
+    const data = await dataApiService.get_demarcaciones(`${year}-01-01`,`${year}-12-31`);
+    console.log(data);
+    let data_max = 0;
+    
+    data.map((row) => {
+      let row_sum = 0;
+      Object.keys(row).map((col) => {
+        row_sum += parseInt(row[col]) || 0;
+      });
+      if (row_sum > data_max){
+        data_max = row_sum;
+      }
+    });
+    console.log(data_max);
+  
+    const domain = Object.keys(data[0]).splice(1,Object.keys(data[0]).length);
+    console.log(domain)
+
     // Configuración del gráfico
     const width = 350;
     const height = 360;
@@ -35,23 +43,23 @@ const Widget06 = () => {
 
     // Escalas
     const xScale = d3.scaleLinear()
-      .domain([0, 460])
+      .domain([0, data_max])
       .nice()
       .range([margin.left, width - margin.right]);
 
     const yScale = d3.scaleBand()
-      .domain(data.map(d => d.city))
+      .domain(data.map(d => d.demarcacion))
       .range([margin.top, height - margin.bottom])
       .padding(0.1);
 
     // Colores para las categorías
     const colorScale = d3.scaleOrdinal()
-      .domain(['Accidentes mortales', 'Víctimas mortales', 'Heridos graves'])
+      .domain(domain)
       .range(['#108cff', '#12229f', '#e76d37']);
 
     // Escala de apilamiento
     const stack = d3.stack()
-      .keys(['Accidentes mortales', 'Víctimas mortales', 'Heridos graves'])
+      .keys(domain)
       .order(d3.stackOrderNone)
       .offset(d3.stackOffsetNone);
 
@@ -65,48 +73,28 @@ const Widget06 = () => {
       .selectAll('rect')
       .data(d => d)
       .enter().append('rect')
-      .attr('y', d => yScale(d.data.city))
+      .attr('y', d => yScale(d.data.demarcacion))
       .attr('x', d => xScale(d[0]))
       .attr('width', d => xScale(d[1]) - xScale(d[0]))
       .attr('height', yScale.bandwidth());
 
-    // Agregar etiquetas de texto para los valores
-    svg.selectAll('text.value')
-      .data(data)
-      .enter().append('text')
-      .attr('class', 'value')
-      .attr('x', d => xScale(d['Accidentes mortales'] / 2))
-      .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
-      .attr('dy', '0.35em')
-      .style('fill', 'white')
-      .style('font-size', '8px')
-      .style('text-anchor', 'middle')
-      .text(d => d['Accidentes mortales']);
 
-    svg.selectAll('text.victimas-mortales')
-      .data(data)
-      .enter().append('text')
-      .attr('class', 'victimas-mortales')
-      .attr('x', d => xScale((d['Accidentes mortales']) + (d['Víctimas mortales'] / 2 )))
-      .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
-      .attr('dy', '0.35em')
-      .style('fill', 'white') // Color de texto en blanco
-      .style('font-size', '8px') // Tamaño de fuente más pequeño
-      .style('text-anchor', 'middle')
-      .text(d => d['Víctimas mortales']);
+    domain.map((ele) => {
+      
+      svg.selectAll(`text.${ele}`)
+        .data(data)
+        .enter().append('text')
+        .attr('class', ele)
+        .attr('x', d => xScale(d[ele] / 2))
+        .attr('y', d => yScale(d.demarcacion) + yScale.bandwidth() / 2)
+        .attr('dy', '0.35em')
+        .style('fill', 'white')
+        .style('font-size', '8px')
+        .style('text-anchor', 'middle')
+        .text(d => d[ele]);
 
-    svg.selectAll('text.heridos')
-      .data(data)
-      .enter().append('text')
-      .attr('class', 'heridos')
-      .attr('x', d => xScale((d['Accidentes mortales']) + (d['Víctimas mortales']) + (d['Heridos graves'] / 2 )))
-      .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
-      .attr('dy', '0.35em')
-      .style('fill', 'white') // Color de texto en blanco
-      .style('font-size', '8px') // Tamaño de fuente más pequeño
-      .style('text-anchor', 'middle')
-      .text(d => d['Heridos graves']);
-
+    });
+ 
     // Ejes
     const yAxis = d3.axisLeft(yScale)
       .tickSize(0);
@@ -116,9 +104,13 @@ const Widget06 = () => {
       .style('font-size', '10px')
       .call(g => g.selectAll('.domain').remove());
 
+    let ticks = [];
+    for(var i = 0 ; i < Math.ceil(data_max/1000);i++ ){
+      ticks.push(1000*i)
+    }
     const xAxis = d3.axisBottom(xScale)
       .tickSize(0)
-      .tickValues([0, 200, 400]);
+      .tickValues(ticks); // TODO: calcularlo de los datos
     
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom + 5})`)
@@ -126,9 +118,9 @@ const Widget06 = () => {
       .call(g => g.select('.domain').remove());
       
     // Agregar una leyenda horizontal
-    const legendData = ['Accidentes mortales', 'Víctimas mortales', 'Heridos graves'];
-    const legendX = width - 325; // Posición X inicial
-    const legendY = 330; // Posición Y
+    const legendData = domain;
+    const legendX = width - 250; // Posición X inicial
+    const legendY = 350; // Posición Y
     const legendCircleRadius = 5;
 
     const legend = svg.append('g')
@@ -172,7 +164,7 @@ const Widget06 = () => {
       preserveAspectRatio="xMinYMin meet"
     >
       <text x="50%" y="30" textAnchor="middle" fontSize="16" fill="#333">
-        Accidentalidad mortal por Demarcación
+        Accidentalidad por Demarcación
       </text>
     </svg>
   </div>

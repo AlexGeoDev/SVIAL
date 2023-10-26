@@ -2,6 +2,10 @@ import FuseUtils from '@fuse/utils/FuseUtils';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
+
+const auth_api_url = 'https://svial-prointec.com/api' // TODO: move to .env
+
+
 class JwtService extends FuseUtils.EventEmitter {
   init() {
     this.setInterceptors();
