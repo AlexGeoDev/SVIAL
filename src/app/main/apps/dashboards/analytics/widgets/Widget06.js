@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Grid } from '@mui/material';
 import dataApiService from 'app/services/dataApiService';
+import { DateTimePicker } from '@mui/lab';
 
 const Widget06 = () => {
   const data = [
@@ -32,7 +33,11 @@ const Widget06 = () => {
 
   useEffect(async () => {
 
-    const data = await dataApiService.get_demarcaciones();
+    const date = new Date()
+    const year = 2021 //date.getFullYear();
+
+
+    const data = await dataApiService.get_demarcaciones(`${year}-01-01`,`${year}-12-31`);
     console.log(data);
     let data_max = 0;
     
@@ -71,7 +76,6 @@ const Widget06 = () => {
       .padding(0.1);
 
     // Colores para las categorías
-  
     const colorScale = d3.scaleOrdinal()
       .domain(domain)
       .range(['#108cff', '#12229f', '#e76d37']);
@@ -97,7 +101,7 @@ const Widget06 = () => {
       .attr('width', d => xScale(d[1]) - xScale(d[0]))
       .attr('height', yScale.bandwidth());
 
-    let previous_data = 0
+
     domain.map((ele) => {
       
       svg.selectAll(`text.${ele}`)
@@ -123,9 +127,13 @@ const Widget06 = () => {
       .style('font-size', '10px')
       .call(g => g.selectAll('.domain').remove());
 
+    let ticks = [];
+    for(var i = 0 ; i < Math.ceil(data_max/1000);i++ ){
+      ticks.push(1000*i)
+    }
     const xAxis = d3.axisBottom(xScale)
       .tickSize(0)
-      .tickValues([0, 1000, 2000, 3000 , 4000, 5000]); // TODO: calcularlo de los datos
+      .tickValues(ticks); // TODO: calcularlo de los datos
     
     svg.append('g')
       .attr('transform', `translate(0,${height - margin.bottom + 5})`)
@@ -134,8 +142,8 @@ const Widget06 = () => {
       
     // Agregar una leyenda horizontal
     const legendData = domain;
-    const legendX = width - 325; // Posición X inicial
-    const legendY = 330; // Posición Y
+    const legendX = width - 250; // Posición X inicial
+    const legendY = 350; // Posición Y
     const legendCircleRadius = 5;
 
     const legend = svg.append('g')

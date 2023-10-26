@@ -10,12 +10,11 @@ axios.defaults.baseURL = 'http://localhost:8000/appdata'; // TOIDO: mover esto a
 
 class DataApiService extends FuseUtils.EventEmitter {
 
-  async get_demarcaciones(req) {
-
+  async get_demarcaciones(desde , hasta) {
     
     const response = await axios.get("demarcaciones", { params: {
-        "desde": "2021-01-01",
-        "hasta": "2022-12-31"
+        "desde": desde,
+        "hasta": hasta
     }});
     console.log(response)
 
