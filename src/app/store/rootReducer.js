@@ -2,14 +2,20 @@ import { combineReducers } from '@reduxjs/toolkit';
 import auth from 'app/auth/store';
 import fuse from './fuse';
 import i18n from './i18nSlice';
-import accidentalidad from 'app/main/apps/accidentalidad/store';
-import apps from 'app/main/apps/store/appsSlice';
+import data from 'app/main/apps/store/dataSlice';
+import maps from 'app/main/apps/store/mapsSlice';
+import tables from 'app/main/apps/store/tablesSlice';
+import tabs from 'app/main/apps/store/tabsSlice';
+import tune  from 'app/main/apps/store/tuneSlice';
 
 const createReducer = (asyncReducers) => (state, action) => {
   const combinedReducer = combineReducers({
     auth,
-    accidentalidad,
-    apps,
+    data,
+    maps,
+    tables,
+    tabs,
+    tune,
     fuse,
     i18n,
     ...asyncReducers,

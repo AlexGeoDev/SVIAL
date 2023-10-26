@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { tablesVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadTablesSlice';
+import { tablesVisibility } from 'app/main/apps/store/tablesSlice';
 
 
 const TablesButton = () => {

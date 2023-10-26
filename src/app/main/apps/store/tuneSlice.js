@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const appsSlice = createSlice({
+const tuneSlice = createSlice({
   name: 'Tune',
   initialState: {showTune: true},
   reducers: {
@@ -10,5 +10,5 @@ const appsSlice = createSlice({
   }
 })
 
-export const {tuneVisibility} = appsSlice.actions;
-export default appsSlice.reducer;
+export const {tuneVisibility} = tuneSlice.actions;
+export default tuneSlice.reducer;

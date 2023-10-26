@@ -2,7 +2,6 @@ import AcademyAppConfig from './academy/AcademyAppConfig';
 import AccidentalidadAppConfig from './accidentalidad/AccidentalidadAppConfig';
 import AccidentesAppConfig from './accidentes/AccidentesAppConfig';
 import CalendarAppConfig from './calendar/CalendarAppConfig';
-import ChatAppConfig from './chat/ChatAppConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
 import AnalyticsDashboardAppConfig from './dashboards/analytics/AnalyticsDashboardAppConfig';
 import ProjectDashboardAppConfig from './dashboards/project/ProjectDashboardAppConfig';
@@ -23,7 +22,6 @@ const appsConfigs = [
   FileManagerAppConfig,
   ContactsAppConfig,
   CalendarAppConfig,
-  ChatAppConfig,
   ECommerceAppConfig,
   ScrumboardAppConfig,
   AcademyAppConfig,

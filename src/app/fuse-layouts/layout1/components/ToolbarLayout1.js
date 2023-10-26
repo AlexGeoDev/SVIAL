@@ -22,6 +22,8 @@ function ToolbarLayout1(props) {
   const navbar = useSelector(({ fuse }) => fuse.navbar);
   const toolbarTheme = useSelector(selectToolbarTheme);
 
+  const isButtonPanelVisible = window.location.pathname === '/apps/accidentalidad' || window.location.pathname === '/apps/accidentes';
+
   return (
     <ThemeProvider theme={toolbarTheme}>
       <AppBar
@@ -53,13 +55,16 @@ function ToolbarLayout1(props) {
                 </>
               )}
 
-              <Stack sx={{ml: 2}} direction={'row'} spacing={2}>
-                <SearchButton />
-                <MapButton />
-                <TablesButton />
-                <DataButton />
-                <TuneButton />
-              </Stack>
+              {isButtonPanelVisible &&(
+                <Stack  className='buttonsPanels' sx={{ml: 2}} direction={'row'} spacing={2}>
+                  <SearchButton />
+                  <TuneButton />
+                  <MapButton />
+                  <DataButton />
+                  <TablesButton />
+                </Stack>
+              )}
+
 
               <Stack className='flex flex-1 items-center justify-center'>
                 <Typography variant="h4" color="white" fontWeight={'bold'}>SVIAL</Typography>

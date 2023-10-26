@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MapIcon from '@mui/icons-material/Map';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { mapVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadMapSlice';
+import { mapVisibility } from 'app/main/apps/store/mapsSlice';
 
 const MapButton = () => {
   const dispatch = useDispatch();

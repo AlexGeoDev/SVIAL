@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import PieChartRoundedIcon from '@mui/icons-material/PieChartRounded';
-import MapIcon from '@mui/icons-material/Map';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { dataVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadDataSlice';
+import { dataVisibility } from 'app/main/apps/store/dataSlice';
 
 const DataButton = () => {
   const dispatch = useDispatch();

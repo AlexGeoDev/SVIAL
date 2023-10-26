@@ -17,10 +17,9 @@ import AccidentesEstadisticas from './AccidentesEstadisticas';
 import AccidentesVariables from './AccidentesVariables';
 import { useSelector } from 'react-redux';
 
-
 const tabLabelStyles = {
-  fontWeight: 'bold', // Texto en negrilla
-  color: 'black',     // Color de texto negro
+  fontWeight: 'bold',
+  color: 'black',
 };
 
 function TabPanel(props) {
@@ -38,7 +37,6 @@ function TabPanel(props) {
           <Typography>{children}</Typography>
         </Box>
       )}
-      
     </Stack>
   );
 }
@@ -58,99 +56,135 @@ function a11yProps(index) {
 
 export default function AccidentesConsultas() {
   const [tabValue, setTabValue] = useState(0);
-  const tabsVisibles = useSelector((state) => state.accidentalidad.accidentalidad.showTabs);
-  const mapVisible = useSelector((state) => state.accidentalidad.accidentalidadMap.showMap);
-  const dataVisible = useSelector ((state) => state.accidentalidad.accidentalidadData.showData);
-  const tablesVisible = useSelector ((state) => state.accidentalidad.accidentalidadTables.showTables);
-  const tuneVisible = useSelector ((state) => state.apps.showTune);
+  const tabsVisibles = useSelector((state) => state.tabs.showTabs);
+  const mapVisible = useSelector((state) => state.maps.showMap);
+  const dataVisible = useSelector((state) => state.data.showData);
+  const tablesVisible = useSelector((state) => state.tables.showTables);
+  const tuneVisible = useSelector((state) => state.tune.showTune);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
-  
+
   return (
     <Box className='flex flex-col'>
-      {tabsVisibles && (
-        <Stack direction={'row'} className='flex flex-1 border-1 border-black'>
-          <Tabs
-            orientation='vertical'
-            value={tabValue}
-            onChange={handleChange}
-            aria-label="Vertical tabs"
-            sx={{ 
-              borderRight: 1, 
-              borderColor: 'divider', 
-              minWidth: '90px',
-              width: {sm: '90px', md: '170px'},
-              '& .Mui-selected': {
-                backgroundColor: '#9fccf8',
-              },
-              '& .MuiTab-root': {
-                backgroundColor: 'white',
-                '&.Mui-selected': {
+      <Stack
+        style={{
+          border: tabsVisibles ? '1px solid black' : 0,
+          resize: 'vertical',
+          overflow: 'auto',
+          minHeight: tabsVisibles ? '150px' : '0',
+        }}
+      >
+        {tabsVisibles && (
+          <Stack direction='row' className='flex flex-1'>
+            <Tabs
+              orientation='vertical'
+              value={tabValue}
+              onChange={handleChange}
+              aria-label='Vertical tabs'
+              sx={{
+                borderRight: 1,
+                borderColor: 'divider',
+                minWidth: '90px',
+                width: { sm: '90px', md: '170px' },
+                '& .Mui-selected': {
                   backgroundColor: '#9fccf8',
                 },
-              },
-            }}
-          >
-            <Tab 
-              label="Consulta por tramo" 
-              style={tabLabelStyles}
-              {...a11yProps(0)} 
-            />
-            <Tab 
-              label="Consulta por ámbito" 
-              style={tabLabelStyles}
-              {...a11yProps(1)} 
-            />
-            <Tab 
-              label="Consulta por mapa" 
-              style={tabLabelStyles}
-              {...a11yProps(2)} 
-            />
-          </Tabs>
-          <TabPanel 
-            value={tabValue} 
-            index={0} 
-            className='flex flex-1 justify-center max-h-145'>
-            <ConsultaTramo />
-          </TabPanel>
-          
-          <TabPanel 
-            value={tabValue} 
-            index={1}
-            className='flex flex-1 justify-center w-max-170'
-          >
-            <ConsultaAmbito />
-          </TabPanel>
-          <TabPanel 
-            value={tabValue} 
-            index={2}>
-            <ConsultaMapa />
-          </TabPanel>
-        </Stack>
-      )}
+                '& .MuiTab-root': {
+                  backgroundColor: 'white',
+                  '&.Mui-selected': {
+                    backgroundColor: '#9fccf8',
+                  },
+                },
+              }}
+            >
+              <Tab
+                label='Consulta por tramo'
+                style={tabLabelStyles}
+                {...a11yProps(0)}
+              />
+              <Tab
+                label='Consulta por ámbito'
+                style={tabLabelStyles}
+                {...a11yProps(1)}
+              />
+              <Tab
+                label='Consulta por mapa'
+                style={tabLabelStyles}
+                {...a11yProps(2)}
+              />
+            </Tabs>
+            <TabPanel
+              value={tabValue}
+              index={0}
+              className='flex flex-1 justify-center max-h-145'
+            >
+              <ConsultaTramo />
+            </TabPanel>
+            <TabPanel
+              value={tabValue}
+              index={1}
+              className='flex flex-1 justify-center w-max-170'
+            >
+              <ConsultaAmbito />
+            </TabPanel>
+            <TabPanel value={tabValue} index={2}>
+              <ConsultaMapa />
+            </TabPanel>
+          </Stack>
+        )}
+      </Stack>
 
       {tuneVisible && (
-        <Stack className='border-1 border-black'>
+        <Stack
+          style={{
+            border: '1px black solid',
+            resize: 'vertical',
+            overflow: 'auto',
+            minHeight: tuneVisible ? '150px' : 0,
+          }}
+        >
           <AccidentesVariables />
         </Stack>
       )}
 
-      <Stack direction={{sm: 'column', md: 'row'}}>
+      <Stack
+        direction={{ sm: 'column', md: 'row' }}
+        style={{
+          resizable: true,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         {mapVisible && (
-          <Stack width={{sm: '100vw', md: '50vw'}} className='border-1 border-black'>          
+          <Stack
+            width={{ sm: '100vw', md: '50vw' }}
+            minHeight='400px'
+            minWidth='25vw'
+            className='border-1 border-black'
+            sx={{
+              overflow: 'auto',
+              resize: 'both',
+            }}
+          >
             <AccidentesMap />
           </Stack>
         )}
         {dataVisible && (
-          <Stack 
-            paddingY={6}
-            width={{sm: '100vw', md: '50vw'}}
-            direction={'row'} 
-            alignItems={'center'}
-            justifyContent={'center'}
+          <Stack
+            width={{ sm: '100vw', md: '50vw' }}
+            minWidth={{ md: '30vw' }}
+            minHeight='400px'
+            padding={2}
+            direction='row'
+            alignItems='center'
+            justifyContent='center'
             className='border-1 border-black'
+            style={{
+              resize: 'both',
+              overflow: 'auto',
+            }}
           >
             <BarChart />
             <PieChart />
@@ -158,11 +192,21 @@ export default function AccidentesConsultas() {
         )}
       </Stack>
 
-      {tablesVisible && (
-        <Stack className='flex flex-1 items-center border-1 border-black'>
-          <AccidentesEstadisticas />
-        </Stack>
-      )}
+      <Stack
+        style={{
+          border: tablesVisible ? '1px solid black' : 0,
+          resize: tablesVisible ? 'vertical' : 'none',
+          overflow: 'auto',
+          marginBottom: '1px',
+          minHeight: tablesVisible ? '200px' : '0px',
+        }}
+      >
+        {tablesVisible && (
+          <Stack className='flex flex-1 py-10 items-center border-1 border-black'>
+            <AccidentesEstadisticas />
+          </Stack>
+        )}
+      </Stack>
     </Box>
   );
 }

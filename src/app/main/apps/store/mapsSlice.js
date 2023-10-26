@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const accidentalidadMapSlice = createSlice({
+const mapSlice = createSlice({
   name: 'accidentalidadMap',
   initialState: {showMap: true},
   reducers: {
@@ -10,5 +10,5 @@ const accidentalidadMapSlice = createSlice({
   }
 })
 
-export const { mapVisibility } = accidentalidadMapSlice.actions;
-export default accidentalidadMapSlice.reducer;
+export const { mapVisibility } = mapSlice.actions;
+export default mapSlice.reducer;

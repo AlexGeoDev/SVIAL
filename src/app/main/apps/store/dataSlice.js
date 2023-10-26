@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const accidentalidadDataSlice = createSlice({
+const dataSlice = createSlice({
   name: 'accidentalidadData',
   initialState: {showData: true},
   reducers: {
@@ -10,5 +10,5 @@ const accidentalidadDataSlice = createSlice({
   }
 })
 
-export const {dataVisibility} = accidentalidadDataSlice.actions;
-export default accidentalidadDataSlice.reducer;
+export const {dataVisibility} = dataSlice.actions;
+export default dataSlice.reducer;

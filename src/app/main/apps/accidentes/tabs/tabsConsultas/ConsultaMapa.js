@@ -90,6 +90,7 @@ const ConsultaMapa = () => {
     <Stack
       sx={{
         width: '80vw',
+        minHeight: '230px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const accidentalidadTablesSlice = createSlice({
+const tablesSlice = createSlice({
   name: 'accidentalidadTables',
   initialState: {showTables: true},
   reducers: {
@@ -10,5 +10,5 @@ const accidentalidadTablesSlice = createSlice({
   }
 })
 
-export const {tablesVisibility} = accidentalidadTablesSlice.actions;
-export default accidentalidadTablesSlice.reducer;
+export const {tablesVisibility} = tablesSlice.actions;
+export default tablesSlice.reducer;

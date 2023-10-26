@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
-// import { tablesVisibility } from 'app/main/apps/accidentalidad/store/accidentalidadTablesSlice';
-import { tuneVisibility } from 'app/main/apps/store/appsSlice';
+import { tuneVisibility } from 'app/main/apps/store/tuneSlice';
 
 
 const TuneButton = () => {

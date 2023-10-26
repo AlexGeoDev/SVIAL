@@ -93,6 +93,7 @@ const ConsultaAmbito = () => {
       paddingY={1}
       sx={{
         width: '80vw',
+        minHeight: '230px',
         marginRight: 3,
         display: 'flex',
         alignItems: 'center',

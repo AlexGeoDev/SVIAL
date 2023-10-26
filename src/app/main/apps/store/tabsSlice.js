@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const accidentalidadSlice = createSlice({
-  name: 'accidentalidad',
+const tabsSlice = createSlice({
+  name: 'Tabs',
   initialState: {showTabs: true},
   reducers: {
     toggleTabsVisibility: (state) => {
@@ -10,5 +10,5 @@ const accidentalidadSlice = createSlice({
   }
 })
 
-export const {toggleTabsVisibility} = accidentalidadSlice.actions;
-export default accidentalidadSlice.reducer;
+export const {toggleTabsVisibility} = tabsSlice.actions;
+export default tabsSlice.reducer;
