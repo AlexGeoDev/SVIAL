@@ -24,6 +24,20 @@ class DataApiService extends FuseUtils.EventEmitter {
     }
     return response.data;
   }
+
+  async get_victimasvs(year) {
+    
+    const response = await axios.get("victimas_vs_anterior", { params: {
+        "year": year,
+    }});
+    console.log(response)
+
+    if (response.status !== 200) {
+      const message = "se produjo un fallo en la carga de capas";
+      throw new Error(message);
+    }
+    return response.data;
+  }
 }
 
 export default new DataApiService();
