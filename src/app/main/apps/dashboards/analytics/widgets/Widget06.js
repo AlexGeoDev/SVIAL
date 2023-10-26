@@ -5,32 +5,9 @@ import dataApiService from 'app/services/dataApiService';
 import { DateTimePicker } from '@mui/lab';
 
 const Widget06 = () => {
-  const data = [
-    { city: 'Andalucía Occidental', 'Accidentes mortales': 92, 'Víctimas mortales': 98, 'Heridos graves': 25 },
-    { city: 'Andalucía Oriental', 'Accidentes mortales': 175, 'Víctimas mortales': 195, 'Heridos graves': 62 },
-    { city: 'Aragon', 'Accidentes mortales': 113, 'Víctimas mortales': 128, 'Heridos graves': 28 },
-    { city: 'Asturias', 'Accidentes mortales': 27, 'Víctimas mortales': 29, 'Heridos graves': 18 },
-    { city: 'Cantabria', 'Accidentes mortales': 28, 'Víctimas mortales': 28, 'Heridos graves': 18 },
-    { city: 'Castilla y Leon Occidental', 'Accidentes mortales': 109, 'Víctimas mortales': 125, 'Heridos graves': 41 },
-    { city: 'Castilla y Leon Oriental', 'Accidentes mortales': 87, 'Víctimas mortales': 100, 'Heridos graves': 46 },
-    { city: 'Castilla-La Mancha', 'Accidentes mortales': 142, 'Víctimas mortales': 155, 'Heridos graves': 70 },
-    { city: 'Cataluña', 'Accidentes mortales': 188, 'Víctimas mortales': 207, 'Heridos graves': 59 },
-    { city: 'Extremadura', 'Accidentes mortales': 47, 'Víctimas mortales': 50, 'Heridos graves': 20 },
-    { city: 'Galicia', 'Accidentes mortales': 98, 'Víctimas mortales': 114, 'Heridos graves': 29 },
-    { city: 'La Rioja', 'Accidentes mortales': 27, 'Víctimas mortales': 31, 'Heridos graves': 18 },
-    { city: 'Madrid', 'Accidentes mortales': 108, 'Víctimas mortales': 122, 'Heridos graves': 27 },
-    { city: 'Murcia', 'Accidentes mortales': 53, 'Víctimas mortales': 57, 'Heridos graves': 27 },
-    { city: 'Valencia', 'Accidentes mortales': 173, 'Víctimas mortales': 191, 'Heridos graves': 1000 },
-  ];
-
-
- 
+  
 
   const chartRef = useRef();
-
-
-
-
   useEffect(async () => {
 
     const date = new Date()
