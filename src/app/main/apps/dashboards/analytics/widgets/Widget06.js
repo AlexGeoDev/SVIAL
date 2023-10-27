@@ -2,10 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { Grid } from '@mui/material';
 import dataApiService from 'app/services/dataApiService';
-import { DateTimePicker } from '@mui/lab';
 
 const Widget06 = () => {
-  
 
   const chartRef = useRef();
   useEffect(async () => {
@@ -13,9 +11,8 @@ const Widget06 = () => {
     const date = new Date()
     const year = 2021 //date.getFullYear();
 
-
     const data = await dataApiService.get_demarcaciones(`${year}-01-01`,`${year}-12-31`);
-    console.log(data);
+    console.log('dataWidget06', data);
     let data_max = 0;
     
     data.map((row) => {
@@ -27,15 +24,15 @@ const Widget06 = () => {
         data_max = row_sum;
       }
     });
-    console.log(data_max);
+    console.log('data_maxWidget06: ', data_max);
   
     const domain = Object.keys(data[0]).splice(1,Object.keys(data[0]).length);
     console.log(domain)
 
     // Configuración del gráfico
-    const width = 350;
-    const height = 360;
-    const margin = { top: 50, right: 10, bottom: 60, left: 125 };
+    const width = 700;
+    const height = 650;
+    const margin = { top: 50, right: 10, bottom: 60, left: 160 };
 
     const svg = d3.select(chartRef.current)
       .attr('width', width)
@@ -78,23 +75,21 @@ const Widget06 = () => {
       .attr('width', d => xScale(d[1]) - xScale(d[0]))
       .attr('height', yScale.bandwidth());
 
-
     domain.map((ele) => {
       
       svg.selectAll(`text.${ele}`)
         .data(data)
         .enter().append('text')
         .attr('class', ele)
-        .attr('x', d => xScale(d[ele] / 2))
+        .attr('x', d => d[ele] >= 50 ? xScale(d[ele] / 2) : 0)
         .attr('y', d => yScale(d.demarcacion) + yScale.bandwidth() / 2)
         .attr('dy', '0.35em')
         .style('fill', 'white')
         .style('font-size', '8px')
         .style('text-anchor', 'middle')
         .text(d => d[ele]);
-
     });
- 
+
     // Ejes
     const yAxis = d3.axisLeft(yScale)
       .tickSize(0);
@@ -119,9 +114,9 @@ const Widget06 = () => {
       
     // Agregar una leyenda horizontal
     const legendData = domain;
-    const legendX = width - 250; // Posición X inicial
-    const legendY = 350; // Posición Y
-    const legendCircleRadius = 5;
+    const legendX = width - 350; // Posición X inicial
+    const legendY = 630; // Posición Y
+    const legendCircleRadius = 7;
 
     const legend = svg.append('g')
       .attr('class', 'legend')
@@ -131,16 +126,16 @@ const Widget06 = () => {
       .data(legendData)
       .enter().append('g')
       .attr('class', 'legend-entry')
-      .attr('transform', (d, i) => `translate(${i * 110}, 0)`); // Espaciado horizontal
+      .attr('transform', (d, i) => `translate(${i * 120}, 0)`); // Espaciado horizontal entre categorias
 
     legendEntries.append('circle')
       .attr('r', legendCircleRadius)
       .attr('fill', d => colorScale(d));
 
     legendEntries.append('text')
-      .attr('x', 8)
+      .attr('x', 10)
       .attr('y', legendCircleRadius)
-      .style('font-size', '9px')
+      .style('font-size', '10px')
       .style('text-anchor', 'start')
       .text(d => d);
 

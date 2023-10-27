@@ -22,7 +22,7 @@ function Widget01(){
     >
       <Stack className='flex items-center mt-10'>
         <Typography variant="h6" gutterBottom>
-          Resúmen de la evolución de la accidentalidad
+          Resúmen de la evolución de la accidentalidad.
         </Typography>
       </Stack>
 

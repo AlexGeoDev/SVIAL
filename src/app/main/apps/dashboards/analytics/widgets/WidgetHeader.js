@@ -1,9 +1,6 @@
 import React from 'react';
 import Typography from '@mui/material/Typography'
-import { Box, Divider, Grid, Stack, useMediaQuery } from '@mui/material';
-import ReportGmailerrorredTwoToneIcon from '@mui/icons-material/ReportGmailerrorredTwoTone';
-import ReportProblemOutlinedIcon from '@mui/icons-material/ReportProblemOutlined';
-import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import { Box, Grid, Stack, useMediaQuery } from '@mui/material';
 
 const WidgetHeader = () => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
@@ -27,39 +24,9 @@ const WidgetHeader = () => {
         className='flex justify-around items-center' 
       >
         <Typography variant={title2Variant} fontWeight={'bold'}>SVIAL</Typography>
-
-        {/* <Divider orientation='vertical' flexItem/> */}
-
-        {/* <Stack 
-          spacing={1}
-          marginTop={{sm: 1, md: 0}} 
-          alignItems={'space-between'} 
-          justifyContent={'space-between'}
-        >
-          <Stack width={{sm: 142, lg: 215}}>
-            <img src='assets/images/logos/logo.png' alt='logo ministreio de transporte' />
-          </Stack>
-          <Stack mt={1.5} width={{sm: 75, lg: 114}}>
-            <img src='assets/images/logos/prointec.png' alt='log prointec' />
-          </Stack>
-        </Stack> */}
       </Grid>
 
       <Stack direction={'row'} spacing={2} alignItems={'center'} marginLeft={{md: 5, lg: 1}}>
-        {/* <ReportProblemOutlinedIcon 
-          sx={{
-            width: {sm: '60px', md: '80px'},
-            height: {sm: '60px', md: '80px'},
-            fontWeight: 'light !important',
-          }}
-        />
-        <CampaignOutlinedIcon
-          sx={{
-            width: {sm: '60px', md: '80px'},
-            height: {sm: '60px', md: '80px'},
-            fontWeight: 'light !important',
-          }}
-        /> */}
         <Grid sm={9} md={11}>
           <Typography 
             variant={titleVariant}

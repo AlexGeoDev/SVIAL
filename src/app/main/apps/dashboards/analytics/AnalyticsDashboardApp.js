@@ -8,9 +8,10 @@ import Widget01 from './widgets/Widget01';
 import Widget02 from './widgets/Widget02';
 import Widget03 from './widgets/Widget03';
 import Widget04 from './widgets/Widget04';
-import Widget05 from './widgets/Widget06';
-import Widget06 from './widgets/Widget05';
+import Widget05 from './widgets/Widget05';
+import Widget06 from './widgets/Widget06';
 import Grid from '@mui/material/Grid';
+import { Stack } from '@mui/material';
 
 const data = [
   {name: 'A', title: 'A: Salida de vía', value: 1.47},
@@ -62,14 +63,21 @@ function AnalyticsDashboardApp() {
               <Widget03 />
             </Grid>
 
-            <Grid container sm={11.5} md={12} direction={'row'} spacing={{md: 3}}>
-              <Grid item sm={6}>
+            <Stack
+              sm={11.5} 
+              md={12} 
+              spacing={{md: 3}}
+              sx={{
+                display: 'flex',
+              }}
+            >
+              <Grid item sm={6} md={12}>
                 <Widget05 />
               </Grid>
-              <Grid item sm={6}>
+              <Grid item sm={6} md={12}>
                 <Widget06 />
               </Grid>
-            </Grid>
+            </Stack>
           </Grid>
 
           <Grid sm={11.5} md={4.4} direction={'column'}

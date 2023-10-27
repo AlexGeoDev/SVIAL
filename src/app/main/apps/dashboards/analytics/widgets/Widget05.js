@@ -19,8 +19,8 @@ const Widget05 = () => {
 
   useEffect(() => {
     // Configuración del gráfico
-    const width = 340;
-    const height = 360;
+    const width = 700;
+    const height = 650;
     const margin = { top: 50, right: 10, bottom: 60, left: 145 };
 
     const svg = d3.select(chartRef.current)
@@ -69,7 +69,7 @@ const Widget05 = () => {
       .data(data)
       .enter().append('text')
       .attr('class', 'value')
-      .attr('x', d => d['Accidentes mortales'] >= 28 ? xScale(d['Accidentes mortales'] / 2) : -1000) // Coloca valores menores a 28 fuera del área visible
+      .attr('x', d => d['Accidentes mortales'] >= 28 ? xScale(d['Accidentes mortales'] / 2) : 0) // Coloca valores menores a 28 fuera del área visible
       .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
       .attr('dy', '0.35em')
       .style('fill', 'white')
@@ -81,7 +81,7 @@ const Widget05 = () => {
       .data(data)
       .enter().append('text')
       .attr('class', 'victimas-mortales')
-      .attr('x', d => d['Víctimas mortales'] >= 28 ? xScale((d['Accidentes mortales']) + (d['Víctimas mortales'] / 2)) : -1000)
+      .attr('x', d => d['Víctimas mortales'] >= 28 ? xScale((d['Accidentes mortales']) + (d['Víctimas mortales'] / 2)) : 0)
       .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
       .attr('dy', '0.35em')
       .style('fill', 'white')
@@ -93,7 +93,7 @@ const Widget05 = () => {
       .data(data)
       .enter().append('text')
       .attr('class', 'heridos')
-      .attr('x', d => d['Heridos graves'] >= 28 ? xScale((d['Accidentes mortales']) + (d['Víctimas mortales']) + (d['Heridos graves'] / 2)) : -1000)
+      .attr('x', d => d['Heridos graves'] >= 28 ? xScale((d['Accidentes mortales']) + (d['Víctimas mortales']) + (d['Heridos graves'] / 2)) : 0)
       .attr('y', d => yScale(d.city) + yScale.bandwidth() / 2)
       .attr('dy', '0.35em')
       .style('fill', 'white')
@@ -122,7 +122,7 @@ const Widget05 = () => {
     // leyenda horizontal
     const legendData = ['Accidentes mortales', 'Víctimas mortales', 'Heridos graves'];
     const legendX = width - 325;
-    const legendY = 330;
+    const legendY = 630;
     const legendCircleRadius = 5;
 
     const legend = svg.append('g')
