@@ -33,7 +33,7 @@ const WidgetHeader = () => {
             fontWeight={'bold'} 
             maxWidth={'730px'}
             className='flex flex-1 items-center '>
-            Resúmen de la accidentalidad mortal en la Red de Carreteras de Estado. Año 2023
+            Resúmen de la accidentalidad mortal a 24 horas de la RCE. Año 2023.
           </Typography>
         </Grid>
       </Stack>

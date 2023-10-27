@@ -4,7 +4,9 @@ import axios from "axios";
 /**
  * Axios HTTP Request defaults
  */
-axios.defaults.baseURL = 'http://localhost:8000/appdata'; // TOIDO: mover esto a .env
+//axios.defaults.baseURL = process.env.DATA_API_URL;
+axios.defaults.baseURL = 'http://localhost:8000/appdata';
+
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
 

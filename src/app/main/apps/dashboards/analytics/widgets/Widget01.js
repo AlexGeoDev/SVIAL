@@ -31,11 +31,9 @@ function Widget01(){
           <TableHead>
             <TableRow>
               <TableCell></TableCell>
-              <TableCell sx={{textAlign: 'center'}}>2023</TableCell>
-              <TableCell sx={{textAlign: 'center'}}>2022</TableCell>
-              <TableCell sx={{textAlign: 'center'}}>2021</TableCell>
-              <TableCell sx={{textAlign: 'center'}}>2020</TableCell>
-              <TableCell sx={{textAlign: 'center'}}>2019</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>Acumulado 2023</TableCell>
+              <TableCell sx={{textAlign: 'center'}}>Mes en curso (Octubre)</TableCell>
+ 
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,31 +51,10 @@ function Widget01(){
               </TableCell>
               <TableCell sx={{textAlign: 'center'}}>451</TableCell>
               <TableCell sx={{textAlign: 'center'}}>
-                417 
+                53 
                 <br /> 
                 <Typography color="#88dc65">
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography color="#ff6961">
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography>
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography color="#88dc65">
-                (-34, -7.0%)
+                (-10, -7.0%)
                 </Typography>
               </TableCell>
             </TableRow>
@@ -92,31 +69,10 @@ function Widget01(){
               </TableCell>
               <TableCell sx={{textAlign: 'center'}}>500</TableCell>
               <TableCell sx={{textAlign: 'center'}}>
-                417 
+                38 
                 <br /> 
-                <Typography color="#88dc65">
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography color="#ff6961">
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography>
-                (-34, -7.0%)
-                </Typography>
-              </TableCell>
-              <TableCell sx={{textAlign: 'center'}}>
-                417 
-                <br /> 
-                <Typography color="#88dc65">
-                (-34, -7.0%)
+                <Typography color='red'>
+                (+34, +7.0%)
                 </Typography>
               </TableCell>
             </TableRow>

@@ -11,9 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://svial-prointec.com/api'
-// axios.defaults.baseURL = 'http://localhost:8088'
-const data_api = 'http://localhost:8000'
+axios.defaults.baseURL = 'http://localhost:8088';
 
 ReactDOM.render(
   <App />, 
