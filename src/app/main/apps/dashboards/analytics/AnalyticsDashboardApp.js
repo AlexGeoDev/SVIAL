@@ -1,5 +1,5 @@
-import withReducer from 'app/store/withReducer';
 import { useEffect } from 'react';
+import withReducer from 'app/store/withReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer from './store';
 import { selectWidgetsEntities, getWidgets } from './store/widgetsSlice';

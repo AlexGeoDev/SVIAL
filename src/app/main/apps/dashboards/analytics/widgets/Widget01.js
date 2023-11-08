@@ -33,7 +33,6 @@ function Widget01(){
               <TableCell></TableCell>
               <TableCell sx={{textAlign: 'center'}}>Acumulado 2023</TableCell>
               <TableCell sx={{textAlign: 'center'}}>Mes en curso (Octubre)</TableCell>
- 
             </TableRow>
           </TableHead>
           <TableBody>

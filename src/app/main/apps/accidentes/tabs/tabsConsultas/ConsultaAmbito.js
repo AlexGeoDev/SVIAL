@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { 
   Stack, 
   Typography, 
@@ -15,51 +15,66 @@ import CloseIcon from '@mui/icons-material/Close';
 import { DatePicker } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns'; 
 import LocalizationProvider from '@mui/lab/LocalizationProvider'; 
+import dataApiService from 'app/services/dataApiService';
 
 const ConsultaAmbito = () => {
-  const [demarcacion, setDemarcacion] = useState('')
-  const [selectHighway, setSelectHighway] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [zonas, setZonas] = useState('');
-  const [tipoDeVia, setTipoDeVia] = useState('');
+  const [demarcacion, setDemarcacion] = useState([]);
+  const [selectedDemarcacion, setSelectedDemarcacion] = useState('');
+
+  const [provincias, setProvincias] = useState([]);
+  const [selectedProvincia, setSelectedProvincia] = useState('');
+  
+  const [tipoVia, setTipoVia] = useState([]);
+  const [selectedTipoVia, setSelectedTipoVia] = useState('');
+
+  const [carreteras, setCarreteras] = useState([]);
+  const [selectedCarretera, setSelectedCarretera] = useState('');
+
+  const [zonas, setZonas] = useState([]);
+  const [selectedZonas, setSelectedZonas] = useState('');
+
   const [IMD, setIMD] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
+  const isMounted = useRef(true);
 
-  const handleDemarcacion = (event) => {
-    setDemarcacion(event.target.value);
+  const handleDemarcacion = (e) => {
+    setSelectedDemarcacion(demarcacion.filter((demarcacion) => {
+      return demarcacion.id_demarcacion == e.target.value;
+    })[0]);
+    console.log('selectedDemarcacion: ', e.target.value)
   }
   const handleClearDemarcacion = () => {
-    setDemarcacion("");
+    setSelectedDemarcacion("");
   }
   // --------------------------------------
-  const handleChangeHigway = (event) => {
-    setSelectHighway(event.target.value);
-  };
-  const handleClearHighway = () => {
-    setSelectHighway('');
-  };
-  // --------------------------------------
-  const handleChangeLocation = (event) => {
-    setSelectedLocation(event.target.value);
-  };
-  const handleClearLocation = () => {
-    setSelectedLocation('');
-  };
-  // --------------------------------------
-  const handleZonas = (event) => {
-    setZonas(event.target.value);
+  const handleProvincias = (e) => {
+    setSelectedProvincia(e.target.value);
   }
-  const handleClearZonas = () => {
-    setZonas('');
-  }
+  const handleClearProvincias = () => {
+    setSelectedProvincia("");
+  };
   // --------------------------------------
   const handleTipoVia = (e) => {
-    setTipoDeVia(e.target.value);
-  }
+    setSelectedTipoVia(e.target.value);
+  };
   const handleClearTipoVia = () => {
-    setTipoDeVia('');
+    setSelectedTipoVia("");
+  };
+  // --------------------------------------
+  const handleCarretera = (e) => {
+    setSelectedCarretera(e.target.value);
+  };
+  const handleClearCarretera = () => {
+    setSelectedCarretera("");
+  };
+  // --------------------------------------
+  const handleZonas = (e) => {
+    setSelectedZonas(e.target.value);
+  }
+  const handleClearZonas = () => {
+    setSelectedZonas('');
   }
   // --------------------------------------
   const handleIMD = (e) => {
@@ -69,7 +84,6 @@ const ConsultaAmbito = () => {
     setIMD('');
   }
   // --------------------------------------
-
   const handleYearChange = (date) => {
     setSelectedYear(date);
   };
@@ -88,6 +102,78 @@ const ConsultaAmbito = () => {
     width: isMediumScreen ? '140px' : '200px', 
   };
 
+  useEffect(() => {
+    return () => {
+      // Cuando el componente se desmonta, cambia el estado de isMounted a false
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    isMounted.current = true;
+    const fecthDemarcacion = async () => {
+      const dataDemarcacion = await dataApiService.get_demarcacion();
+      if (isMounted.current) {
+        setDemarcacion(dataDemarcacion);
+      }
+    };
+    
+    fecthDemarcacion();
+  }, [isMounted])
+
+  useEffect(() => {
+    isMounted.current = true;
+    const fecthProvincia = async () => {
+      const dataProvincias = await dataApiService.get_provinciaName();
+      console.log('dataProvincias: ', dataProvincias );
+      if (isMounted.current) {
+        setProvincias(dataProvincias);
+      }
+    }
+
+    fecthProvincia();
+  }, [isMounted]);
+
+  useEffect(() => {
+    isMounted.current = true;
+    const fecthTipoVia = async () => {
+      const dataTipoVia = await dataApiService.get_tipoVia();
+      if (isMounted.current) {
+        setTipoVia(dataTipoVia);
+      }
+    }
+
+    fecthTipoVia();
+  }, [isMounted])
+
+  useEffect(() => {
+    isMounted.current = true;
+    const fetchCarreteras = async () => {
+      try {
+        const dataCarreteras = await dataApiService.get_carretera(selectedProvincia);
+        if (isMounted.current) {
+          setCarreteras(dataCarreteras);
+        }
+      } catch (error) {
+        console.error('Error al obtener carreteras: ', error);
+      }
+    }
+
+    fetchCarreteras();
+  }, [selectedProvincia]);
+
+  useEffect(() => {
+    isMounted.current = true;
+    const fetchZonas = async () => {
+      const dataZona = await dataApiService.get_zonas();
+      if (isMounted.current) {
+        setZonas(dataZona);
+      }
+    };
+
+    fetchZonas();
+  }, [isMounted]);
+  
   return (
     <Stack
       paddingY={1}
@@ -111,17 +197,26 @@ const ConsultaAmbito = () => {
         className='flex'
         justifyContent={'space-around'}
       >
-        <Stack spacing={{sm: 0, md: 1}} direction={{sm: 'column', md: 'row'}}
+        <Stack 
+          direction={{sm: 'column', md: 'row'}}
           sx={{
+            border: '1px blue solid',
             display: 'flex',
-            justifyContent: {sm: 'center', md: 'space-around'},
+            justifyContent: 'space-between',
             alignItems: 'center',
+
           }}
         >
           <Stack                    // Demarcacion
-            sx={formControlStyle}
+            sx={{
+              minWidth: '200px',
+              width: 'min-content',
+              maxWidth: '250px',
+              marginX: {md: 1},
+              formControlStyle
+            }}
           >
-            <Typography fontWeight={'bold'}>
+            <Typography fontWeight={'bold'} sx={{marginBottom: 1}}>
               Demarcación:
             </Typography>
             <FormControl fullWidth>
@@ -130,19 +225,21 @@ const ConsultaAmbito = () => {
                 size='small'
                 labelId="Elegir demarcación"
                 id="elegir-demarcación"
-                value={demarcacion}
+                value={selectedDemarcacion.id_demarcacion}
                 label="Elegir demarcación"
                 onChange={handleDemarcacion}
               >
-                <MenuItem value={'Demarcacion 1'}>Demarcación 1</MenuItem>
-                <MenuItem value={'Demarcacion 2'}>Demarcación 2</MenuItem>
-                <MenuItem value={'Demarcacion 3'}>Demarcación 3</MenuItem>
+                {demarcacion.map((demarcacion) => (
+                  <MenuItem key={demarcacion.id_demarcacion} value={demarcacion.id_demarcacion}>
+                    {demarcacion.descripcion}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <Stack>
-              {demarcacion && (
+            <Stack marginY={1}>
+              {selectedDemarcacion && (
                 <Chip 
-                  label={demarcacion}
+                  label={selectedDemarcacion.descripcion}
                   onDelete={handleClearDemarcacion}
                   deleteIcon={
                     <IconButton>
@@ -151,7 +248,7 @@ const ConsultaAmbito = () => {
                   }
                   style={{
                     backgroundColor:'#afdd95',
-                    borderRadius: '3px',
+                    borderRadius: '15px',
                     fontWeight: 'bold',
                   }}
                 />
@@ -159,9 +256,15 @@ const ConsultaAmbito = () => {
             </Stack>
           </Stack>
           <Stack                    // Provincia
-            sx={formControlStyle}
+            sx={{
+              minWidth: '200px',
+              width: 'min-content',
+              maxWidth: '250px',
+              marginX: {md: 1},
+              formControlStyle
+            }}
           >
-            <Typography fontWeight={'bold'}>
+            <Typography fontWeight={'bold'} mb={1}>
               Provincia:
             </Typography>
             <FormControl fullWidth>
@@ -170,20 +273,24 @@ const ConsultaAmbito = () => {
                 size='small'
                 labelId="Elegir provincia"
                 id="elegir-provincia"
-                value={selectedLocation}
+                value={selectedProvincia}
                 label="Elegir provincia"
-                onChange={handleChangeLocation}
+                onChange={handleProvincias}
               >
-                <MenuItem value={'Provincia 1'}>Provincia 1</MenuItem>
-                <MenuItem value={'provincia 2'}>provincia 2</MenuItem>
-                <MenuItem value={'provincia 3'}>provincia 3</MenuItem>
+                {provincias.filter((provincia) => {
+                  return provincia.id_demarcacion == selectedDemarcacion.id_demarcacion;
+                }).map((provincias) =>(
+                  <MenuItem key={provincias.id} value={provincias.descripcion}>
+                    {provincias.descripcion}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <Stack>
-              {selectedLocation && (
+            <Stack my={1}>
+              {selectedProvincia && (
                 <Chip 
-                  label={selectedLocation}
-                  onDelete={handleClearLocation}
+                  label={selectedProvincia}
+                  onDelete={handleClearProvincias}
                   deleteIcon={
                     <IconButton>
                       <CloseIcon />
@@ -191,7 +298,7 @@ const ConsultaAmbito = () => {
                   }
                   style={{
                     backgroundColor:'#afdd95',
-                    borderRadius: '3px',
+                    borderRadius: '15px',
                     fontWeight: 'bold',
                   }}
                 />
@@ -199,9 +306,15 @@ const ConsultaAmbito = () => {
             </Stack>
           </Stack>
           <Stack                    // Tipo de via
-            sx={formControlStyle}
+            sx={{
+              minWidth: '200px',
+              width: 'min-content',
+              maxWidth: '310px',
+              marginX: {md: 1},
+              formControlStyle
+            }}
           >
-            <Typography fontWeight={'bold'}>
+            <Typography fontWeight={'bold'} mb={1}>
               Tipo de via:
             </Typography>
             <FormControl fullWidth>
@@ -210,19 +323,21 @@ const ConsultaAmbito = () => {
                 size='small'
                 labelId="Elegir Tipo de via"
                 id="elegir-TipoDeVia"
-                value={tipoDeVia}
+                value={selectedTipoVia}
                 label="Elegir Tipo de via"
                 onChange={handleTipoVia}
               >
-                <MenuItem value={'TipoDeVia 1'}>Tipo de via 1</MenuItem>
-                <MenuItem value={'TipoDeVia 2'}>Tipo de via 2</MenuItem>
-                <MenuItem value={'TipoDeVia 3'}>Tipo de via 3</MenuItem>
+                {tipoVia.map((tipoVia) => (
+                  <MenuItem key={tipoVia.id} value={tipoVia.descripcion}>
+                    {tipoVia.descripcion}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <Stack>
-              {tipoDeVia && (
+            <Stack my={1}>
+              {selectedTipoVia && (
                 <Chip 
-                  label={tipoDeVia}
+                  label={selectedTipoVia}
                   onDelete={handleClearTipoVia}
                   deleteIcon={
                     <IconButton>
@@ -231,7 +346,7 @@ const ConsultaAmbito = () => {
                   }
                   style={{
                     backgroundColor:'#afdd95',
-                    borderRadius: '3px',
+                    borderRadius: '15px',
                     fontWeight: 'bold',
                   }}
                 />
@@ -259,20 +374,22 @@ const ConsultaAmbito = () => {
                 size='small'
                 labelId="Elegir carretera"
                 id="elegir-carretera"
-                value={selectHighway}
+                value={selectedCarretera}
                 label="Elegir carretera"
-                onChange={handleChangeHigway}
+                onChange={handleCarretera}
               >
-                <MenuItem value={'Carretera 1'}>Carretera 1</MenuItem>
-                <MenuItem value={'Carretera 2'}>Carretera 2</MenuItem>
-                <MenuItem value={'Carretera 3'}>Carretera 3</MenuItem>
+                {carreteras.map((carretera) => (
+                  <MenuItem key={carretera.id} value={carretera.descripcion}>
+                    {carretera.descripcion}                  
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             <Stack>
-              {selectHighway && (
+              {selectedCarretera && (
                   <Chip 
-                    label={selectHighway}
-                    onDelete={handleClearHighway}
+                    label={selectedCarretera}
+                    onDelete={handleClearCarretera}
                     deleteIcon={
                       <IconButton>
                         <CloseIcon />
@@ -299,19 +416,21 @@ const ConsultaAmbito = () => {
                 size='small'
                 labelId="Elegir zonas"
                 id="elegir-zonas"
-                value={zonas}
+                value={selectedZonas}
                 label="Elegir zonas"
                 onChange={handleZonas}
               >
-                <MenuItem value={'Zonas 1'}>Zonas 1</MenuItem>
-                <MenuItem value={'Zonas 2'}>Zonas 2</MenuItem>
-                <MenuItem value={'Zonas 3'}>Zonas 3</MenuItem>
+                {zonas.map((zonas) => {
+                  <MenuItem key={zonas.id} value={zonas.descripcion}>
+                    {zonas.descripcion}
+                  </MenuItem>
+                })}
               </Select>
             </FormControl>
             <Stack>
-              {zonas && (
+              {selectedZonas && (
                 <Chip 
-                  label={zonas}
+                  label={selectedZonas}
                   onDelete={handleClearZonas}
                   deleteIcon={
                     <IconButton>
