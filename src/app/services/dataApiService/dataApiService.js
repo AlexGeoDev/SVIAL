@@ -117,7 +117,7 @@ class DataApiService extends FuseUtils.EventEmitter {
   async getTramosPorCarretera(carretera) {
     try {
       const response = await axios.get(`tramos/pks_carretera?carretera=${carretera}`);
-      console.log('TramosPorCarretera: ', response);
+      // console.log('TramosPorCarretera: ', response);
 
       if (response.status !== 200) {
         const message = "Se produjo un fallo en la carga de tramos por carretera";
@@ -138,7 +138,6 @@ class DataApiService extends FuseUtils.EventEmitter {
           pk_fin: pkFin
         }
       });
-      console.log('TramosGeo: ', response);
   
       if (response.status !== 200) {
         const message = "Se produjo un fallo en la carga de tramos geográficos";
@@ -149,7 +148,31 @@ class DataApiService extends FuseUtils.EventEmitter {
       throw error;
     }
   }
-  
+
+  async getPuntosAccidentes(carretera, pkInicio, pkFin, desde, hasta) {
+    try {
+      const response = await axios.get(`accidentes/tramo_geom`, {
+        params: {
+          carretera,
+          pk_ini: pkInicio,
+          pk_fin: pkFin,
+          desde,
+          hasta
+        }
+      });
+      console.log('PuntosAccidentes: ', response);
+
+      if (!response || !response.data ||  response.status !== 200) {
+        const message = "Respuesta incorrecta al cargar puntos de accidentes";
+        throw new Error(message);
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error('Error al cargar puntos de accidentes:', error);
+      throw error;
+    }
+  }
 }
 
 export default new DataApiService();

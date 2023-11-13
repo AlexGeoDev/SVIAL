@@ -56,11 +56,14 @@ function a11yProps(index) {
 
 export default function AccidentesConsultas() {
   const [tabValue, setTabValue] = useState(0);
+  const [tramoGeoJson, setTramoGeoJson] = useState(null);
+  const [puntosAccidentes, setPuntosAccidentes] = useState();
   const tabsVisibles = useSelector((state) => state.tabs.showTabs);
   const mapVisible = useSelector((state) => state.maps.showMap);
   const dataVisible = useSelector((state) => state.data.showData);
   const tablesVisible = useSelector((state) => state.tables.showTables);
   const tuneVisible = useSelector((state) => state.tune.showTune);
+
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -120,7 +123,10 @@ export default function AccidentesConsultas() {
               index={0}
               className='flex flex-1 justify-center max-h-145'
             >
-              <ConsultaTramo />
+              <ConsultaTramo 
+                setTramoGeoJson={setTramoGeoJson}
+                setPuntosAccidentes={setPuntosAccidentes}
+              />
             </TabPanel>
             <TabPanel
               value={tabValue}
@@ -159,7 +165,7 @@ export default function AccidentesConsultas() {
       >
         {mapVisible && (
           <Stack
-            width={{ sm: '100vw', md: '50vw' }}
+            width={{ sm: '100vw', md: '100vw' }}
             minHeight='400px'
             minWidth='25vw'
             className='border-1 border-black'
@@ -168,12 +174,15 @@ export default function AccidentesConsultas() {
               resize: 'both',
             }}
           >
-            <AccidentesMap />
+            <AccidentesMap 
+              tramoGeoJson={tramoGeoJson}
+              puntosAccidentes={puntosAccidentes}              
+            />
           </Stack>
         )}
         {dataVisible && (
           <Stack
-            width={{ sm: '100vw', md: '50vw' }}
+            width={{ sm: '100vw', md: '100vw' }}
             minWidth={{ md: '30vw' }}
             minHeight='400px'
             padding={2}
