@@ -8,8 +8,9 @@ const AccidentesVariables = ({setVariableEstudio}) => {
   //TODO: esto hay que sacarlo de la base de datos
   const variables = [
     { title: 'Anchura arcen' , column: "ARCEN", fktable : "anchura_arcen"},
-    { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", fktable: "tipo_accidente_colision" },
+    { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", nativecolumn: "TIPO_ACC_COLISION", fktable: "tipo_accidente_colision" },
     { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida" },
+    { title: 'Numero vehículos', column: "TOTAL_VEHICULOS", fktable: "" },
     
   ];
 

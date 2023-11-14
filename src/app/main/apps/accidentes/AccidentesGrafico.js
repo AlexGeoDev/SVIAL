@@ -35,7 +35,6 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
 
     chartConfig.current = { svg, x, xAxis, y, yAxis };
     setLoading(false);
-    console.log("INICIALIZADO")
     setFirstRun(true)
   }, []);
 
@@ -106,8 +105,6 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
     const { svg, x, xAxis, y, yAxis } = chartConfig.current;
     
     // Update the X axis
-
-    
     const geojson_data = puntosAccidentes[0].geojson.features;
     let data = []
     let series = [default_serie]
@@ -136,7 +133,9 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
 
 
     x.domain(series);
-    xAxis.call(d3.axisBottom(x));
+    xAxis.call(d3.axisBottom(x)).selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");;
 
     // Update the Y axis
     y.domain(data_domain);
@@ -161,7 +160,6 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
     <svg
       ref={ref}
     />
-
   );
 }
 
