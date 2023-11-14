@@ -1,9 +1,17 @@
 import { Autocomplete, Button, Stack, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useState } from 'react';
 
-const AccidentesVariables = () => {
+const AccidentesVariables = ({setVariableEstudio}) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeButton, setActiveButton] = useState(null);
+
+  //TODO: esto hay que sacarlo de la base de datos
+  const variables = [
+    { title: 'Anchura arcen' , column: "ARCEN", fktable : "anchura_arcen"},
+    { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", fktable: "tipo_accidente_colision" },
+    { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida" },
+    
+  ];
 
   const handleOptionChange = (index, newValue) => {
     setSelectedOptions(prevSelected => {
@@ -13,8 +21,9 @@ const AccidentesVariables = () => {
     });
   };
 
-  const handleButtonClick = index => {
+  const handleButtonClick = (index) => {
     setActiveButton(index);
+    setVariableEstudio(variables[index]);
   };
 
   const theme = createTheme({
@@ -36,7 +45,7 @@ const AccidentesVariables = () => {
           className='flex flex-1'
           justifyContent={'space-around'}
         >
-          {variables.map((film, index) => (
+          {variables.map((varialbe, index) => (
             <Stack spacing={2} paddingX={1} key={index}>
               <Button
                 variant={activeButton === index ? 'contained' : 'outlined'}
@@ -44,7 +53,7 @@ const AccidentesVariables = () => {
                 sx={{ borderRadius: '8px' }}
                 onClick={() => handleButtonClick(index)}
               >
-                {film.title}
+                {varialbe.title}
               </Button>
               <Autocomplete
                 multiple
@@ -66,15 +75,3 @@ const AccidentesVariables = () => {
 };
 
 export default AccidentesVariables;
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const variables = [
-  { title: 'Tipología' },
-  { title: 'Lesividad' },
-  { title: 'Luminosidad' },
-  { title: 'Factores atmosféricos' },
-  { title: 'Vehículos implicados' },
-  { title: 'Factor concurrente' },
-  { title: 'Estado superficie' },
-  { title: 'Intersección' },
-];

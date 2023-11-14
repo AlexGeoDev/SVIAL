@@ -11,11 +11,10 @@ import ConsultaAmbito from './tabs/tabsConsultas/ConsultaAmbito';
 import ConsultaTramo from './tabs/tabsConsultas/ConsultaTramo';
 import ConsultaMapa from './tabs/tabsConsultas/ConsultaMapa';
 import AccidentesMap from './AccidentesMap';
-import BarChart from './tabs/components/BarChart';
-import PieChart from './tabs/components/PieChart';
 import AccidentesEstadisticas from './AccidentesEstadisticas';
 import AccidentesVariables from './AccidentesVariables';
 import { useSelector } from 'react-redux';
+import AccidentesGrafico from './AccidentesGrafico';
 
 const tabLabelStyles = {
   fontWeight: 'bold',
@@ -63,6 +62,7 @@ export default function AccidentesConsultas() {
   const dataVisible = useSelector((state) => state.data.showData);
   const tablesVisible = useSelector((state) => state.tables.showTables);
   const tuneVisible = useSelector((state) => state.tune.showTune);
+  const [variableEstudio, setVariableEstudio] = useState(null);
 
 
   const handleChange = (event, newValue) => {
@@ -151,7 +151,7 @@ export default function AccidentesConsultas() {
             minHeight: tuneVisible ? '150px' : 0,
           }}
         >
-          <AccidentesVariables />
+          <AccidentesVariables setVariableEstudio={setVariableEstudio}/>
         </Stack>
       )}
 
@@ -180,7 +180,7 @@ export default function AccidentesConsultas() {
             />
           </Stack>
         )}
-        {dataVisible && (
+        {dataVisible &&(
           <Stack
             width={{ sm: '100vw', md: '100vw' }}
             minWidth={{ md: '30vw' }}
@@ -195,8 +195,10 @@ export default function AccidentesConsultas() {
               overflow: 'auto',
             }}
           >
-            <BarChart />
-            <PieChart />
+            {puntosAccidentes && <AccidentesGrafico 
+            puntosAccidentes={puntosAccidentes}
+            variableEstudio = {variableEstudio}
+            />}
           </Stack>
         )}
       </Stack>
