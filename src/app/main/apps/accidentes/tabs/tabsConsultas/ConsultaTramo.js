@@ -24,6 +24,8 @@ import { style } from "d3";
 
 const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
   const [disabled, setDisabled] = useState(true);
+  // const [showTooltip, setShowTooltip] = useState(false);
+  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
   const [disabledPuntos, setDisabledPuntos] = useState(true);
 
   const [provincias, setProvincias] = useState([]);
@@ -278,7 +280,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Stack paddingX={1}>
+          <Stack sx={{paddingX: {sm: 1, lg: 0}}} >
             <FormControl className="pks-id">
               <Stack 
                 className="flex" 
@@ -294,23 +296,66 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                       PK inicio:
                     </Typography>
                   </Tooltip>
-                  <TextField
-                    disabled={disabled}
-                    type="number"
-                    inputProps={{
-                      step: 0.1,
-                    }}
-                    size="small"
-                    placeholder={pk_inicio}
-                    onChange={handlePkInicio}
-                    helperText={
-                      selectedCarretera
-                        ? `El valor mínimo permitido es ${parseFloat(
-                            pkInicioHelperText
-                          )} y el valor máximo es ${pkFinHelperText - 1}`
-                        : null
-                    }
-                  />
+                  {/* <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
+                    <TextField
+                      disabled={disabled}
+                      type="number"
+                      pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
+                      inputProps={{
+                        step: 0.1,
+                      }}
+                      size="small"
+                      placeholder={pk_inicio}
+                      onChange={handlePkInicio}
+                      helperText={
+                        selectedCarretera
+                          ? `El valor mínimo permitido es ${parseFloat(
+                              pkInicioHelperText
+                            )} y el valor máximo es ${pkFinHelperText - 1}`
+                          : null
+                      }
+                      sx={{ '& .MuiTooltip-tooltip': { backgroundColor: 'red' } }}
+                      onBlur={(e) => {
+                        const inputValue = parseFloat(e.target.value);
+                        if (inputValue < parseFloat(pk_inicio)) {
+                          setShowErrorTooltip(true);
+                        } else {
+                          setShowErrorTooltip(false);
+                        }
+                      }}
+                    />
+                  </Tooltip> */}
+                  <div style={{ position: 'relative' }}>
+  <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
+    <TextField
+      disabled={disabled}
+      type="number"
+      pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
+      inputProps={{
+        step: 0.1,
+      }}
+      size="small"
+      placeholder={pk_inicio}
+      onChange={handlePkInicio}
+      helperText={
+        selectedCarretera
+          ? `El valor mínimo permitido es ${parseFloat(
+              pkInicioHelperText
+            )} y el valor máximo es ${pkFinHelperText - 1}`
+          : null
+      }
+      onBlur={(e) => {
+        const inputValue = parseFloat(e.target.value);
+        if (inputValue < parseFloat(pk_inicio)) {
+          setShowErrorTooltip(true);
+        } else {
+          setShowErrorTooltip(false);
+        }
+      }}
+    />
+  </Tooltip>
+</div>
+
                 </Stack>
                 <Stack
                   spacing={2}
@@ -353,7 +398,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
               backgroundColor: "#0866ff",
             }}
             onClick={fetchTramosGeom}
-            disabled={!selectedPk_inicio || !selectedPk_fin}
+            disabled={!selectedPk_inicio || !selectedPk_fin || showErrorTooltip}
           >
             <Typography>Consultar Tramo</Typography>
           </Button>
@@ -372,12 +417,16 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
               flexDirection: { sm: "column", lg: "row" },
             }}
           >
-            <Stack className="flex flex-1 px-10" spacing={1}>
+            <Stack 
+              spacing={1} 
+              className="flex flex-1"
+              sx={{paddingX: {sm: 1, lg: 0}}}
+            >
               <Stack
-                direction={"row"}
                 spacing={1}
-                className="flex flex-1"
+                direction={"row"}
                 alignItems={"center"}
+                className="flex flex-1"
               >
                 <Typography fontWeight={"bold"} width={80}>
                   Fecha inicio:
