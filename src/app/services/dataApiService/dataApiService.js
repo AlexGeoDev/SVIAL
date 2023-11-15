@@ -69,8 +69,8 @@ class DataApiService extends FuseUtils.EventEmitter {
 
   async get_carretera() {
     
-    const response = await axios.get("diccionario/carretera");
-    // console.log(response)
+    const response = await axios.get("tramos/carreteras_con_provincia");
+    // console.log(response);
 
     if (response.status !== 200) {
       const message = "se produjo un fallo en la carga de capas";
