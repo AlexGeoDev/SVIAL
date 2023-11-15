@@ -154,7 +154,6 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
           const dataTramo = await dataApiService.getTramosPorCarretera(
             selectedCarretera
           );
-          console.log("dataTramo: ", dataTramo);
           setPk_inicio(dataTramo[0]?.min);
           setPk_fin(dataTramo[0]?.max);
 
@@ -243,10 +242,10 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                 onChange={handleChangeCarretera}
               >
                 {carreteras.map((carretera) => (
-                  <MenuItem key={carretera.id} value={carretera.descripcion}>
-                    {carretera.descripcion}
-                  </MenuItem>
-                ))}
+                    <MenuItem key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} value={carretera.descripcion}>
+                      {carretera.descripcion}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
             <Stack>
@@ -296,7 +295,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                       PK inicio:
                     </Typography>
                   </Tooltip>
-                  {/* <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
+                  <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
                     <TextField
                       disabled={disabled}
                       type="number"
@@ -324,37 +323,37 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                         }
                       }}
                     />
-                  </Tooltip> */}
-                  <div style={{ position: 'relative' }}>
-  <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
-    <TextField
-      disabled={disabled}
-      type="number"
-      pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
-      inputProps={{
-        step: 0.1,
-      }}
-      size="small"
-      placeholder={pk_inicio}
-      onChange={handlePkInicio}
-      helperText={
-        selectedCarretera
-          ? `El valor mínimo permitido es ${parseFloat(
-              pkInicioHelperText
-            )} y el valor máximo es ${pkFinHelperText - 1}`
-          : null
-      }
-      onBlur={(e) => {
-        const inputValue = parseFloat(e.target.value);
-        if (inputValue < parseFloat(pk_inicio)) {
-          setShowErrorTooltip(true);
-        } else {
-          setShowErrorTooltip(false);
-        }
-      }}
-    />
-  </Tooltip>
-</div>
+                  </Tooltip>
+                  {/* <div style={{ position: 'relative' }}>
+                    <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
+                      <TextField
+                        disabled={disabled}
+                        type="number"
+                        pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
+                        inputProps={{
+                          step: 0.1,
+                        }}
+                        size="small"
+                        placeholder={pk_inicio}
+                        onChange={handlePkInicio}
+                        helperText={
+                          selectedCarretera
+                            ? `El valor mínimo permitido es ${parseFloat(
+                                pkInicioHelperText
+                              )} y el valor máximo es ${pkFinHelperText - 1}`
+                            : null
+                        }
+                        onBlur={(e) => {
+                          const inputValue = parseFloat(e.target.value);
+                          if (inputValue < parseFloat(pk_inicio)) {
+                            setShowErrorTooltip(true);
+                          } else {
+                            setShowErrorTooltip(false);
+                          }
+                        }}
+                      />
+                    </Tooltip>
+                  </div> */}
 
                 </Stack>
                 <Stack
