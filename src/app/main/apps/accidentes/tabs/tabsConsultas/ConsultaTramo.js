@@ -22,14 +22,16 @@ import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
 import { style } from "d3";
 
-const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
+const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData }) => {
   const [disabled, setDisabled] = useState(true);
-  // const [showTooltip, setShowTooltip] = useState(false);
-  const [showErrorTooltip, setShowErrorTooltip] = useState(false);
+  const [showErrorFecha, setShowErrorFecha] = useState(false);
+  const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
+  const [showErrorPkFin, setShowErrorPkFin] = useState(false);
   const [disabledPuntos, setDisabledPuntos] = useState(true);
+  const [filteredCarreteras, setFilteredCarreteras] = useState([]);
 
   const [provincias, setProvincias] = useState([]);
-  const [selectedProvincia, setSelectedProvincia] = useState("");
+  const [selectedProvincia, setSelectedProvincia] = useState('');
 
   const [carreteras, setCarreteras] = useState([]);
   const [selectedCarretera, setSelectedCarretera] = useState("");
@@ -128,12 +130,14 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
         console.error("Error al obtener provincias: ", error);
       }
     };
-
+    
     fetchProvinciaName();
   }, []);
+  console.log('provincias: ', provincias[0])
 
   useEffect(() => {
     isMounted.current = true;
+
     const fetchCarreteras = async () => {
       try {
         const dataCarreteras = await dataApiService.get_carretera();
@@ -145,6 +149,17 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
 
     fetchCarreteras();
   }, [isMounted]);
+
+  useEffect(() => {
+    if(selectedProvincia) {
+      const filtered = carreteras.filter(
+        (carretera) => carretera.id_provincia === selectedProvincia.id);
+      setFilteredCarreteras(filtered);
+    } else {
+      setFilteredCarreteras(carreteras);
+    }
+  }, [selectedProvincia, carreteras]);
+  
 
   useEffect(() => {
     isMounted.current = true;
@@ -241,12 +256,27 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                 label="Elegir carretera"
                 onChange={handleChangeCarretera}
               >
+                {filteredCarreteras.map((carretera) => (
+                  <MenuItem key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} value={carretera.descripcion}>
+                    {carretera.descripcion}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              {/* <Select
+                size="small"
+                labelId="Elegir carretera"
+                id="elegir-carretera"
+                value={selectedCarretera}
+                label="Elegir carretera"
+                onChange={handleChangeCarretera}
+              >
                 {carreteras.map((carretera) => (
                     <MenuItem key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} value={carretera.descripcion}>
                       {carretera.descripcion}
                     </MenuItem>
                   ))}
-              </Select>
+              </Select> */}
             </FormControl>
             <Stack>
               {selectedCarretera && (
@@ -295,67 +325,36 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                       PK inicio:
                     </Typography>
                   </Tooltip>
-                  <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
+                  <Tooltip 
+                    placement="top" 
+                    open={showErrorPkInicio}
+                    title="Error, el valor ingresado está fuera del rango permitido." 
+                  >
                     <TextField
                       disabled={disabled}
                       type="number"
-                      pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
-                      inputProps={{
-                        step: 0.1,
-                      }}
+                      inputProps={{step: 0.1}}
                       size="small"
                       placeholder={pk_inicio}
                       onChange={handlePkInicio}
                       helperText={
                         selectedCarretera
-                          ? `El valor mínimo permitido es ${parseFloat(
-                              pkInicioHelperText
-                            )} y el valor máximo es ${pkFinHelperText - 1}`
+                          ? `El valor mínimo permitido es ${parseFloat(pkInicioHelperText)} 
+                            y el valor máximo es ${pkFinHelperText - 1}`
                           : null
                       }
-                      sx={{ '& .MuiTooltip-tooltip': { backgroundColor: 'red' } }}
                       onBlur={(e) => {
                         const inputValue = parseFloat(e.target.value);
-                        if (inputValue < parseFloat(pk_inicio)) {
-                          setShowErrorTooltip(true);
+                        if (inputValue < parseFloat(pk_inicio) || inputValue > parseFloat(pk_fin - 1)) {
+                          setShowErrorPkInicio(true);
                         } else {
-                          setShowErrorTooltip(false);
+                          setShowErrorPkInicio(false);
                         }
                       }}
                     />
                   </Tooltip>
-                  {/* <div style={{ position: 'relative' }}>
-                    <Tooltip title="Error, valor ingresado incorrecto" placement="top" open={showErrorTooltip}>
-                      <TextField
-                        disabled={disabled}
-                        type="number"
-                        pattern="^[0-9]*\.[0-9]{0,2}$|>=pk_inicio"
-                        inputProps={{
-                          step: 0.1,
-                        }}
-                        size="small"
-                        placeholder={pk_inicio}
-                        onChange={handlePkInicio}
-                        helperText={
-                          selectedCarretera
-                            ? `El valor mínimo permitido es ${parseFloat(
-                                pkInicioHelperText
-                              )} y el valor máximo es ${pkFinHelperText - 1}`
-                            : null
-                        }
-                        onBlur={(e) => {
-                          const inputValue = parseFloat(e.target.value);
-                          if (inputValue < parseFloat(pk_inicio)) {
-                            setShowErrorTooltip(true);
-                          } else {
-                            setShowErrorTooltip(false);
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </div> */}
-
                 </Stack>
+
                 <Stack
                   spacing={2}
                   direction={"row"}
@@ -366,23 +365,37 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
                       PK final:
                     </Typography>
                   </Tooltip>
-                  <TextField
-                    disabled={disabled}
-                    size="small"
-                    type="number"
-                    inputProps={{
-                      step: 0.1,
-                    }}
-                    placeholder={pk_fin}
-                    onChange={handlePkFin}
-                    helperText={
-                      selectedCarretera
-                        ? `El valor mínimo permitido es ${
-                            parseFloat(pkInicioHelperText) + 0.1
-                          } y el valor máximo es ${parseFloat(pkFinHelperText)}`
+                  <Tooltip 
+                    placement="top"
+                    open={showErrorPkFin}
+                    title="Error, el valor ingresado está fuera del rango permitido." 
+                  >
+                    <TextField
+                      disabled={disabled}
+                      size="small"
+                      type="number"
+                      inputProps={{
+                        step: 0.1,
+                      }}
+                      placeholder={pk_fin}
+                      onChange={handlePkFin}
+                      helperText={
+                        selectedCarretera
+                        ? `El valor mínimo permitido es ${parseFloat(pkInicioHelperText) + 0.1} 
+                          y el valor máximo es ${parseFloat(pkFinHelperText)}`
                         : null
-                    }
-                  />
+                      }
+                      onBlur={(e) => {
+                        const inputValue = parseFloat(e.target.value);
+                        if (inputValue < parseFloat(pk_inicio) + 0.1 || inputValue > parseFloat(pk_fin)) {
+                          setShowErrorPkFin(true);
+                        } else {
+                          setShowErrorPkFin(false);
+                        }
+                      
+                      }}
+                    />                    
+                  </Tooltip>
                 </Stack>
               </Stack>
             </FormControl>
@@ -397,7 +410,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
               backgroundColor: "#0866ff",
             }}
             onClick={fetchTramosGeom}
-            disabled={!selectedPk_inicio || !selectedPk_fin || showErrorTooltip}
+            disabled={!selectedPk_inicio || !selectedPk_fin || showErrorPkInicio || showErrorPkFin}
           >
             <Typography>Consultar Tramo</Typography>
           </Button>
@@ -410,69 +423,82 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
             flexDirection: { sm: "row", lg: "column" },
           }}
         >
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: { sm: "column", lg: "row" },
-            }}
+          <Tooltip 
+            placement="top"
+            open={showErrorFecha}
+            title="La fecha final no puede ser inferior a la fecha de inicio"
           >
-            <Stack 
-              spacing={1} 
-              className="flex flex-1"
-              sx={{paddingX: {sm: 1, lg: 0}}}
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: { sm: "column", lg: "row" },
+              }}
             >
-              <Stack
-                spacing={1}
-                direction={"row"}
-                alignItems={"center"}
+              <Stack 
+                spacing={1} 
                 className="flex flex-1"
+                sx={{paddingX: {sm: 1, lg: 0}}}
               >
-                <Typography fontWeight={"bold"} width={80}>
-                  Fecha inicio:
-                </Typography>
-                <FormControl>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      disabled={disabledPuntos}
-                      value={selectedStartDate}
-                      onChange={handleStartDateChange}
-                      views={["day"]}
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          style={{ width: "140px" }}
-                          size="small"
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </FormControl>
-              </Stack>
+                <Stack
+                  spacing={1}
+                  direction={"row"}
+                  alignItems={"center"}
+                  className="flex flex-1"
+                >
+                  <Typography fontWeight={"bold"} width={80}>
+                    Fecha inicio:
+                  </Typography>
+                  <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        disabled={disabledPuntos}
+                        value={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        views={["day"]}
+                        renderInput={(props) => (
+                          <TextField
+                            {...props}
+                            style={{ width: "140px" }}
+                            size="small"
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+                </Stack>
 
-              <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                <Typography fontWeight={"bold"} width={80}>
-                  Fecha final:
-                </Typography>
-                <FormControl>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      disabled={disabledPuntos}
-                      value={selectedEndDate}
-                      onChange={handleEndDateChange}
-                      views={["day"]}
-                      renderInput={(props) => (
-                        <TextField
-                          {...props}
-                          style={{ width: "140px" }}
-                          size="small"
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </FormControl>
+                <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                  <Typography fontWeight={"bold"} width={80}>
+                    Fecha final:
+                  </Typography>
+                  <FormControl>
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        disabled={disabledPuntos}
+                        value={selectedEndDate}
+                        onChange={handleEndDateChange}
+                        views={["day"]}
+                        renderInput={(props) => (
+                          <TextField
+                            {...props}
+                            style={{ width: "140px" }}
+                            size="small"
+                            onBlur={() => {
+                              if (selectedEndDate < selectedStartDate) {
+                                setShowErrorFecha(true);
+                              } else {
+                                setShowErrorFecha(false);
+                              }
+                            }}
+                          />
+                        )}
+                      />
+                    </LocalizationProvider>
+                  </FormControl>
+                </Stack>
               </Stack>
-            </Stack>
-          </Grid>
+            </Grid>            
+          </Tooltip>
 
           <Button
             type="submit"
@@ -482,7 +508,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
               borderRadius: "8px",
               backgroundColor: "#0866ff",
             }}
-            disabled={!selectedStartDate || !selectedEndDate}
+            disabled={!selectedStartDate || !selectedEndDate || selectedEndDate < selectedStartDate}
           >
             <Typography>
               Consultar accidentes

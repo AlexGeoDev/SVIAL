@@ -57,6 +57,7 @@ export default function AccidentesConsultas() {
   const [tabValue, setTabValue] = useState(0);
   const [tramoGeoJson, setTramoGeoJson] = useState(null);
   const [puntosAccidentes, setPuntosAccidentes] = useState();
+  const [accidentesData, setAccidentesData] = useState();
   const tabsVisibles = useSelector((state) => state.tabs.showTabs);
   const mapVisible = useSelector((state) => state.maps.showMap);
   const dataVisible = useSelector((state) => state.data.showData);
@@ -126,6 +127,7 @@ export default function AccidentesConsultas() {
               <ConsultaTramo 
                 setTramoGeoJson={setTramoGeoJson}
                 setPuntosAccidentes={setPuntosAccidentes}
+                setAccidentesData={setAccidentesData}
               />
             </TabPanel>
             <TabPanel
@@ -214,7 +216,10 @@ export default function AccidentesConsultas() {
       >
         {tablesVisible && (
           <Stack className='flex flex-1 py-10 items-center border-1 border-black'>
-            <AccidentesEstadisticas />
+            <AccidentesEstadisticas 
+              accidentesData={accidentesData}
+              puntosAccidentes={puntosAccidentes}
+            />
           </Stack>
         )}
       </Stack>
