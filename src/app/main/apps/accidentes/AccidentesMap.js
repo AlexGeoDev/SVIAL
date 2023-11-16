@@ -8,13 +8,21 @@ import GeoJSON from 'ol/format/GeoJSON';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Style, Stroke, Circle, Fill } from 'ol/style';
 import TileWMS from 'ol/source/TileWMS';
+import {get as getProjection} from 'ol/proj.js';
+import {register} from 'ol/proj/proj4.js';
+import proj4 from 'proj4';
+
 
 function AccidentesMap({ tramoGeoJson, puntosAccidentes }) {
   const [map, setMap] = useState(null);
+  proj4.defs("EPSG:25830","+proj=utm +zone=30 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
+  register(proj4);
+  const epsg25830Projection = getProjection('EPSG:25830');
+  
 
   useEffect(() => {
     console.log('puntosAccidentes desde el mapa: ', puntosAccidentes ? 'prueba ok' : 'puntosAccidentes sin data');
-    const españa = [-400000, 4870000];
+    const españa = [442484.6387,4471319.5361];
 
     try {
       const featuresWithGeometry = tramoGeoJson && tramoGeoJson[0]?.geojson.features
@@ -51,10 +59,7 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes }) {
       const vectorLayerAccidentes = new VectorLayer({
         source: new Vector({
           features: new GeoJSON().readFeatures(
-            { type: 'FeatureCollection', features: puntosAccidentesCoordinates },
-            {
-              dataProjection: 'EPSG:25830',
-            }
+            { type: 'FeatureCollection', features: puntosAccidentesCoordinates }
           ),
         }),
         style: new Style({
@@ -66,14 +71,17 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes }) {
         }),
       });
 
+
+      console.log(epsg25830Projection)
       const map = new Map({
         target: 'map-container',
         layers: [
           new TileLayer({
+            
             source: new TileWMS({
               url: 'https://www.ign.es/wms-inspire/mapa-raster',
               params: {'LAYERS': 'mtn_rasterizado', 'TILED': true, 'SRS':'EPSG:25830', 'VERSION':'1.3.0', 'CRS':'EPSG:25830'},
-              projection: 'EPSG:25830',
+              
               transition: 0,
             }),
           }),
@@ -81,6 +89,7 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes }) {
           vectorLayerAccidentes,
         ],
         view: new View({
+          projection: epsg25830Projection,
           center: españa,
           zoom: 5.5,
         }),

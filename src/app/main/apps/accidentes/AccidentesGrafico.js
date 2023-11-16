@@ -39,73 +39,12 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
   }, []);
 
 
-  //   // append the svg object to the body of the serie
-  //   var svg = d3.select(chartRef.current)
-  //       .attr("width", width + margin.left + margin.right)
-  //       .attr("height", height + margin.top + margin.bottom)
-  //     .append("g")
-  //       .attr("transform",
-  //             "translate(" + margin.left + "," + margin.top + ")");
-
-  //   // X axis
-  //   var x = d3.scaleBand()
-  //   .range([ 0, width ])
-  //   .domain(series.map(function(d) { return d; }))
-  //   .padding(0.2);
-
-  //   svg.append("g")
-  //   .attr("transform", "translate(0," + height + ")")
-  //   .call(d3.axisBottom(x))
-  //   .selectAll("text")
-  //     .attr("transform", "translate(-10,0)rotate(-45)")
-  //     .style("text-anchor", "end");
-
-  //   // Add Y axis
-  //   const y = d3.scaleLinear()
-  //     .domain(data_domain)
-  //     .range([ height, 0]);
-  //   svg.append("g")
-  //     .call(d3.axisLeft(y));
-
-  //   // Bars
-
-  //   const bars = svg.selectAll("mybar")
-  //   .data(data);
-
-  //   bars.exit()
-  //   .transition()
-  //   .duration(1000)
-  //   .attr("heigh", 0)
-  //   .remove();
-
-  //   bars
-  //   .enter()
-  //   .append("rect")
-  //     .attr("x", function(d) { return x(d.Serie); })
-  //     .attr("y", function(d) { return y(d.Value); })
-  //     .attr("width", x.bandwidth())
-  //     .attr("height", 0)
-  //     .attr("fill", "#69b3a2")
-  //     .merge(bars).transition()
-  //     .duration(1000)
-  //     .delay(1000)
-  //     .attr("x", function(d) { return x(d.Serie); })
-  //       .attr("y", function(d) { return y(d.Value); })
-  //       .attr("width", x.bandwidth())
-  //       .attr("height", function(d) { return height - y(d.Value); })
-  //       .attr("fill", "#69b3a2")
-  //     //todo implementar cambio.. referencia.. https://jsfiddle.net/z0j4e3kb/ y https://jtr13.github.io/d3book/update-enter-and-exit.html
-
-
-  // }, [puntosAccidentes, variableEstudio]);
-
-
   useEffect(() => {
     if (loading || !chartConfig.current) return;
     const { svg, x, xAxis, y, yAxis } = chartConfig.current;
     
     // Update the X axis
-    const geojson_data = puntosAccidentes[0].geojson.features;
+    const geojson_data = puntosAccidentes[0].geojson.features || [];
     let data = []
     let series = [default_serie]
 
