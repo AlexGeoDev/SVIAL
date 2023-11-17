@@ -1,17 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { Grid } from '@mui/material';
+import { ObjectSchema } from 'yup';
 
-function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
+function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, mappingColors , default_accidentes_color_style}) {
 
   const ref = useRef();
   const chartConfig = useRef();
-  const default_serie = "Número de accidentes";
+  
   const [loading, setLoading] = useState(true);
   const [firstRun, setFirstRun] = useState(false);
- 
-
-  console.log(puntosAccidentes);
 
   const margin = { top: 30, right: 30, bottom: 120, left: 60 }
   const  width = 460 - margin.left - margin.right
@@ -44,7 +42,7 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
     const { svg, x, xAxis, y, yAxis } = chartConfig.current;
     
     // Update the X axis
-    const geojson_data = puntosAccidentes[0].geojson.features || [];
+    const geojson_data = puntosAccidentes.features || [];
     let data = []
     let series = [default_serie]
 
@@ -83,17 +81,30 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio }) {
     // Create the u variable
     var u = svg.selectAll("rect").data(data);
 
-    u.join("rect") // Add a new rect for each new elements
+    if(mappingColors && Object.keys(mappingColors).length > 1){
+      u.join("rect") // Add a new rect for each new elements
       .transition()
       .duration(1000)
       .attr("x", (d) => x(d.Serie))
       .attr("y", (d) => y(d.Value))
       .attr("width", x.bandwidth())
       .attr("height", (d) => height - y(d.Value))
-      .attr("fill", "#69b3a2");
+      .attr("fill", (d) => mappingColors[d.Serie]);
+    }
+    else{
+      u.join("rect") // Add a new rect for each new elements
+      .transition()
+      .duration(1000)
+      .attr("x", (d) => x(d.Serie))
+      .attr("y", (d) => y(d.Value))
+      .attr("width", x.bandwidth())
+      .attr("height", (d) => height - y(d.Value))
+      .attr("fill", default_accidentes_color_style);
+    }
+   
 
     u.exit().remove();
-  }, [puntosAccidentes, variableEstudio, firstRun]);
+  }, [puntosAccidentes, variableEstudio, firstRun, mappingColors]);
 
   return (
     <svg

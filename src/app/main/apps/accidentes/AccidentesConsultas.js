@@ -64,6 +64,10 @@ export default function AccidentesConsultas() {
   const tablesVisible = useSelector((state) => state.tables.showTables);
   const tuneVisible = useSelector((state) => state.tune.showTune);
   const [variableEstudio, setVariableEstudio] = useState(null);
+  const default_serie = "Número de accidentes";
+  const [mappingColors, setMappingColors] = useState(null);
+  const default_accidentes_color_style = '#69b3a2';
+
 
 
   const handleChange = (event, newValue) => {
@@ -128,6 +132,7 @@ export default function AccidentesConsultas() {
                 setTramoGeoJson={setTramoGeoJson}
                 setPuntosAccidentes={setPuntosAccidentes}
                 setAccidentesData={setAccidentesData}
+                default_serie = {default_serie}
               />
             </TabPanel>
             <TabPanel
@@ -153,7 +158,8 @@ export default function AccidentesConsultas() {
             minHeight: tuneVisible ? '150px' : 0,
           }}
         >
-          <AccidentesVariables setVariableEstudio={setVariableEstudio}/>
+          <AccidentesVariables setVariableEstudio={setVariableEstudio} setMappingColors={setMappingColors} 
+          puntosAccidentes={puntosAccidentes} />
         </Stack>
       )}
 
@@ -178,7 +184,10 @@ export default function AccidentesConsultas() {
           >
             <AccidentesMap 
               tramoGeoJson={tramoGeoJson}
-              puntosAccidentes={puntosAccidentes}              
+              puntosAccidentes={puntosAccidentes} 
+              variableEstudio={variableEstudio}  
+              mappingColors={mappingColors}   
+              default_accidentes_color_style={default_accidentes_color_style}
             />
           </Stack>
         )}
@@ -200,6 +209,8 @@ export default function AccidentesConsultas() {
             {puntosAccidentes && <AccidentesGrafico 
             puntosAccidentes={puntosAccidentes}
             variableEstudio = {variableEstudio}
+            mappingColors={mappingColors}
+            default_accidentes_color_style={default_accidentes_color_style}
             />}
           </Stack>
         )}
