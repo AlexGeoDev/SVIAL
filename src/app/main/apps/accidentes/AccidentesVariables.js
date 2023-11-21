@@ -12,6 +12,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
     { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", estilo: 'Valores únicos' },
     { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida", estilo: 'Valores únicos' },
     { title: 'Numero vehículos', column: "TOTAL_VEHICULOS", fktable: "", estilo: 'Rampa' },
+    { title: 'Luminisidad', column: "CONDICION_ILUMINACION", fktable: "", estilo: 'Valores únicos' },
 
   ];
 

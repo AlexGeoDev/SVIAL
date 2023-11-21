@@ -23,6 +23,8 @@ const ConsultaTramo = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
+  const [dominioDeVariable, setDominioDeVariable] = useState([])
+  
 
   const handleYearChange = (date) => {
     setSelectedYear(date);
