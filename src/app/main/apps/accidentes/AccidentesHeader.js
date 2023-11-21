@@ -86,7 +86,7 @@ const AccidentesHeader = () => {
           size="small"
           style={{ backgroundColor: 'white', borderRadius: '5px', width: '24vw' }}
         />
-        <Grid 
+        <Grid container
           height={{sm: 100}}
           direction={{sm: 'column', lg: 'row'}} 
           sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}} 
@@ -107,7 +107,7 @@ const AccidentesHeader = () => {
             LIMPIAR
           </Button>
         </Grid>
-        <Grid
+        <Grid container
           height={{sm: 100}}
           direction={{sm: 'column', lg: 'row'}} 
           sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center'}} 

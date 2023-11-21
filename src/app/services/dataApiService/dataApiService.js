@@ -66,6 +66,18 @@ class DataApiService extends FuseUtils.EventEmitter {
     }
     return response.data;
   }
+  
+  async get_carreteraSinProvincia() {
+    
+    const response = await axios.get("diccionario/carretera");
+    // console.log(response);
+
+    if (response.status !== 200) {
+      const message = "se produjo un fallo en la carga de capas";
+      throw new Error(message);
+    }
+    return response.data;
+  }
 
   async get_carretera() {
     
@@ -160,7 +172,7 @@ class DataApiService extends FuseUtils.EventEmitter {
           hasta
         }
       });
-      console.log('PuntosAccidentes: ', response);
+      console.log('PuntosAccidentes desde dataApiService: ', response);
 
       if (!response || !response.data ||  response.status !== 200) {
         const message = "Respuesta incorrecta al cargar puntos de accidentes";
