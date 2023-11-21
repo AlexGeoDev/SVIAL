@@ -20,18 +20,16 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
-import { style } from "d3";
 
-const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData }) => {
+const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
   const [disabled, setDisabled] = useState(true);
   const [showErrorFecha, setShowErrorFecha] = useState(false);
   const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
   const [showErrorPkFin, setShowErrorPkFin] = useState(false);
   const [disabledPuntos, setDisabledPuntos] = useState(true);
-  const [filteredCarreteras, setFilteredCarreteras] = useState([]);
 
   const [provincias, setProvincias] = useState([]);
-  const [selectedProvincia, setSelectedProvincia] = useState('');
+  const [selectedProvincia, setSelectedProvincia] = useState("");
 
   const [carreteras, setCarreteras] = useState([]);
   const [selectedCarretera, setSelectedCarretera] = useState("");
@@ -48,9 +46,32 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
 
+  const fetchCarreteras = async () => {
+    try {
+      const dataCarreteras = await dataApiService.get_carretera();
+      setCarreteras(dataCarreteras);
+    } catch (error) {
+      console.error("Error al obtener carreteras: ", error);
+    }
+  };
+
   const handleStartDateChange = (date) => setSelectedStartDate(date);
   const handleEndDateChange = (date) => setSelectedEndDate(date);
-  const handleChangeProvincia = (e) => setSelectedProvincia(e.target.value);
+  
+  const handleChangeProvincia = (e) => {
+    const selectedValue = e.target.value;
+    const selectedProvince = provincias.find(
+      (province) => province.descripcion === selectedValue
+    );
+  
+    setSelectedProvincia(selectedProvince);
+    setSelectedCarretera("");
+    console.log('selectedProvincia: ', selectedProvince);
+
+    selectedProvince ? fetchCarreteras() : fetchCarreterasSinProvincia();
+  };
+  
+
   const handleClearProvincia = () => setSelectedProvincia("");
   const handleChangeCarretera = (e) => {
     setSelectedCarretera(e.target.value);
@@ -87,9 +108,8 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
             formattedStartDate,
             formattedEndDate
           );
-          console.log("dataPuntosAccidentes: ", dataPuntosAccidentes);
-
           setPuntosAccidentes(dataPuntosAccidentes);
+
         } catch (e) {
           console.error("Error al obtener puntos de accidentes: ", e);
         }
@@ -106,13 +126,14 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
         selectedPk_inicio,
         selectedPk_fin
       );
-      console.log("dataTramosGeom: ", dataTramosGeom);
+      console.log('la carretera seleccionada es: ', selectedCarretera )
 
       if (dataTramosGeom) {
         setDisabledPuntos(false);
       }
       
       setTramoGeoJson(dataTramosGeom);
+      // console.log('dataTramosGeom desde ConsultaTramo: ', dataTramosGeom);
     } catch (e) {
       console.error("Error al obtener tramos geográficos: ", e);
     }
@@ -133,32 +154,27 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
     
     fetchProvinciaName();
   }, []);
-  console.log('provincias: ', provincias[0])
 
   useEffect(() => {
     isMounted.current = true;
-
-    const fetchCarreteras = async () => {
+  
+    const fetchCarreterasSinProvincia = async () => {
       try {
-        const dataCarreteras = await dataApiService.get_carretera();
-        isMounted.current && setCarreteras(dataCarreteras);
+        const dataCarreterasSinProvincia = await dataApiService.get_carreteraSinProvincia();
+        isMounted.current && setCarreteras(dataCarreterasSinProvincia);
       } catch (error) {
         console.error("Error al obtener carreteras: ", error);
       }
     };
-
-    fetchCarreteras();
-  }, [isMounted]);
-
-  useEffect(() => {
-    if(selectedProvincia) {
-      const filtered = carreteras.filter(
-        (carretera) => carretera.id_provincia === selectedProvincia.id);
-      setFilteredCarreteras(filtered);
+  
+    if (!selectedProvincia) {
+      // Utiliza fetchCarreterasSinProvincia si no hay provincia seleccionada
+      fetchCarreterasSinProvincia();
     } else {
-      setFilteredCarreteras(carreteras);
+      // Utiliza fetchCarreteras si hay provincia seleccionada
+      fetchCarreteras();
     }
-  }, [selectedProvincia, carreteras]);
+  }, [selectedProvincia, isMounted]);
   
 
   useEffect(() => {
@@ -227,7 +243,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
             <Stack>
               {selectedProvincia && (
                 <Chip
-                  label={selectedProvincia}
+                  label={selectedProvincia.descripcion}
                   onDelete={handleClearProvincia}
                   deleteIcon={
                     <IconButton>
@@ -256,27 +272,23 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes, setAccidentesData
                 label="Elegir carretera"
                 onChange={handleChangeCarretera}
               >
-                {filteredCarreteras.map((carretera) => (
-                  <MenuItem key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} value={carretera.descripcion}>
+                {carreteras
+                  .filter((carretera) => {
+                    if (selectedProvincia) {
+                      return carretera.id_provincia === selectedProvincia.id;
+                    } else {
+                      return true;
+                    }                   
+                  })
+                  .map((carretera) => (
+                  <MenuItem 
+                    key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} 
+                    value={carretera.descripcion}
+                  >
                     {carretera.descripcion}
                   </MenuItem>
                 ))}
               </Select>
-
-              {/* <Select
-                size="small"
-                labelId="Elegir carretera"
-                id="elegir-carretera"
-                value={selectedCarretera}
-                label="Elegir carretera"
-                onChange={handleChangeCarretera}
-              >
-                {carreteras.map((carretera) => (
-                    <MenuItem key={`key_${carretera.id_carretera}_${carretera.id_provincia}`} value={carretera.descripcion}>
-                      {carretera.descripcion}
-                    </MenuItem>
-                  ))}
-              </Select> */}
             </FormControl>
             <Stack>
               {selectedCarretera && (
