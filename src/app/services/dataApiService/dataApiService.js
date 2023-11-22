@@ -1,11 +1,13 @@
 import FuseUtils from "@fuse/utils/FuseUtils";
 import axios from "axios";
 
+
+
 /**
  * Axios HTTP Request defaults
  */
 //axios.defaults.baseURL = process.env.DATA_API_URL;
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = process.env.REACT_APP_DATA_API_URL || 'http://localhost:8000';
 
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 // axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';

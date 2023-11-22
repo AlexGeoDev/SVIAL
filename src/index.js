@@ -1,6 +1,7 @@
 // Internet Explorer 11 requires polyfills and partially supported by this project.
 // import 'react-app-polyfill/ie11';
 // import 'react-app-polyfill/stable';
+
 import './i18n';
 import './styles/app-base.css';
 import './styles/app-components.css';
@@ -11,8 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'http://localhost:8088';
-axios.defaults.baseURL = 'https://svial-prointec.com/api';
+axios.defaults.baseURL = process.env.REACT_APP_AUTH_API_URL || 'https://svial-prointec.com/api';
 
 ReactDOM.render(
   <App />, 
