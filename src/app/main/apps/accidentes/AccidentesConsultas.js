@@ -64,9 +64,9 @@ export default function AccidentesConsultas() {
   const tablesVisible = useSelector((state) => state.tables.showTables);
   const tuneVisible = useSelector((state) => state.tune.showTune);
   const [variableEstudio, setVariableEstudio] = useState(null);
-  const default_serie = "Número de accidentes";
-  const [mappingColors, setMappingColors] = useState(null);
+  const default_serie = "Total";
   const default_accidentes_color_style = '#69b3a2';
+  const [mappingColors, setMappingColors] = useState({"Total":default_accidentes_color_style });
 
 
 
@@ -210,6 +210,7 @@ export default function AccidentesConsultas() {
             puntosAccidentes={puntosAccidentes}
             variableEstudio = {variableEstudio}
             mappingColors={mappingColors}
+            default_serie = {default_serie}
             default_accidentes_color_style={default_accidentes_color_style}
             />}
           </Stack>

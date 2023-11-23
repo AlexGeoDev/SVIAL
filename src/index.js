@@ -6,11 +6,13 @@ import './i18n';
 import './styles/app-base.css';
 import './styles/app-components.css';
 import './styles/app-utilities.css';
+import './styles/c3.min.css';
 import ReactDOM from 'react-dom';
 import App from 'app/App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+
 
 axios.defaults.baseURL = process.env.REACT_APP_AUTH_API_URL || 'https://svial-prointec.com/api';
 
