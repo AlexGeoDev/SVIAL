@@ -1,20 +1,25 @@
 import { Autocomplete, Button, Stack, TextField, ThemeProvider, createTheme } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes }) => {
+
+const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeButton, setActiveButton] = useState(null);
 
 
   //TODO: esto hay que sacarlo de la base de datos
-  const variables = [
-    { title: 'Anchura arcen', column: "ARCEN", fktable: "anchura_arcen", estilo: 'Valores únicos'},
-    { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", estilo: 'Valores únicos' },
-    { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida", estilo: 'Valores únicos' },
-    { title: 'Numero vehículos', column: "TOTAL_VEHICULOS", fktable: "", estilo: 'Rampa' },
-    { title: 'Luminisidad', column: "CONDICION_ILUMINACION", fktable: "", estilo: 'Valores únicos' },
 
-  ];
+
+
+
+  // const variables = [
+  //   { title: 'Anchura arcen', column: "ARCEN", fktable: "anchura_arcen", estilo: 'Valores únicos'},
+  //   { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", estilo: 'Valores únicos' },
+  //   { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida", estilo: 'Valores únicos' },
+  //   { title: 'Numero vehículos', column: "TOTAL_VEHICULOS", fktable: "", estilo: 'Rampa' },
+  //   { title: 'Luminisidad', column: "CONDICION_ILUMINACION", fktable: "", estilo: 'Valores únicos' },
+
+  // ];
 
   const paleta_contraste = ['#a6cee3',
     '#1f78b4',
@@ -53,6 +58,8 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
       let series = [];
       let mapping_colors = {}
       let paleta = paleta_contraste;
+
+      //TODO: calcular rampa de colores desde los datos.
       if(variables[index].estilo == "Rampa"){
         paleta = paleta_ramp
       }
@@ -64,12 +71,9 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
         else {
           mapping_colors[series[i]] = paleta[i];
         }
-
       }
       setMappingColors(mapping_colors);
     }
-
-
   };
 
   const theme = createTheme({
@@ -91,7 +95,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
           className='flex flex-1'
           justifyContent={'space-around'}
         >
-          {variables.map((varialbe, index) => (
+          {variables && variables.map((varialbe, index) => (
             <Stack spacing={2} paddingX={1} key={index}>
               <Button
                 variant={activeButton === index ? 'contained' : 'outlined'}
@@ -106,6 +110,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
                 id={`tags-outlined-${index}`}
                 size='small'
                 options={variables}
+                //options={puntosAccidentes.features.map((f) => { return f.properties[variable.column]}).filter((v, i, self) => {return i == self.indexOf(v);} )}
                 getOptionLabel={(option) => option.title}
                 value={selectedOptions[index] || []}
                 onChange={(_, newValue) => handleOptionChange(index, newValue)}

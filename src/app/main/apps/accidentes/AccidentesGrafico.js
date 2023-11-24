@@ -134,7 +134,7 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
       columns = []
       series.map((s) => {
         let serie_count = geojson_data.filter((f) => { return f.properties[variableEstudio.column] == s; }).length;
-        if (s){
+        if (s!==null){
           columns.push([s, serie_count]);
         }
         else{
@@ -162,7 +162,7 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
       columns = []
       series.map((s) => {
         let serie_count = geojson_data.filter((f) => { return f.properties[variableEstudio.column] == s; }).length;
-        if (s){
+        if (s!==null){
           columns.push([s, serie_count]);
         }
         else{
@@ -204,7 +204,7 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
       series.map((s) => {
         let serie_count = geojson_data.filter((f) => { return f.properties[variableEstudio.column] == s; }).length;
  
-        if (s){
+        if (s!==null){
           columns.push([s, serie_count]);
         }
         else{
@@ -221,7 +221,6 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
       type: selectedTipoGrafico
     });
     chart.data.colors(mappingColors);
-
 
   }, [puntosAccidentes, variableEstudio, mappingColors])
 

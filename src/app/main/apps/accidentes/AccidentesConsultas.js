@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Box,
   Stack, 
@@ -15,6 +15,7 @@ import AccidentesEstadisticas from './AccidentesEstadisticas';
 import AccidentesVariables from './AccidentesVariables';
 import { useSelector } from 'react-redux';
 import AccidentesGrafico from './AccidentesGrafico';
+import dataApiService from 'app/services/dataApiService';
 
 const tabLabelStyles = {
   fontWeight: 'bold',
@@ -67,8 +68,18 @@ export default function AccidentesConsultas() {
   const default_serie = "Total";
   const default_accidentes_color_style = '#69b3a2';
   const [mappingColors, setMappingColors] = useState({"Total":default_accidentes_color_style });
+  const [variables, setVariables] = useState([]);
 
+  useEffect(async() => {
 
+    
+        const get_vars = await dataApiService.get_variables_estudio();
+        setVariables(get_vars);
+  
+     
+
+  }, [])
+  
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -159,7 +170,7 @@ export default function AccidentesConsultas() {
           }}
         >
           <AccidentesVariables setVariableEstudio={setVariableEstudio} setMappingColors={setMappingColors} 
-          puntosAccidentes={puntosAccidentes} />
+          puntosAccidentes={puntosAccidentes} variables={variables} />
         </Stack>
       )}
 

@@ -187,6 +187,18 @@ class DataApiService extends FuseUtils.EventEmitter {
       throw error;
     }
   }
+
+  async get_variables_estudio() {
+
+  const response = await axios.get("web/variables_estudio");
+  if (response.status !== 200) {
+    const message = "Se produjo un fallo en la carga de variables_estudio";
+    throw new Error(message);
+  }
+
+  return response.data;
 }
+}
+
 
 export default new DataApiService();
