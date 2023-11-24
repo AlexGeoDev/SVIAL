@@ -1,25 +1,13 @@
 import { Autocomplete, Button, Stack, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import dataApiService from 'app/services/dataApiService';
 
-
-const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables }) => {
+const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables, diccionariosVariables }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [activeButton, setActiveButton] = useState(null);
+  
 
-
-  //TODO: esto hay que sacarlo de la base de datos
-
-
-
-
-  // const variables = [
-  //   { title: 'Anchura arcen', column: "ARCEN", fktable: "anchura_arcen", estilo: 'Valores únicos'},
-  //   { title: 'Tipo accidente colisión', column: "TIPO_ACC_COLISION", estilo: 'Valores únicos' },
-  //   { title: 'Tipo accidente salida', column: "TIPO_ACC_SALIDA", fktable: "tipo_accidente_salida", estilo: 'Valores únicos' },
-  //   { title: 'Numero vehículos', column: "TOTAL_VEHICULOS", fktable: "", estilo: 'Rampa' },
-  //   { title: 'Luminisidad', column: "CONDICION_ILUMINACION", fktable: "", estilo: 'Valores únicos' },
-
-  // ];
+  console.log(diccionariosVariables);
 
   const paleta_contraste = ['#a6cee3',
     '#1f78b4',
@@ -95,7 +83,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
           className='flex flex-1'
           justifyContent={'space-around'}
         >
-          {variables && variables.map((varialbe, index) => (
+          {variables && variables.map((variable, index) => (
             <Stack spacing={2} paddingX={1} key={index}>
               <Button
                 variant={activeButton === index ? 'contained' : 'outlined'}
@@ -103,15 +91,15 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
                 sx={{ borderRadius: '8px' }}
                 onClick={() => handleButtonClick(index)}
               >
-                {varialbe.title}
+                {variable.title}
               </Button>
               <Autocomplete
                 multiple
                 id={`tags-outlined-${index}`}
                 size='small'
-                options={variables}
-                //options={puntosAccidentes.features.map((f) => { return f.properties[variable.column]}).filter((v, i, self) => {return i == self.indexOf(v);} )}
-                getOptionLabel={(option) => option.title}
+                options={diccionariosVariables.filter((d) => {return d.hasOwnProperty(variable.column); })[0]?.[variable.column].map((d) => {return d[variable.definition_column]}) || []}
+                //options={diccionariosVariables[variables.column]}
+                //getOptionLabel={(option) => option.title}
                 value={selectedOptions[index] || []}
                 onChange={(_, newValue) => handleOptionChange(index, newValue)}
                 filterSelectedOptions

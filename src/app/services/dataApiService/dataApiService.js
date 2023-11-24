@@ -198,6 +198,17 @@ class DataApiService extends FuseUtils.EventEmitter {
 
   return response.data;
 }
+
+async get_diccionario(diccionario) {
+
+  const response = await axios.get(`diccionario/${diccionario}`);
+  if (response.status !== 200) {
+    const message = "Se produjo un fallo en la carga de diccionario";
+    throw new Error(message);
+  }
+
+  return response.data;
+}
 }
 
 
