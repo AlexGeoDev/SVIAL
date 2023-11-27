@@ -11,12 +11,16 @@ import TileWMS from 'ol/source/TileWMS';
 import {get as getProjection} from 'ol/proj.js';
 import {register} from 'ol/proj/proj4.js';
 import proj4 from 'proj4';
+import mapService from "app/services/map/mapService";
 
 
-function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappingColors, default_accidentes_color_style}) {
+function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappingColors, default_accidentes_color_style, 
+  variableFilters, variables}) {
 
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
+  const [accidentesMapService, setAccidentesMapService] = useState(null)
+  
   
   proj4.defs("EPSG:25830","+proj=utm +zone=30 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs");
   register(proj4);
@@ -27,13 +31,7 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappi
   const [capaAccidentes, setCapaAccidentes] = useState(null);
  
 
-
-
-
   useEffect(() => {
-
-    
-
 
     const map = new Map({
       target: 'map-container',
@@ -53,6 +51,8 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappi
       }),
     });
 
+    
+    
     setCapaTramo(new VectorLayer({
       source: new Vector(),
       map: map,
@@ -62,21 +62,46 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappi
       },
     }));
 
+   
+
+    const accidentesStyleFunction = function(feature, resolution) {
+      let class_color = default_accidentes_color_style;
+      if (Object.keys(mappingColors).length > 1 && variableEstudio)
+      {
+        class_color = mappingColors[feature.get(variableEstudio.column)];
+      }
+      if (feature.get('visible') == false){
+        class_color +='00';
+      }
+      
+      return [new Style({
+        image: new Circle({
+          fill: new Fill({
+            color: class_color
+          }),
+          stroke: new Stroke({
+            color: class_color,
+            width: 1
+          }),
+          radius: 8
+        })
+      })];
+    }
+
 
     setCapaAccidentes(new VectorLayer({
       source: new Vector(),
       map: map,
-      style: new Style({
-        image: new Circle({
-          radius: 8,
-          fill: new Fill({ color: default_accidentes_color_style }),
-          stroke: new Stroke({ color: default_accidentes_color_style, width: 1 }),
-        })
-      })
+      style: accidentesStyleFunction
     }));
+
+
 
     map.setTarget(mapTargetElement.current || "")
     setMap(map);
+    setAccidentesMapService(new mapService(map));
+    
+    
     return () => map.setTarget("");
   }, []);
 
@@ -92,19 +117,20 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappi
       {
         capaAccidentes.getSource().clear();
         capaAccidentes.getSource().addFeatures(new GeoJSON().readFeatures(puntosAccidentes));
-        
-      }
-
-      if(variableEstudio  && puntosAccidentes && puntosAccidentes.features){
-        
+  
+        if(variableFilters && puntosAccidentes){
+          accidentesMapService.filterLayerFeatures(capaAccidentes,variableFilters,variables)
+        }
         const accidentesStyleFunction = function(feature, resolution) {
-
           let class_color = default_accidentes_color_style;
-          if (Object.keys(mappingColors).length > 1)
+          if (Object.keys(mappingColors).length > 1 && variableEstudio)
           {
             class_color = mappingColors[feature.get(variableEstudio.column)];
           }
-
+          if (feature.get('visible') == false){
+            class_color +='00';
+          }
+          
           return [new Style({
             image: new Circle({
               fill: new Fill({
@@ -118,10 +144,17 @@ function AccidentesMap({ tramoGeoJson, puntosAccidentes, variableEstudio , mappi
             })
           })];
         }
-        capaAccidentes.setStyle(accidentesStyleFunction);
 
-      } 
-  }, [tramoGeoJson, puntosAccidentes, variableEstudio]);
+        capaAccidentes.setStyle(accidentesStyleFunction);
+        
+      }
+
+   
+    
+      
+
+      
+  }, [tramoGeoJson, puntosAccidentes, variableEstudio, variableFilters, variables]);
 
 
   return <div ref={mapTargetElement} className="map" id="map-container" style={{ width: '100%', height: '100%' }} />;

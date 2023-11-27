@@ -72,6 +72,7 @@ export default function AccidentesConsultas() {
   const [mappingColors, setMappingColors] = useState({ "Total": default_accidentes_color_style });
   const [variables, setVariables] = useState([]);
   const [diccionariosVariables, setDiccionariosVariables] = useState([]);
+  const [variableFilters, setVariableFilters] = useState([]);
 
 
 
@@ -190,7 +191,8 @@ return (
       >
         {variables.length>0 && diccionariosVariables.length>0  &&
           <AccidentesVariables setVariableEstudio={setVariableEstudio} setMappingColors={setMappingColors}
-            puntosAccidentes={puntosAccidentes} variables={variables} diccionariosVariables={diccionariosVariables} />}
+            puntosAccidentes={puntosAccidentes} variables={variables} diccionariosVariables={diccionariosVariables} 
+            variableFilters={variableFilters} setVariableFilters={setVariableFilters}/>}
       </Stack>
     )}
 
@@ -219,6 +221,8 @@ return (
             variableEstudio={variableEstudio}
             mappingColors={mappingColors}
             default_accidentes_color_style={default_accidentes_color_style}
+            variableFilters={variableFilters}
+            variables={variables}
           />
         </Stack>
       )}
@@ -243,6 +247,8 @@ return (
             mappingColors={mappingColors}
             default_serie={default_serie}
             default_accidentes_color_style={default_accidentes_color_style}
+            variableFilters={variableFilters}
+            variables = {variables}
           />}
         </Stack>
       )}

@@ -9,7 +9,8 @@ import {
 import { ObjectSchema } from 'yup';
 import { CardTravelSharp } from '@mui/icons-material';
 
-function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, mappingColors, default_accidentes_color_style }) {
+function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, mappingColors, 
+  default_accidentes_color_style ,variableFilters, variables}) {
 
   const ref = useRef();
   const chartConfig = useRef();
@@ -126,8 +127,21 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
     setSelectedTipoGrafico( e.target.value);
     const selectedValue = e.target.value;
     const { chart } = chartConfig.current;
-    const geojson_data = puntosAccidentes.features || [];
-    let columns = [[default_serie, puntosAccidentes.features.length]]
+    let geojson_data = puntosAccidentes.features || [];
+    geojson_data = geojson_data.filter((data) => {
+      let visible = true;
+      for (var i = 0 ; i < variableFilters.length ; i++ ){
+        if (variableFilters[i] && variableFilters[i].length > 0 && 
+          !variableFilters[i].includes(data.properties[variables[i].column]))
+          {
+            visible = false;
+          break;
+          }
+        }
+      return visible;  
+      });
+
+    let columns = [[default_serie, geojson_data.length]]
     if (variableEstudio && variableEstudio !== "") {
       let series = [];
       series = [...new Set(geojson_data.map(obj => obj.properties[variableEstudio.column]))];
@@ -153,8 +167,22 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
 
   useEffect(() => {
 
-    const geojson_data = puntosAccidentes.features || [];
-    let columns = [[default_serie, puntosAccidentes.features.length]]
+    let geojson_data = puntosAccidentes.features || [];
+    geojson_data = geojson_data.filter((data) => {
+      let visible = true;
+      for (var i = 0 ; i < variableFilters.length ; i++ ){
+        if (variableFilters[i] && variableFilters[i].length > 0 && 
+          !variableFilters[i].includes(data.properties[variables[i].column]))
+          {
+            visible = false;
+          break;
+          }
+        }
+      return visible;  
+      });
+
+
+    let columns = [[default_serie, geojson_data.length]]
     if (variableEstudio && variableEstudio !== "") {
       console.log(variableEstudio);
       let series = [];
@@ -195,8 +223,22 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
     if (loading || !chartConfig.current) return;
     const { chart } = chartConfig.current;
 
-    const geojson_data = puntosAccidentes.features || [];
-    let columns = [[default_serie, puntosAccidentes.features.length]]
+   
+    let geojson_data = puntosAccidentes.features || [];
+    geojson_data = geojson_data.filter((data) => {
+      let visible = true;
+      for (var i = 0 ; i < variableFilters.length ; i++ ){
+        if (variableFilters[i] && variableFilters[i].length > 0 && 
+          !variableFilters[i].includes(data.properties[variables[i].column]))
+          {
+            visible = false;
+          break;
+          }
+        }
+      return visible;  
+      });
+
+    let columns = [[default_serie, geojson_data.length]]
     if (variableEstudio && variableEstudio !== "") {
       let series = [];
       series = [...new Set(geojson_data.map(obj => obj.properties[variableEstudio.column]))];
@@ -222,7 +264,7 @@ function AccidentesGrafico({ puntosAccidentes, variableEstudio, default_serie, m
     });
     chart.data.colors(mappingColors);
 
-  }, [puntosAccidentes, variableEstudio, mappingColors])
+  }, [puntosAccidentes, variableEstudio, mappingColors, variableFilters])
 
   return (
     <Stack

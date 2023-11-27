@@ -1,14 +1,11 @@
 import { Autocomplete, Button, Stack, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import dataApiService from 'app/services/dataApiService';
 
-const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables, diccionariosVariables }) => {
-  const [selectedOptions, setSelectedOptions] = useState([]);
+const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables, diccionariosVariables, 
+  variableFilters, setVariableFilters }) => {
+  
   const [activeButton, setActiveButton] = useState(null);
   
-
-  console.log(diccionariosVariables);
-
   const paleta_contraste = ['#a6cee3',
     '#1f78b4',
     '#b2df8a',
@@ -19,6 +16,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
     '#ff7f00',
     '#cab2d6',
     '#6a3d9a']
+
   const paleta_ramp = ['#5673e0',
     '#7597f6',
     '#94b6ff',
@@ -31,11 +29,13 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
     '#d44e41']
 
   const handleOptionChange = (index, newValue) => {
-    setSelectedOptions(prevSelected => {
+    setVariableFilters(prevSelected => {
       const updatedSelected = [...prevSelected];
       updatedSelected[index] = newValue;
+      
       return updatedSelected;
     });
+    console.log(variableFilters);
   };
 
   const handleButtonClick = (index) => {
@@ -98,10 +98,8 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
                 id={`tags-outlined-${index}`}
                 size='small'
                 options={diccionariosVariables.filter((d) => {return d.hasOwnProperty(variable.column); })[0]?.[variable.column].map((d) => {return d[variable.definition_column]}) || []}
-                //options={diccionariosVariables[variables.column]}
-                //getOptionLabel={(option) => option.title}
-                value={selectedOptions[index] || []}
-                onChange={(_, newValue) => handleOptionChange(index, newValue)}
+                value={variableFilters[index] || []}
+                onChange={(_, newValue) => handleOptionChange(index,  newValue)}
                 filterSelectedOptions
                 renderInput={(params) => <TextField {...params} />}
               />
