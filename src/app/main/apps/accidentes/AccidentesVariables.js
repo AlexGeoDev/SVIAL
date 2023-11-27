@@ -40,6 +40,7 @@ const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccid
 
   const handleButtonClick = (index) => {
     setActiveButton(index);
+    
     setVariableEstudio(variables[index]);
 
     if (puntosAccidentes && puntosAccidentes.features) {
