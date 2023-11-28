@@ -4,6 +4,7 @@ import maps from './mapsSlice';
 import tables from './tablesSlice';
 import tabs from './tabsSlice';
 import tune from './tuneSlice';
+import consultas from './consultasSlice';
 
 const reducer = combineReducers({
   data,
@@ -11,6 +12,7 @@ const reducer = combineReducers({
   tables,
   tabs,
   tune,
+  consultas,
 });
 
 export default reducer;

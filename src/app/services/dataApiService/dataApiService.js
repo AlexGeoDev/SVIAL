@@ -174,7 +174,7 @@ class DataApiService extends FuseUtils.EventEmitter {
           hasta
         }
       });
-      console.log('PuntosAccidentes desde dataApiService: ', response);
+      // console.log('PuntosAccidentes desde dataApiService: ', response);
 
       if (!response || !response.data ||  response.status !== 200) {
         const message = "Respuesta incorrecta al cargar puntos de accidentes";

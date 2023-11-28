@@ -7,6 +7,7 @@ import maps from 'app/main/apps/store/mapsSlice';
 import tables from 'app/main/apps/store/tablesSlice';
 import tabs from 'app/main/apps/store/tabsSlice';
 import tune  from 'app/main/apps/store/tuneSlice';
+import consultas from 'app/main/apps/store/consultasSlice';
 
 const createReducer = (asyncReducers) => (state, action) => {
   const combinedReducer = combineReducers({
@@ -16,6 +17,7 @@ const createReducer = (asyncReducers) => (state, action) => {
     tables,
     tabs,
     tune,
+    consultas,
     fuse,
     i18n,
     ...asyncReducers,

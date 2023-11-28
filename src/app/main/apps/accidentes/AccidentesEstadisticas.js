@@ -2,10 +2,10 @@ import React from "react";
 import { Stack } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
 
-const AccidentesEstadisticas = ({ puntosAccidentes }) => {
-  console.log(puntosAccidentes ? ('puntosAccidentes desde tabla: ' + puntosAccidentes.features) : 'puntosAccidentes desde tabla: null');
-
+const AccidentesEstadisticas = () => {
+  const puntosAccidentes = useSelector((state) => state.consultas.puntosAccidentes);
   const PAF = puntosAccidentes;
 
   if (!PAF || PAF.features.length === 0) {
@@ -40,6 +40,24 @@ const AccidentesEstadisticas = ({ puntosAccidentes }) => {
 
   return (
     <>
+      <Stack
+        sx={{
+          width: "100%",
+          padding: '10px',
+          display: "flex",
+          flexDirection: {md: 'column', lg: 'row'},
+          justifyContent: "space-between",
+          alignItems: "space-between",
+        }}
+      >
+        <Stack>
+          <Typography variant="h4">DATOS DE ACCIDENTES</Typography>
+        </Stack>
+        <Stack>
+          Tabla resumen
+        </Stack>
+
+      </Stack>
       <Typography variant="h4">Registro de accidentes</Typography>
       <Stack style={{ padding: '10px',  height: 400, width: "100%" }}>
         <DataGrid

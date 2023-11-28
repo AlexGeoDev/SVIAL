@@ -125,7 +125,7 @@ const ConsultaAmbito = () => {
     isMounted.current = true;
     const fecthProvincia = async () => {
       const dataProvincias = await dataApiService.get_provinciaName();
-      console.log('dataProvincias: ', dataProvincias );
+      // console.log('dataProvincias: ', dataProvincias );
       if (isMounted.current) {
         setProvincias(dataProvincias);
       }

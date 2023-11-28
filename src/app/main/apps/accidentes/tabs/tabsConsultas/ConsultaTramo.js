@@ -20,8 +20,11 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
+import { useDispatch } from "react-redux";
+import { setPuntosAccidentes, setTramoGeoJson } from "app/main/apps/store/consultasSlice";
 
-const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
+const ConsultaTramo = () => {
+  const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(true);
   const [showErrorFecha, setShowErrorFecha] = useState(false);
   const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
@@ -66,8 +69,6 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
   
     setSelectedProvincia(selectedProvince);
     setSelectedCarretera("");
-    console.log('selectedProvincia: ', selectedProvince);
-
     selectedProvince ? fetchCarreteras() : fetchCarreterasSinProvincia();
   };
   
@@ -108,7 +109,7 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
             formattedStartDate,
             formattedEndDate
           );
-          setPuntosAccidentes(dataPuntosAccidentes);
+          dispatch(setPuntosAccidentes(dataPuntosAccidentes))
 
         } catch (e) {
           console.error("Error al obtener puntos de accidentes: ", e);
@@ -126,14 +127,12 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
         selectedPk_inicio,
         selectedPk_fin
       );
-      console.log('la carretera seleccionada es: ', selectedCarretera )
 
       if (dataTramosGeom) {
         setDisabledPuntos(false);
       }
       
-      setTramoGeoJson(dataTramosGeom);
-      // console.log('dataTramosGeom desde ConsultaTramo: ', dataTramosGeom);
+      dispatch(setTramoGeoJson(dataTramosGeom))
     } catch (e) {
       console.error("Error al obtener tramos geográficos: ", e);
     }
@@ -321,7 +320,12 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Stack sx={{paddingX: {sm: 1, lg: 0}}} >
+          <Stack 
+            sx={{ 
+              paddingLeft: { sm: 1, lg: 0 }, 
+              paddingRight: { sm: 1, lg: 0 } 
+            }}
+          >
             <FormControl className="pks-id">
               <Stack 
                 className="flex" 
@@ -449,7 +453,10 @@ const ConsultaTramo = ({ setTramoGeoJson, setPuntosAccidentes }) => {
               <Stack 
                 spacing={1} 
                 className="flex flex-1"
-                sx={{paddingX: {sm: 1, lg: 0}}}
+                sx={{ 
+                  paddingLeft: { sm: 1, lg: 0 }, 
+                  paddingRight: { sm: 1, lg: 0 } 
+                }}
               >
                 <Stack
                   spacing={1}

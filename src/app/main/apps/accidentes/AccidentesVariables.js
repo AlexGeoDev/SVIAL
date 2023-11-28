@@ -1,10 +1,12 @@
 import { Autocomplete, Button, Stack, TextField, ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-const AccidentesVariables = ({ setVariableEstudio, setMappingColors, puntosAccidentes, variables, diccionariosVariables, 
+const AccidentesVariables = ({ setVariableEstudio, setMappingColors, variables, diccionariosVariables, 
   variableFilters, setVariableFilters }) => {
   
   const [activeButton, setActiveButton] = useState(null);
+  const puntosAccidentes = useSelector((state) => state.consultas.puntosAccidentes)
   
   const paleta_contraste = ['#a6cee3',
     '#1f78b4',
