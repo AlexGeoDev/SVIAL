@@ -14,7 +14,7 @@ import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
 
-axios.defaults.baseURL = process.env.REACT_APP_AUTH_API_URL || 'https://svial-prointec.com/api';
+// axios.defaults.baseURL = process.env.REACT_APP_AUTH_API_URL || 'https://svial-prointec.com/api';
 
 ReactDOM.render(
   <App />, 
