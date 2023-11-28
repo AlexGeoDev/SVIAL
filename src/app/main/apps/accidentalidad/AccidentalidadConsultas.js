@@ -15,6 +15,7 @@ import BarChart from './tabs/components/BarChart';
 import PieChart from './tabs/components/PieChart';
 import AccidentalidadEstadisticas from './AccidentalidadEstadisticas';
 import { useSelector } from 'react-redux';
+import Consultas from '../components/Consultas';
 
 const tabLabelStyles = {
   fontWeight: 'bold', // Texto en negrilla
@@ -67,6 +68,7 @@ export default function AccidentalidadConsultas() {
   
   return (
     <Box className='flex flex-col'>
+      <Consultas />
       <Stack
         style={{
           border: tabsVisibles ? '1px solid black' : 0,
