@@ -128,11 +128,18 @@ class DataApiService extends FuseUtils.EventEmitter {
     return response.data;
   }
 
-  async getTramosPorCarretera(carretera) {
+  async getTramosPorCarretera(carretera, provincia) {
     try {
-      const response = await axios.get(`tramos/pks_carretera?carretera=${carretera}`);
+      let endpoint = `tramos/pks_carretera?carretera=${carretera}`;
+      
+      // Agrgamos al endpoint la provincia si es que existe
+      if (provincia) {
+        endpoint += `&provincia=${provincia}`;
+      }
+  
+      const response = await axios.get(endpoint);
       // console.log('TramosPorCarretera: ', response);
-
+  
       if (response.status !== 200) {
         const message = "Se produjo un fallo en la carga de tramos por carretera";
         throw new Error(message);
@@ -142,6 +149,7 @@ class DataApiService extends FuseUtils.EventEmitter {
       throw error;
     }
   }
+  
 
   async getTramosGeo(carretera, pkInicio, pkFin) {
     try {

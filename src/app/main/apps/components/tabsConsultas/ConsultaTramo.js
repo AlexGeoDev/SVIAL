@@ -20,13 +20,11 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPuntosAccidentes, setTramoGeoJson } from "app/main/apps/store/consultasSlice";
 
 const ConsultaTramo = () => {
   const dispatch = useDispatch();
-  // const provincias = useSelector((state) => state.consultas.provincias);
-  // const carreteras = useSelector((state) => state.consultas.carreteras);
   const [disabled, setDisabled] = useState(true);
   const [showErrorFecha, setShowErrorFecha] = useState(false);
   const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
@@ -156,6 +154,7 @@ const ConsultaTramo = () => {
     fetchProvinciaName();
   }, []);
 
+
   useEffect(() => {
     isMounted.current = true;
   
@@ -176,7 +175,7 @@ const ConsultaTramo = () => {
       fetchCarreteras();
     }
   }, [selectedProvincia, isMounted]);
-  
+
 
   useEffect(() => {
     isMounted.current = true;
@@ -184,7 +183,8 @@ const ConsultaTramo = () => {
       try {
         if (selectedCarretera) {
           const dataTramo = await dataApiService.getTramosPorCarretera(
-            selectedCarretera
+            selectedCarretera,
+            selectedProvincia.descripcion,
           );
           setPk_inicio(dataTramo[0]?.min);
           setPk_fin(dataTramo[0]?.max);
@@ -203,7 +203,8 @@ const ConsultaTramo = () => {
     };
 
     fetchTramosPorCarretera();
-  }, [selectedCarretera, isMounted]);
+  }, [selectedCarretera, isMounted]);  
+  
 
   return (
     <form onSubmit={handleSubmit}>

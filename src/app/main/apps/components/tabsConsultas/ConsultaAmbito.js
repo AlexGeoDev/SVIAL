@@ -200,7 +200,6 @@ const ConsultaAmbito = () => {
         <Stack 
           direction={{sm: 'column', md: 'row'}}
           sx={{
-            border: '1px blue solid',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
@@ -212,8 +211,8 @@ const ConsultaAmbito = () => {
               minWidth: '200px',
               width: 'min-content',
               maxWidth: '250px',
-              marginX: {md: 1},
-              formControlStyle
+              marginLeft: { md: 1 },
+              marginRight: { md: 1 },              formControlStyle
             }}
           >
             <Typography fontWeight={'bold'} sx={{marginBottom: 1}}>
