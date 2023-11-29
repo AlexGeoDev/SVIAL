@@ -5,7 +5,6 @@ const consultasSlice = createSlice({
   initialState: {
     tramoGeoJson: null,
     puntosAccidentes: null,
-    // provincias: [],
   },
   reducers: {
     setTramoGeoJson: (state, action) => {
@@ -14,9 +13,6 @@ const consultasSlice = createSlice({
     setPuntosAccidentes: (state, action) => {
       state.puntosAccidentes = action.payload;
     },
-    // setProvincias: (state, action) => {
-    //   state.provincias = action.payload;
-    // },
   }
 })
 

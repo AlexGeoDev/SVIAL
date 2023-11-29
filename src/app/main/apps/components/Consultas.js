@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, Stack, Tab, Tabs, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import ConsultaAmbito from "../accidentes/tabs/tabsConsultas/ConsultaAmbito";
-import ConsultaTramo from "../accidentes/tabs/tabsConsultas/ConsultaTramo";
-import ConsultaMapa from "../accidentes/tabs/tabsConsultas/ConsultaMapa";
+import ConsultaAmbito from "./tabsConsultas/ConsultaAmbito";
+import ConsultaTramo from "./tabsConsultas/ConsultaTramo";
+import ConsultaMapa from "./tabsConsultas/ConsultaMapa";
 import { useSelector } from "react-redux";
 
 const tabLabelStyles = {

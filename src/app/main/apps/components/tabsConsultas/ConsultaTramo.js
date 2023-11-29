@@ -20,11 +20,13 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPuntosAccidentes, setTramoGeoJson } from "app/main/apps/store/consultasSlice";
 
 const ConsultaTramo = () => {
   const dispatch = useDispatch();
+  // const provincias = useSelector((state) => state.consultas.provincias);
+  // const carreteras = useSelector((state) => state.consultas.carreteras);
   const [disabled, setDisabled] = useState(true);
   const [showErrorFecha, setShowErrorFecha] = useState(false);
   const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
