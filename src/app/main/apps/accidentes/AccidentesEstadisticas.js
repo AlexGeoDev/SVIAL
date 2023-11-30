@@ -58,7 +58,6 @@ const AccidentesEstadisticas = () => {
         </Stack>
 
       </Stack>
-      <Typography variant="h4">Registro de accidentes</Typography>
       <Stack style={{ padding: '10px',  height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
