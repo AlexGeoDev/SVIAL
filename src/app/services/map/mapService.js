@@ -13,6 +13,9 @@ import DoubleClickZoom from "ol/interaction/DoubleClickZoom";
 import Modify from "ol/interaction/Modify";
 import Draw from "ol/interaction/Draw";
 import Collection from "ol/Collection";
+import "ol-ext/dist/ol-ext.min.css";
+import LayerPopup from "ol-ext/control/LayerPopup";
+
 
 
 
@@ -32,9 +35,11 @@ class MapService extends FuseUtils.EventEmitter {
     //   }
     // });
     this.layers = [];
-    //this.toolbar = new Toolbar();
-    //this.map.addControl(this.toolbar);
-    // this._addSelectInteraction();
+
+    
+    this.layerSwitcher = new LayerPopup();
+    this.layerSwitcher.setMap(map);
+
 
   }
 
@@ -578,6 +583,9 @@ class MapService extends FuseUtils.EventEmitter {
   }
 
   filterLayerFeatures(layer, filters, variables) {
+    console.log("Filtering layer")
+    console.log(filters);
+    console.log(variables);
     layer.getSource().forEachFeature((feature) => {
        feature.set("visible", true);
        filters.map((filter, index) => {
