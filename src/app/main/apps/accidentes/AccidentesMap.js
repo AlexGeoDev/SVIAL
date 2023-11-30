@@ -150,12 +150,6 @@ function AccidentesMap({
         _capaTramo
       );
 
-      
-     
-    
-
-    
-
     const accidentesStyleFunction = function (feature, resolution) {
       let class_color = default_accidentes_color_style;
       if (Object.keys(mappingColors).length > 1 && variableEstudio) {
