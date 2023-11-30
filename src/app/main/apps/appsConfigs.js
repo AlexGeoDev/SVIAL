@@ -1,4 +1,3 @@
-import AcademyAppConfig from './academy/AcademyAppConfig';
 import AccidentalidadAppConfig from './accidentalidad/AccidentalidadAppConfig';
 import AccidentesAppConfig from './accidentes/AccidentesAppConfig';
 import CalendarAppConfig from './calendar/CalendarAppConfig';
@@ -22,7 +21,6 @@ const appsConfigs = [
   ContactsAppConfig,
   CalendarAppConfig,
   ScrumboardAppConfig,
-  AcademyAppConfig,
   NotesAppConfig,
 ];
 

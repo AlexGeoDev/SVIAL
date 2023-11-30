@@ -20,6 +20,7 @@
         "@mui/system": "5.2.4",
         "@mui/utils": "5.2.3",
         "@mui/x-data-grid": "5.2.0",
+        "@mui/x-date-pickers": "^6.18.2",
         "@reduxjs/toolkit": "1.7.0",
         "apexcharts": "3.32.0",
         "auth0-lock": "11.31.1",
@@ -32,6 +33,7 @@
         "d3": "^5.16.0",
         "date-fns": "^2.27.0",
         "date-fns-jalali": "2.27.0-0",
+        "dayjs": "^1.11.10",
         "draft-js": "0.11.7",
         "draftjs-to-html": "0.9.1",
         "firebase": "9.6.1",
@@ -134,9 +136,9 @@
         "util": "^0.12.4"
     },
     "browser": {
-        "fs": false , 
+        "fs": false,
         "path": false
-      },
+    },
     "scripts": {
         "start": "craco start",
         "build": "cross-env GENERATE_SOURCEMAP=false craco build",

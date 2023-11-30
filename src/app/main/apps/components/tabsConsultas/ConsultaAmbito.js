@@ -1,57 +1,62 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { 
-  Stack, 
-  Typography, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
-  Chip, 
-  IconButton, 
-  TextField, 
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Stack,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  IconButton,
+  TextField,
   useMediaQuery,
-} from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { DatePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns'; 
-import LocalizationProvider from '@mui/lab/LocalizationProvider'; 
-import dataApiService from 'app/services/dataApiService';
+  Button,
+  Grid,
+  Tooltip,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { DatePicker } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import dataApiService from "app/services/dataApiService";
 
 const ConsultaAmbito = () => {
   const [demarcacion, setDemarcacion] = useState([]);
-  const [selectedDemarcacion, setSelectedDemarcacion] = useState('');
+  const [selectedDemarcacion, setSelectedDemarcacion] = useState("");
 
   const [provincias, setProvincias] = useState([]);
-  const [selectedProvincia, setSelectedProvincia] = useState('');
-  
+  const [selectedProvincia, setSelectedProvincia] = useState("");
+
   const [tipoVia, setTipoVia] = useState([]);
-  const [selectedTipoVia, setSelectedTipoVia] = useState('');
+  const [selectedTipoVia, setSelectedTipoVia] = useState("");
 
   const [carreteras, setCarreteras] = useState([]);
-  const [selectedCarretera, setSelectedCarretera] = useState('');
+  const [selectedCarretera, setSelectedCarretera] = useState("");
 
   const [zonas, setZonas] = useState([]);
-  const [selectedZonas, setSelectedZonas] = useState('');
+  const [selectedZonas, setSelectedZonas] = useState("");
 
-  const [IMD, setIMD] = useState('');
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedYear, setSelectedYear] = useState(null);
+  const [IMD, setIMD] = useState("");
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [showErrorFecha, setShowErrorFecha] = useState(false);
   const isMounted = useRef(true);
 
   const handleDemarcacion = (e) => {
-    setSelectedDemarcacion(demarcacion.filter((demarcacion) => {
-      return demarcacion.id_demarcacion == e.target.value;
-    })[0]);
-    console.log('selectedDemarcacion: ', e.target.value)
-  }
+    setSelectedDemarcacion(
+      demarcacion.filter((demarcacion) => {
+        return demarcacion.id_demarcacion == e.target.value;
+      })[0]
+    );
+    console.log("selectedDemarcacion: ", e.target.value);
+  };
   const handleClearDemarcacion = () => {
     setSelectedDemarcacion("");
-  }
+  };
   // --------------------------------------
   const handleProvincias = (e) => {
     setSelectedProvincia(e.target.value);
-  }
+  };
   const handleClearProvincias = () => {
     setSelectedProvincia("");
   };
@@ -72,34 +77,38 @@ const ConsultaAmbito = () => {
   // --------------------------------------
   const handleZonas = (e) => {
     setSelectedZonas(e.target.value);
-  }
+  };
   const handleClearZonas = () => {
-    setSelectedZonas('');
-  }
+    setSelectedZonas("");
+  };
   // --------------------------------------
   const handleIMD = (e) => {
     setIMD(e.target.value);
-  }
+  };
   const handleClearIMD = () => {
-    setIMD('');
-  }
+    setIMD("");
+  };
   // --------------------------------------
-  const handleYearChange = (date) => {
-    setSelectedYear(date);
+  const handleStartDateChange = (date) => {
+    setSelectedStartDate(date);
   };
 
-  const handleMonthChange = (date) => {
-    setSelectedMonth(date);
+  const handleEndDateChange = (date) => {
+    setSelectedEndDate(date);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleConsultar = () => {
+    // Lógica para realizar la consulta con las fechas seleccionadas
+    console.log("Fecha Inicial:", selectedStartDate);
+    console.log("Fecha Final:", selectedEndDate);
   };
 
-  const isMediumScreen = useMediaQuery('(min-width: 1200px) and (max-width: 1300px)');
+  const isMediumScreen = useMediaQuery(
+    "(min-width: 1200px) and (max-width: 1300px)"
+  );
 
   const formControlStyle = {
-    width: isMediumScreen ? '140px' : '200px', 
+    width: isMediumScreen ? "140px" : "200px",
   };
 
   useEffect(() => {
@@ -117,9 +126,9 @@ const ConsultaAmbito = () => {
         setDemarcacion(dataDemarcacion);
       }
     };
-    
+
     fecthDemarcacion();
-  }, [isMounted])
+  }, [isMounted]);
 
   useEffect(() => {
     isMounted.current = true;
@@ -129,7 +138,7 @@ const ConsultaAmbito = () => {
       if (isMounted.current) {
         setProvincias(dataProvincias);
       }
-    }
+    };
 
     fecthProvincia();
   }, [isMounted]);
@@ -141,23 +150,25 @@ const ConsultaAmbito = () => {
       if (isMounted.current) {
         setTipoVia(dataTipoVia);
       }
-    }
+    };
 
     fecthTipoVia();
-  }, [isMounted])
+  }, [isMounted]);
 
   useEffect(() => {
     isMounted.current = true;
     const fetchCarreteras = async () => {
       try {
-        const dataCarreteras = await dataApiService.get_carretera(selectedProvincia);
+        const dataCarreteras = await dataApiService.get_carretera(
+          selectedProvincia
+        );
         if (isMounted.current) {
           setCarreteras(dataCarreteras);
         }
       } catch (error) {
-        console.error('Error al obtener carreteras: ', error);
+        console.error("Error al obtener carreteras: ", error);
       }
-    }
+    };
 
     fetchCarreteras();
   }, [selectedProvincia]);
@@ -173,55 +184,55 @@ const ConsultaAmbito = () => {
 
     fetchZonas();
   }, [isMounted]);
-  
+
   return (
     <Stack
       paddingY={1}
       sx={{
-        width: '80vw',
-        minHeight: '230px',
+        width: "80vw",
+        minHeight: "230px",
         marginRight: 3,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: {sm: 'column', lg: 'row'},
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+        flexDirection: { sm: "column", lg: "row" },
       }}
     >
       <Stack
         spacing={2}
-        width={{sm: '70vw', lg: '55vw'}}
+        width={{ sm: "70vw", lg: "55vw" }}
         direction={{
-          sm: 'row',
-          md: 'column',
+          sm: "row",
+          md: "column",
         }}
-        className='flex'
-        justifyContent={'space-around'}
+        className="flex"
+        justifyContent={"space-around"}
       >
-        <Stack 
-          direction={{sm: 'column', md: 'row'}}
+        <Stack
+          direction={{ sm: "column", md: "row" }}
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Stack                    // Demarcacion
+          <Stack // Demarcacion
             sx={{
-              minWidth: '200px',
-              width: 'min-content',
-              maxWidth: '250px',
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "250px",
               marginLeft: { md: 1 },
-              marginRight: { md: 1 },              formControlStyle
+              marginRight: { md: 1 },
+              formControlStyle,
             }}
           >
-            <Typography fontWeight={'bold'} sx={{marginBottom: 1}}>
+            <Typography fontWeight={"bold"} sx={{ marginBottom: 1 }}>
               Demarcación:
             </Typography>
             <FormControl fullWidth>
               <InputLabel>Demarcación...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir demarcación"
                 id="elegir-demarcación"
                 value={selectedDemarcacion.id_demarcacion}
@@ -229,7 +240,10 @@ const ConsultaAmbito = () => {
                 onChange={handleDemarcacion}
               >
                 {demarcacion.map((demarcacion) => (
-                  <MenuItem key={demarcacion.id_demarcacion} value={demarcacion.id_demarcacion}>
+                  <MenuItem
+                    key={demarcacion.id_demarcacion}
+                    value={demarcacion.id_demarcacion}
+                  >
                     {demarcacion.descripcion}
                   </MenuItem>
                 ))}
@@ -237,7 +251,7 @@ const ConsultaAmbito = () => {
             </FormControl>
             <Stack marginY={1}>
               {selectedDemarcacion && (
-                <Chip 
+                <Chip
                   label={selectedDemarcacion.descripcion}
                   onDelete={handleClearDemarcacion}
                   deleteIcon={
@@ -246,48 +260,56 @@ const ConsultaAmbito = () => {
                     </IconButton>
                   }
                   style={{
-                    backgroundColor:'#afdd95',
-                    borderRadius: '15px',
-                    fontWeight: 'bold',
+                    backgroundColor: "#afdd95",
+                    borderRadius: "15px",
+                    fontWeight: "bold",
                   }}
                 />
               )}
             </Stack>
           </Stack>
-          <Stack                    // Provincia
+          <Stack // Provincia
             sx={{
-              minWidth: '200px',
-              width: 'min-content',
-              maxWidth: '250px',
-              marginX: {md: 1},
-              formControlStyle
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "250px",
+              marginX: { md: 1 },
+              formControlStyle,
             }}
           >
-            <Typography fontWeight={'bold'} mb={1}>
+            <Typography fontWeight={"bold"} mb={1}>
               Provincia:
             </Typography>
             <FormControl fullWidth>
               <InputLabel>Provincia...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir provincia"
                 id="elegir-provincia"
                 value={selectedProvincia}
                 label="Elegir provincia"
                 onChange={handleProvincias}
               >
-                {provincias.filter((provincia) => {
-                  return provincia.id_demarcacion == selectedDemarcacion.id_demarcacion;
-                }).map((provincias) =>(
-                  <MenuItem key={provincias.id} value={provincias.descripcion}>
-                    {provincias.descripcion}
-                  </MenuItem>
-                ))}
+                {provincias
+                  .filter((provincia) => {
+                    return (
+                      provincia.id_demarcacion ==
+                      selectedDemarcacion.id_demarcacion
+                    );
+                  })
+                  .map((provincias) => (
+                    <MenuItem
+                      key={provincias.id}
+                      value={provincias.descripcion}
+                    >
+                      {provincias.descripcion}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
             <Stack my={1}>
               {selectedProvincia && (
-                <Chip 
+                <Chip
                   label={selectedProvincia}
                   onDelete={handleClearProvincias}
                   deleteIcon={
@@ -296,30 +318,30 @@ const ConsultaAmbito = () => {
                     </IconButton>
                   }
                   style={{
-                    backgroundColor:'#afdd95',
-                    borderRadius: '15px',
-                    fontWeight: 'bold',
+                    backgroundColor: "#afdd95",
+                    borderRadius: "15px",
+                    fontWeight: "bold",
                   }}
                 />
               )}
             </Stack>
           </Stack>
-          <Stack                    // Tipo de via
+          <Stack // Tipo de via
             sx={{
-              minWidth: '200px',
-              width: 'min-content',
-              maxWidth: '310px',
-              marginX: {md: 1},
-              formControlStyle
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "310px",
+              marginX: { md: 1 },
+              formControlStyle,
             }}
           >
-            <Typography fontWeight={'bold'} mb={1}>
+            <Typography fontWeight={"bold"} mb={1}>
               Tipo de via:
             </Typography>
             <FormControl fullWidth>
               <InputLabel>Tipo de via...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir Tipo de via"
                 id="elegir-TipoDeVia"
                 value={selectedTipoVia}
@@ -335,7 +357,7 @@ const ConsultaAmbito = () => {
             </FormControl>
             <Stack my={1}>
               {selectedTipoVia && (
-                <Chip 
+                <Chip
                   label={selectedTipoVia}
                   onDelete={handleClearTipoVia}
                   deleteIcon={
@@ -344,33 +366,39 @@ const ConsultaAmbito = () => {
                     </IconButton>
                   }
                   style={{
-                    backgroundColor:'#afdd95',
-                    borderRadius: '15px',
-                    fontWeight: 'bold',
+                    backgroundColor: "#afdd95",
+                    borderRadius: "15px",
+                    fontWeight: "bold",
                   }}
                 />
               )}
             </Stack>
-          </Stack>          
+          </Stack>
         </Stack>
 
-        <Stack spacing={{sm: 0, md: 1}} direction={{sm: 'column', md: 'row'}}
+        <Stack
+          direction={{ sm: "column", md: "row" }}
           sx={{
-            display: 'flex',
-            justifyContent: {sm: 'center', md: 'space-around'},
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Stack                  // Carretera
-            sx={formControlStyle}
+          <Stack // Carretera
+            sx={{
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "250px",
+              marginLeft: { md: 1 },
+              marginRight: { md: 1 },
+              formControlStyle,
+            }}
           >
-            <Typography fontWeight={'bold'}>
-              Carretera:
-            </Typography>
+            <Typography fontWeight={"bold"} mb={1}>Carretera:</Typography>
             <FormControl fullWidth>
               <InputLabel>Carretera...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir carretera"
                 id="elegir-carretera"
                 value={selectedCarretera}
@@ -379,40 +407,44 @@ const ConsultaAmbito = () => {
               >
                 {carreteras.map((carretera) => (
                   <MenuItem key={carretera.id} value={carretera.descripcion}>
-                    {carretera.descripcion}                  
+                    {carretera.descripcion}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            <Stack>
+            <Stack my={1}>
               {selectedCarretera && (
-                  <Chip 
-                    label={selectedCarretera}
-                    onDelete={handleClearCarretera}
-                    deleteIcon={
-                      <IconButton>
-                        <CloseIcon />
-                      </IconButton>
-                    }
-                    style={{
-                      backgroundColor:'#afdd95',
-                      borderRadius: '3px',
-                      fontWeight: 'bold',
-                    }}
-                    />
+                <Chip
+                  label={selectedCarretera}
+                  onDelete={handleClearCarretera}
+                  deleteIcon={
+                    <IconButton>
+                      <CloseIcon />
+                    </IconButton>
+                  }
+                  style={{
+                    backgroundColor: "#afdd95",
+                    borderRadius: "3px",
+                    fontWeight: "bold",
+                  }}
+                />
               )}
             </Stack>
           </Stack>
-          <Stack                  // Zonas 
-            sx={formControlStyle} 
+          <Stack // Zonas
+            sx={{
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "250px",
+              marginX: { md: 1 },
+              formControlStyle,
+            }}
           >
-            <Typography fontWeight={'bold'}>
-              Zonas:
-            </Typography>
+            <Typography fontWeight={"bold"} mb={1}>Zonas:</Typography>
             <FormControl fullWidth>
               <InputLabel>Zonas...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir zonas"
                 id="elegir-zonas"
                 value={selectedZonas}
@@ -422,13 +454,13 @@ const ConsultaAmbito = () => {
                 {zonas.map((zonas) => {
                   <MenuItem key={zonas.id} value={zonas.descripcion}>
                     {zonas.descripcion}
-                  </MenuItem>
+                  </MenuItem>;
                 })}
               </Select>
             </FormControl>
-            <Stack>
+            <Stack my={1}>
               {selectedZonas && (
-                <Chip 
+                <Chip
                   label={selectedZonas}
                   onDelete={handleClearZonas}
                   deleteIcon={
@@ -437,38 +469,42 @@ const ConsultaAmbito = () => {
                     </IconButton>
                   }
                   style={{
-                    backgroundColor:'#afdd95',
-                    borderRadius: '3px',
-                    fontWeight: 'bold',
+                    backgroundColor: "#afdd95",
+                    borderRadius: "3px",
+                    fontWeight: "bold",
                   }}
                 />
               )}
             </Stack>
           </Stack>
-          <Stack                  // IMD 
-            sx={formControlStyle} 
+          <Stack // IMD
+            sx={{
+              minWidth: "200px",
+              width: "min-content",
+              maxWidth: "310px",
+              marginX: { md: 1 },
+              formControlStyle,
+            }}
           >
-            <Typography fontWeight={'bold'}>
-              IMD:
-            </Typography>
+            <Typography fontWeight={"bold"} mb={1}>IMD:</Typography>
             <FormControl fullWidth>
               <InputLabel>IMD...</InputLabel>
               <Select
-                size='small'
+                size="small"
                 labelId="Elegir IMD"
                 id="elegir-IMD"
                 value={IMD}
                 label="Elegir IMD"
                 onChange={handleIMD}
               >
-                <MenuItem value={'IMD 1'}>IMD 1</MenuItem>
-                <MenuItem value={'IMD 2'}>IMD 2</MenuItem>
-                <MenuItem value={'IMD 3'}>IMD 3</MenuItem>
+                <MenuItem value={"IMD 1"}>IMD 1</MenuItem>
+                <MenuItem value={"IMD 2"}>IMD 2</MenuItem>
+                <MenuItem value={"IMD 3"}>IMD 3</MenuItem>
               </Select>
             </FormControl>
-            <Stack>
+            <Stack my={1}>
               {IMD && (
-                <Chip 
+                <Chip
                   label={IMD}
                   onDelete={handleClearIMD}
                   deleteIcon={
@@ -477,9 +513,9 @@ const ConsultaAmbito = () => {
                     </IconButton>
                   }
                   style={{
-                    backgroundColor:'#afdd95',
-                    borderRadius: '3px',
-                    fontWeight: 'bold',
+                    backgroundColor: "#afdd95",
+                    borderRadius: "3px",
+                    fontWeight: "bold",
                   }}
                 />
               )}
@@ -488,77 +524,106 @@ const ConsultaAmbito = () => {
         </Stack>
       </Stack>
 
-      <Stack
-        marginTop={{sm: 2, lg: 0}}
-        width={{sm: '60vw', lg: '45vw'}}
-        alignItems={'center'}
-        justifyContent={'center'} 
-        className='flex'
-        direction={'column'}
+      <Grid
+        paddingY={2}
+        sx={{
+          display: "flex",
+          flexDirection: { sm: "row", lg: "column" },
+        }}
       >
-        <Stack direction={'column'} className='flex' alignItems={'center'}>
-          <Stack>
-            <Typography fontWeight={'bold'}>
-              Fecha inicio:
-            </Typography>
-          </Stack>
-          <Stack direction={'row'} spacing={1}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={selectedDate}
-                onChange={handleDateChange}
-                views={['day']}
-                renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
-              />
-              <DatePicker
-                value={selectedMonth}
-                onChange={handleMonthChange}
-                views={['month', 'year']}
-                renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small' placeholder="mm/yy"/>}
-              />
-              <DatePicker
-                value={selectedYear}
-                onChange={handleYearChange}
-                views={['year']}
-                renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
-              />
-            </LocalizationProvider>
-          </Stack>
-        </Stack>
+        <Tooltip
+          placement="top"
+          open={showErrorFecha}
+          title="La fecha final no puede ser inferior a la fecha de inicio"
+        >
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: { sm: "column", lg: "row" },
+            }}
+          >
+            <Stack
+              spacing={1}
+              className="flex flex-1"
+              sx={{
+                paddingLeft: { sm: 1, lg: 0 },
+                paddingRight: { sm: 1, lg: 0 },
+              }}
+            >
+              <Stack
+                spacing={1}
+                direction={"row"}
+                alignItems={"center"}
+                className="flex flex-1"
+              >
+                <Typography fontWeight={"bold"} width={80} component="span">
+                  Fecha inicio:
+                </Typography>
+                <FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      value={selectedStartDate}
+                      onChange={handleStartDateChange}
+                      views={["day"]}
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          style={{ width: "140px" }}
+                          size="small"
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+              </Stack>
 
-        <Stack direction={'column'} className='flex' alignItems={'center'} marginTop={2}>
-          <Stack>
-            <Typography fontWeight={'bold'}>
-              Fecha final:
-            </Typography>
-          </Stack>
-          <Stack direction={'row'} spacing={1}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                value={selectedDate}
-                onChange={handleDateChange}
-                views={['day']}
-                renderInput={(props) => <TextField {...props} style={{ width: '140px' }} size='small'/>}
-              />
-              <DatePicker
-                value={selectedMonth}
-                onChange={handleMonthChange}
-                views={['year', 'month']}
-                renderInput={(props) => <TextField {...props} style={{ width: '160px' }} size='small'/>}
-              />
-              <DatePicker
-                value={selectedYear}
-                onChange={handleYearChange}
-                views={['year']}
-                renderInput={(props) => <TextField {...props} style={{ width: '100px' }} size='small'/>}
-              />
-            </LocalizationProvider>
-          </Stack>
-        </Stack>
-      </Stack>
+              <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                <Typography fontWeight={"bold"} width={80} component="span">
+                  Fecha final:
+                </Typography>
+                <FormControl>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      value={selectedEndDate}
+                      onChange={handleEndDateChange}
+                      views={["day"]}
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          style={{ width: "140px" }}
+                          size="small"
+                          onBlur={() => {
+                            if (selectedEndDate < selectedStartDate) {
+                              setShowErrorFecha(true);
+                            } else {
+                              setShowErrorFecha(false);
+                            }
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </FormControl>
+              </Stack>
+            </Stack>
+          </Grid>
+        </Tooltip>
 
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            marginTop: { sm: 0, lg: 1 },
+            borderRadius: "8px",
+            backgroundColor: "#0866ff",
+          }}
+          disabled={showErrorFecha}
+        >
+          <Typography>Consultar accidentes</Typography>
+        </Button>
+      </Grid>
     </Stack>
-  )
+  );
 };
 
 export default ConsultaAmbito;

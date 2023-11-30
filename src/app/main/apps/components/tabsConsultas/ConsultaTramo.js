@@ -224,7 +224,7 @@ const ConsultaTramo = () => {
       >
         <Stack direction={"row"}>
           <Stack spacing={2} paddingY={2} paddingX={1} sx={formControlStyle}>
-            <Typography fontWeight={"bold"}>Provincia:</Typography>
+            <Typography fontWeight={"bold"} component="span">Provincia:</Typography>
             <FormControl fullWidth>
               <InputLabel>Provincia...</InputLabel>
               <Select
@@ -263,7 +263,7 @@ const ConsultaTramo = () => {
           </Stack>
 
           <Stack spacing={2} paddingY={2} paddingX={1} sx={formControlStyle}>
-            <Typography fontWeight={"bold"}>Carretera:</Typography>
+            <Typography fontWeight={"bold"} component="span">Carretera:</Typography>
             <FormControl fullWidth>
               <InputLabel>Carretera...</InputLabel>
               <Select
@@ -467,7 +467,7 @@ const ConsultaTramo = () => {
                   alignItems={"center"}
                   className="flex flex-1"
                 >
-                  <Typography fontWeight={"bold"} width={80}>
+                  <Typography fontWeight={"bold"} width={80} component="span">
                     Fecha inicio:
                   </Typography>
                   <FormControl>
@@ -490,7 +490,7 @@ const ConsultaTramo = () => {
                 </Stack>
 
                 <Stack direction={"row"} spacing={1} alignItems={"center"}>
-                  <Typography fontWeight={"bold"} width={80}>
+                  <Typography fontWeight={"bold"} width={80} component="span">
                     Fecha final:
                   </Typography>
                   <FormControl>
@@ -519,7 +519,7 @@ const ConsultaTramo = () => {
                   </FormControl>
                 </Stack>
               </Stack>
-            </Grid>            
+            </Grid>
           </Tooltip>
 
           <Button
