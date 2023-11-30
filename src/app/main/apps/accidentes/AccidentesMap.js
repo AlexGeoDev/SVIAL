@@ -19,15 +19,18 @@ function AccidentesMap({
   mappingColors,
   default_accidentes_color_style,
   variableFilters,
-  variables,
+  variables
 }) {
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
-  const [accidentesMapService, setAccidentesMapService] = useState(null);
+  
   const tramoGeoJson = useSelector((state) => state.consultas.tramoGeoJson);
   const puntosAccidentes = useSelector(
     (state) => state.consultas.puntosAccidentes
   );
+  const [accidentesMapService, setAccidentesMapService] = useState(null);
+
+
 
   proj4.defs(
     "EPSG:25830",
@@ -119,9 +122,12 @@ function AccidentesMap({
   useEffect(() => {
     if (tramoGeoJson && capaTramo && capaTramo.getSource()) {
       capaTramo.getSource().clear();
+      const features = new GeoJSON().readFeatures(tramoGeoJson);
       capaTramo
         .getSource()
-        .addFeatures(new GeoJSON().readFeatures(tramoGeoJson));
+        .addFeatures(features);
+
+        accidentesMapService.zoomTo(features);
     }
 
     if (

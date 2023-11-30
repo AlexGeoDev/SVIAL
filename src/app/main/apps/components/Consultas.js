@@ -43,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-export default function Consultas() {
+export default function Consultas(accidentesMapService) {
   const [tabValue, setTabValue] = useState(0);
   const tabsVisibles = useSelector((state) => state.tabs.showTabs);
 

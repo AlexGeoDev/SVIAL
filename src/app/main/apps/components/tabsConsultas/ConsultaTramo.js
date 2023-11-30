@@ -23,6 +23,7 @@ import dataApiService from "app/services/dataApiService";
 import { useDispatch } from "react-redux";
 import { setPuntosAccidentes, setTramoGeoJson } from "app/main/apps/store/consultasSlice";
 
+
 const ConsultaTramo = () => {
   const dispatch = useDispatch();
   const [disabled, setDisabled] = useState(true);
@@ -132,7 +133,9 @@ const ConsultaTramo = () => {
         setDisabledPuntos(false);
       }
       
-      dispatch(setTramoGeoJson(dataTramosGeom))
+      dispatch(setTramoGeoJson(dataTramosGeom));
+      
+
     } catch (e) {
       console.error("Error al obtener tramos geográficos: ", e);
     }
