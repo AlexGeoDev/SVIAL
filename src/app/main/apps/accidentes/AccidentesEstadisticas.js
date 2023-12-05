@@ -6,9 +6,8 @@ import { useSelector } from "react-redux";
 
 const AccidentesEstadisticas = () => {
   const puntosAccidentes = useSelector((state) => state.consultas.puntosAccidentes);
-  const PAF = puntosAccidentes;
 
-  if (!PAF || PAF.features.length === 0) {
+  if (!puntosAccidentes || puntosAccidentes.features.length === 0) {
     return (
       <Stack 
         height={400} 
@@ -25,7 +24,7 @@ const AccidentesEstadisticas = () => {
     );
   }
 
-  const columns = Object.keys(PAF.features[0].properties).map((property) => ({
+  const columns = Object.keys(puntosAccidentes.features[0].properties).map((property) => ({
     flex: 1,
     minWidth: 200,
     field: property,
@@ -33,7 +32,7 @@ const AccidentesEstadisticas = () => {
     headerName: property,
   }));
 
-  const rows = PAF.features.map((feature, index) => ({
+  const rows = puntosAccidentes.features.map((feature, index) => ({
     id: index,
     ...feature.properties,
   }));

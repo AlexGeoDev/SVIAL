@@ -16,12 +16,16 @@ import { styled } from "@mui/system";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { 
+  setInputPkFin,
+  setInputPkInicio,
   setPk_fin, 
   setPk_inicio, 
+  setPuntosAccidentes, 
   setSelectedCarretera, 
   setSelectedEndDate, 
   setSelectedProvincia,
-  setSelectedStartDate, 
+  setSelectedStartDate,
+  setTramoGeoJson,
 } from "../store/consultasSlice";
 
 const HeaderContainer = styled(Grid)(({ theme }) => ({
@@ -56,11 +60,13 @@ const AccidentesHeader = () => {
     dispatch(setSelectedCarretera(""))  
   }
 
-  const handleLimpiarPkInicio = () => {
-    dispatch(setPk_inicio(null))  
+  const handleClearPkInicio = () => {
+    dispatch(setPk_inicio(""));
+    dispatch(setInputPkInicio(""))
   }
-  const handleLimpiarPkFin = () => {
-    dispatch(setPk_fin(null))  
+  const handleClearPkFin = () => {
+    dispatch(setPk_fin(""));
+    dispatch(setInputPkFin(""));
   }
 
   const handleClearStartDate = () => {
@@ -68,6 +74,17 @@ const AccidentesHeader = () => {
   }
   const handleClearEndDate = () => {
     dispatch(setSelectedEndDate(null))
+  }
+
+  const handleClearMap = () => {
+    dispatch(setTramoGeoJson({
+      data: "",
+      visible: false, // Establecer la visibilidad como false
+    }));
+  };  
+
+  const handleClearGraficoyEstadisticas = () => {
+    dispatch(setPuntosAccidentes(""))
   }
 
   const isSmallScreen = useMediaQuery("(max-width:600px)");
@@ -167,10 +184,12 @@ const AccidentesHeader = () => {
           onClick={() => {
             handleLimpiarProvincia();
             handleLimpiarCarretera();
-            handleLimpiarPkInicio();
-            handleLimpiarPkFin();
+            handleClearPkInicio();
+            handleClearPkFin();
+            handleClearMap();
             handleClearStartDate();
             handleClearEndDate();
+            handleClearGraficoyEstadisticas();
           }}
         >
           LIMPIAR

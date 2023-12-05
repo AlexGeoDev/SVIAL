@@ -4,30 +4,38 @@ import Map from "ol/Map";
 import View from "ol/View";
 import TileLayer from "ol/layer/Tile";
 import Vector from "ol/source/Vector";
+import Group from "ol/layer/Group"
 import GeoJSON from "ol/format/GeoJSON";
 import { Vector as VectorLayer } from "ol/layer";
 import { Style, Stroke, Circle, Fill } from "ol/style";
 import TileWMS from "ol/source/TileWMS";
-import { get as getProjection } from "ol/proj.js";
+import WMTSTileGrid from "ol/tilegrid/WMTS";
+import WMTS from "ol/source/WMTS";
+import { getTopLeft, getWidth, applyTransform} from "ol/extent";
+import { get as getProjection, getTransform  } from "ol/proj.js";
 import { register } from "ol/proj/proj4.js";
 import proj4 from "proj4";
 import mapService from "app/services/map/mapService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setTramoGeoJson, toggleTramoGeoJsonVisibility } from "../store/consultasSlice"; 
 
 function AccidentesMap({
   variableEstudio,
   mappingColors,
   default_accidentes_color_style,
   variableFilters,
-  variables,
+  variables
 }) {
+  const dispatch = useDispatch();
   const mapTargetElement = useRef();
   const [map, setMap] = useState(null);
-  const [accidentesMapService, setAccidentesMapService] = useState(null);
+  
   const tramoGeoJson = useSelector((state) => state.consultas.tramoGeoJson);
+  // console.log('tramoGeoJson desde map: ', tramoGeoJson)
   const puntosAccidentes = useSelector(
     (state) => state.consultas.puntosAccidentes
   );
+  const [accidentesMapService, setAccidentesMapService] = useState(null);
 
   proj4.defs(
     "EPSG:25830",
@@ -37,14 +45,47 @@ function AccidentesMap({
   const epsg25830Projection = getProjection("EPSG:25830");
   const peninsula_bbox = [442484.6387, 4471319.5361];
 
+
+  //const extent = [-1968157.09 , 3638026.2 ,4677582.63, 12837333]
+
+  // const top_left_tile_cero = [-1968157.095 , 2.2856087*10000000];
+  // const sclale_denominator = 2.795411320714286 * 100000000 ;
+  // const pixel_size = 0.00028 * sclale_denominator;
+  // const n_tiles = 1;
+  
+  // console.log(sclale_denominator);
+  // const tile_size = 256;
+  // const proj25830extent = [top_left_tile_cero[0], 
+  //                       top_left_tile_cero[1] - (pixel_size*tile_size*n_tiles), 
+  //                       top_left_tile_cero[0] + (pixel_size*tile_size*n_tiles), 
+  //                       top_left_tile_cero[1]]
+  
+  // console.log(proj25830extent)
+  // epsg25830Projection.setExtent(proj25830extent);
+
+  
   const [capaTramo, setCapaTramo] = useState(null);
   const [capaAccidentes, setCapaAccidentes] = useState(null);
 
   useEffect(() => {
-    const map = new Map({
-      target: "map-container",
-      layers: [
+
+    // var resolutions = new Array(19);
+    // var matrixIds = new Array(19);
+    // var size = getWidth(epsg25830Projection.getExtent()) / 256 ;
+		// for (var z = 0; z < 20; ++z) {
+		//   // generate resolutions and matrixIds arrays for this WMTS
+		//   resolutions[z] = size / Math.pow(2, z);
+    //   matrixIds[z] = z;
+		// }
+    // const origin = getTopLeft(epsg25830Projection.getExtent());
+
+
+
+        let layers = [
         new TileLayer({
+          title: "IGN Raster",
+          baseLayer: true,
+          visible:false,
           source: new TileWMS({
             url: "https://www.ign.es/wms-inspire/mapa-raster",
             params: {
@@ -57,24 +98,56 @@ function AccidentesMap({
             transition: 0,
           }),
         }),
-      ],
-      view: new View({
-        projection: epsg25830Projection,
-        center: peninsula_bbox,
-        zoom: 5.5,
-      }),
-    });
+        new TileLayer({
+          title: "PNOA",
+          openInLayerSwitcher:true,
+          baseLayer: true,
+          visible:false,
+          source: new TileWMS({
+            url: "https://www.ign.es/wms-inspire/pnoa-ma",
+            params: {
+              LAYERS: "OI.OrthoimageCoverage",
+              TILED: true,
+              SRS: "EPSG:25830",
+              VERSION: "1.3.0",
+              CRS: "EPSG:25830",
+            },
+            transition: 0,
+          }),
+        }),
+        new TileLayer({
+          title: "Mapa base IGN",
+          baseLayer: true,
+          visible:true,
+          source: new TileWMS({
+            url: "https://www.ign.es/wms-inspire/ign-base",
+            params: {
+              LAYERS: "IGNBaseTodo",
+              TILED: true,
+              SRS: "EPSG:25830",
+              VERSION: "1.3.0",
+              CRS: "EPSG:25830",
+            },
+            transition: 0,
+          }),
+        })
+      ]
+      
+      
 
-    setCapaTramo(
-      new VectorLayer({
+      const _capaTramo = new VectorLayer({
+        openInLayerSwitcher: true,
         source: new Vector(),
-        map: map,
+        name: "Tramo",
         style: {
           "stroke-color": "rgba(255, 0, 0, 1)",
           "stroke-width": 3,
         },
-      })
-    );
+      });
+
+      setCapaTramo(
+        _capaTramo
+      );
 
     const accidentesStyleFunction = function (feature, resolution) {
       let class_color = default_accidentes_color_style;
@@ -101,13 +174,27 @@ function AccidentesMap({
       ];
     };
 
-    setCapaAccidentes(
-      new VectorLayer({
-        source: new Vector(),
-        map: map,
-        style: accidentesStyleFunction,
-      })
-    );
+    const _capaAccidentes = new VectorLayer({
+      name:"Accidentes",
+      openInLayerSwitcher: true,
+      source: new Vector(),
+      style: accidentesStyleFunction,
+    }) 
+
+    setCapaAccidentes(_capaAccidentes);
+
+    layers.push(_capaTramo);
+    layers.push(_capaAccidentes);
+
+    const map = new Map({
+      target: "map-container",
+      layers: layers,
+      view: new View({
+        projection: epsg25830Projection,
+        center: peninsula_bbox,
+        zoom: 5.5,
+      }),
+    });
 
     map.setTarget(mapTargetElement.current || "");
     setMap(map);
@@ -116,12 +203,23 @@ function AccidentesMap({
     return () => map.setTarget("");
   }, []);
 
+
   useEffect(() => {
-    if (tramoGeoJson && capaTramo && capaTramo.getSource()) {
+    if (tramoGeoJson.data && capaTramo && capaTramo.getSource()) {
       capaTramo.getSource().clear();
-      capaTramo
-        .getSource()
-        .addFeatures(new GeoJSON().readFeatures(tramoGeoJson));
+      const features = new GeoJSON().readFeatures(tramoGeoJson.data);
+      capaTramo.getSource().addFeatures(features);
+
+        accidentesMapService.zoomTo(features);
+        console.log(accidentesMapService.layerSwitcher.displayInLayerSwitcher(capaTramo));
+        accidentesMapService.layerSwitcher.setMap(map);
+        console.log(accidentesMapService.layerSwitcher)
+
+        if (tramoGeoJson.visible) {
+          accidentesMapService.layerSwitcher.displayInLayerSwitcher(capaTramo);
+        } else {
+          accidentesMapService.layerSwitcher.removeFromLayerSwitcher(capaTramo);
+        }
     }
 
     if (
@@ -134,6 +232,10 @@ function AccidentesMap({
       capaAccidentes
         .getSource()
         .addFeatures(new GeoJSON().readFeatures(puntosAccidentes));
+
+      accidentesMapService.filterLayerFeatures(capaAccidentes, variableFilters, variables) 
+      accidentesMapService.layerSwitcher.displayInLayerSwitcher(capaAccidentes);
+      console.log(accidentesMapService.layerSwitcher)
     }
 
     if (
@@ -144,9 +246,12 @@ function AccidentesMap({
     ) {
       const accidentesStyleFunction = function (feature, resolution) {
         let class_color = default_accidentes_color_style;
-        if (Object.keys(mappingColors).length > 1) {
-          class_color = mappingColors[feature.get(variableEstudio.column)];
-        }
+      if (Object.keys(mappingColors).length > 1 && variableEstudio) {
+        class_color = mappingColors[feature.get(variableEstudio.column)];
+      }
+      if (feature.get("visible") == false) {
+        class_color += "00";
+      }
 
         return [
           new Style({
@@ -171,6 +276,8 @@ function AccidentesMap({
     variableEstudio,
     capaTramo,
     capaAccidentes,
+    variableFilters,
+    variables
   ]);
 
   return (

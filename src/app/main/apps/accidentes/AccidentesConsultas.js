@@ -26,6 +26,7 @@ export default function AccidentesConsultas() {
   const [diccionariosVariables, setDiccionariosVariables] = useState([]);
   const [variableFilters, setVariableFilters] = useState([]);
 
+
   useEffect(() => {
     const get_vars = async () => {
       const vars = await dataApiService.get_variables_estudio();
@@ -33,6 +34,8 @@ export default function AccidentesConsultas() {
     };
     get_vars();
   }, []);
+
+
 
   useEffect(() => {
     const get_diccionarios = async () => {
@@ -104,6 +107,7 @@ export default function AccidentesConsultas() {
               variableEstudio={variableEstudio}
               variableFilters={variableFilters}
               default_accidentes_color_style={default_accidentes_color_style}
+              
             />
           </Stack>
         )}

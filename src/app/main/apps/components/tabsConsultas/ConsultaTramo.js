@@ -22,6 +22,9 @@ import { format } from "date-fns";
 import dataApiService from "app/services/dataApiService";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setCarreteras,
+  setInputPkFin,
+  setInputPkInicio,
   setPk_fin,
   setPk_inicio,
   setPuntosAccidentes,
@@ -34,92 +37,153 @@ import {
 
 const ConsultaTramo = () => {
   const dispatch = useDispatch();
+  const carreteras = useSelector((state) => state.consultas.carreteras);
   const selectedProvincia = useSelector((state) => state.consultas.selectedProvincia);
+  console.log('selectedProvincia: ', selectedProvincia);
   const selectedCarretera = useSelector((state) => state.consultas.selectedCarretera);
-  const pk_inicio = useSelector((state) => state.consultas.pk_inicio);
-  const pk_fin = useSelector((state) => state.consultas.pk_fin);
-  const selectedStartDate = useSelector((state) => state.consultas.selectedStartDate);
-  console.log('selectedStartDate1: ', selectedStartDate)
-  const selectedEndDate = useSelector((state) => state.consultas.selectedEndDate);
-  console.log('selectedEndDate1: ', selectedEndDate)
 
+  const inputPkInicio = useSelector((state) => state.consultas.inputPkInicio); //valor que ingresa el usuario
+  const inputPkFin = useSelector((state) => state.consultas.inputPkFin); //valor que ingresa el usuario
+  const pkInicioHelper = useSelector((state) => state.consultas.pk_inicio); // valor que responde la API y que aparece en el textHelper y en placeholder
+  const pkFinHelper = useSelector((state) => state.consultas.pk_fin); // valor que responde la API y que aparece en el textHelper y en placeholder
+
+  const selectedStartDate = useSelector((state) => state.consultas.selectedStartDate);
+  const selectedEndDate = useSelector((state) => state.consultas.selectedEndDate);
+  
   const [disabled, setDisabled] = useState(true);
   const [showErrorFecha, setShowErrorFecha] = useState(false);
   const [showErrorPkInicio, setShowErrorPkInicio] = useState(false);
   const [showErrorPkFin, setShowErrorPkFin] = useState(false);
-  const [disabledPuntos, setDisabledPuntos] = useState(true);
-
+  const [disabledPuntos, setDisabledPuntos] = useState(true);  
   const [provincias, setProvincias] = useState([]);
-  const [carreteras, setCarreteras] = useState([]);
-
-  // const [pk_inicio, setPk_inicio] = useState();
-  const [selectedPk_inicio, setSelectedPk_inicio] = useState("");
-
-  // const [pk_fin, setPk_fin] = useState();
-  const [selectedPk_fin, setSelectedPk_fin] = useState("");
-
+  // const [carreteras, setCarreteras] = useState([]);
+  
   const [pkInicioHelperText, setPkInicioHelperText] = useState("");
   const [pkFinHelperText, setPkFinHelperText] = useState("");
-
-  // const [selectedStartDate, setSelectedStartDate] = useState(null);
-  // const [selectedEndDate, setSelectedEndDate] = useState(null);
-
-  const fetchCarreteras = async () => {
-    try {
-      const dataCarreteras = await dataApiService.get_carretera();
-      setCarreteras(dataCarreteras);
-    } catch (error) {
-      console.error("Error al obtener carreteras: ", error);
-    }
-  };
+  const isMounted = useRef(true);
 
   const handleStartDateChange = (date) => dispatch(setSelectedStartDate(date));
   const handleEndDateChange = (date) => dispatch(setSelectedEndDate(date));
 
   const handleChangeProvincia = (e) => {
-    const selectedValue = e.target.value;
-    const selectedProvince = provincias.find(
-      (province) => province.descripcion === selectedValue
-    );
 
-    dispatch(setSelectedProvincia(selectedProvince));
-    dispatch(setSelectedCarretera(""));
-    selectedProvince ? fetchCarreteras() : fetchCarreterasSinProvincia();
+    dispatch(setSelectedProvincia(e.target.value))
+
+    // const selectedValue = e.target.value;
+    // const selectedProvince = provincias.find(
+    //   (province) => province.descripcion === selectedValue
+    // );
+
+    // dispatch(setSelectedProvincia(selectedProvince));
+    // dispatch(setSelectedCarretera(""));
+    // selectedProvince ? fetchCarreteras() : fetchCarreterasSinProvincia();
   };
-
   const handleClearProvincia = () => {
     dispatch(setSelectedProvincia(""));
   };
+
   const handleChangeCarretera = (e) => {
     dispatch(setSelectedCarretera(e.target.value));
     setDisabled(false);
   };
   const handleClearCarretera = () => {
     dispatch(setSelectedCarretera(""));
+    dispatch(setInputPkInicio(""));
+    dispatch(setInputPkFin(""))
+    dispatch(setPk_inicio(""))
+    dispatch(setPk_fin(""))
   };
-  const handlePkInicio = (e) => setSelectedPk_inicio(e.target.value);
-  const handleClearPkInicio = () => {
-    dispatch(setPk_inicio(''));
-  }
+  const handlePkInicio = (e) => {
+    dispatch(setInputPkInicio(e.target.value))
+  };
 
-  const handlePkFin = (e) => setSelectedPk_fin(e.target.value);
-  const handleClearPkFin = () => {
-    dispatch(setPk_fin(''))
-  }
-
+  const handlePkFin = (e) => {
+    dispatch(setInputPkFin(e.target.value));
+  };
 
   const isMediumScreen = useMediaQuery(
     "(min-width: 1200px) and (max-width: 1300px)"
   );
   const formControlStyle = { width: isMediumScreen ? "160px" : "200px" };
-  const isMounted = useRef(true);
+
+  useEffect(() => {
+    const fetchProvincias = async () => {
+      const dataProvincias = await dataApiService.get_provinciaName();
+      setProvincias(dataProvincias);
+    }
+
+    fetchProvincias();
+
+    if (!selectedProvincia) {
+
+      console.log('selectedProvincia is false')
+      const fetchCarreterasSinProvincia = async () => {
+        const dataCarreterasSinProvincia = await dataApiService.get_carreteraSinProvincia();
+        console.log('dataCarreteras2: ', dataCarreterasSinProvincia)
+        dispatch(setCarreteras(dataCarreterasSinProvincia))
+        console.log('carreteras2: ', carreteras)
+      }
+  
+      fetchCarreterasSinProvincia();
+      
+    } else {
+      console.log('selectedProvincia is true')
+      const fetchCarreteras = async () => {
+        const dataCarreteras = await dataApiService.get_carretera();
+        console.log('dataCarreteras1: ', dataCarreteras)
+        dispatch(setCarreteras(dataCarreteras))
+        console.log('carreteras1: ', carreteras)
+      }
+  
+      fetchCarreteras();
+    }
+  },[selectedProvincia])
+
+  // useEffect(() => {
+  //   isMounted.current = true;
+
+  //   const fetchProvincias = async () => {
+  //     try {
+  //       const dataProvincias = await dataApiService.get_provinciaName();
+  //       isMounted.current && setProvincias(dataProvincias);
+  //       console.log('provincias1: ', provincias)
+  //     } catch (error) {
+  //       console.error("Error al obtener las provincias: ", error);
+  //     }
+  //   };
+
+  //   const fetchCarreterasSinProvincia = async () => {
+  //     try {
+  //       const dataCarreterasSinProvincia = await dataApiService.get_carreteraSinProvincia();
+  //       isMounted.current && setCarreteras(dataCarreterasSinProvincia);
+  //     } catch (error) {
+  //       console.error("Error al obtener carreteras: ", error);
+  //     }
+  //   }
+
+  //   // if (selectedCarretera) {
+  //   //   fetchProvincias();
+  //   // } else {
+  //   //   fetchCarreterasSinProvincia();
+  //   // }
+
+
+  //     if (!selectedProvincia) {
+  //     // Utiliza fetchCarreterasSinProvincia si no hay provincia seleccionada
+  //     fetchCarreterasSinProvincia();
+  //   } else {
+  //     // Utiliza fetchCarreteras si hay provincia seleccionada
+  //     fetchCarreteras();
+  //   }
+  // // }, [selectedProvincia, isMounted]);
+  // }, [selectedCarretera, isMounted])
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
       selectedCarretera &&
-      selectedPk_inicio &&
-      selectedPk_fin &&
+      inputPkInicio &&
+      inputPkFin &&
       selectedStartDate &&
       selectedEndDate
     ) {
@@ -130,8 +194,8 @@ const ConsultaTramo = () => {
         try {
           const dataPuntosAccidentes = await dataApiService.getPuntosAccidentes(
             selectedCarretera,
-            selectedPk_inicio,
-            selectedPk_fin,
+            inputPkInicio,
+            inputPkFin,
             formattedStartDate,
             formattedEndDate
           );
@@ -149,15 +213,18 @@ const ConsultaTramo = () => {
     try {
       const dataTramosGeom = await dataApiService.getTramosGeo(
         selectedCarretera,
-        selectedPk_inicio,
-        selectedPk_fin
+        inputPkInicio,
+        inputPkFin
       );
 
       if (dataTramosGeom) {
         setDisabledPuntos(false);
       }
 
-      dispatch(setTramoGeoJson(dataTramosGeom));
+      dispatch(setTramoGeoJson({
+        data: dataTramosGeom,
+        visible: true,
+      }));
     } catch (e) {
       console.error("Error al obtener tramos geográficos: ", e);
     }
@@ -165,44 +232,73 @@ const ConsultaTramo = () => {
 
   useEffect(() => () => (isMounted.current = false), []);
 
+  // useEffect(() => {
+  //   isMounted.current = true;
+  //   const fetchProvinciaName = async () => {
+  //     try {
+  //       const dataProvincias = await dataApiService.get_provinciaName();
+  //       isMounted.current && setProvincias(dataProvincias);
+  //     } catch (error) {
+  //       console.error("Error al obtener provincias: ", error);
+  //     }
+  //   };
+
+  //   fetchProvinciaName();
+  // }, []);
+
+  // useEffect(() => {
+  //   isMounted.current = true;
+
+  //   const fetchCarreterasSinProvincia = async () => {
+  //     try {
+  //       const dataCarreterasSinProvincia =
+  //         await dataApiService.get_carreteraSinProvincia();
+  //       isMounted.current && setCarreteras(dataCarreterasSinProvincia);
+  //     } catch (error) {
+  //       console.error("Error al obtener carreteras: ", error);
+  //     }
+  //   };
+
+  //   if (!selectedProvincia) {
+  //     // Utiliza fetchCarreterasSinProvincia si no hay provincia seleccionada
+  //     fetchCarreterasSinProvincia();
+  //   } else {
+  //     // Utiliza fetchCarreteras si hay provincia seleccionada
+  //     fetchCarreteras();
+  //   }
+  // }, [selectedProvincia, isMounted]);
+
+  // useEffect(() => {
+  //   isMounted.current = true;
+  //   const fetchTramosPorCarretera = async () => {
+  //     try {
+  //       if (selectedCarretera) {
+  //         const dataTramo = await dataApiService.getTramosPorCarretera(
+  //           selectedCarretera,
+  //           selectedProvincia.descripcion
+  //         );
+  //         dispatch(setPk_inicio(dataTramo[0]?.min));
+  //         dispatch(setPk_fin(dataTramo[0]?.max));
+
+  //         if (dataTramo && dataTramo.length > 0) {
+  //           setPkInicioHelperText(dataTramo[0].min);
+  //           setPkFinHelperText(dataTramo[0].max);
+  //         } else {
+  //           setPkInicioHelperText("");
+  //           setPkFinHelperText("");
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error("Error al obtener tramos por carretera: ", error);
+  //     }
+  //   };
+
+  //   fetchTramosPorCarretera();
+  // }, [selectedCarretera, isMounted]);
+
   useEffect(() => {
     isMounted.current = true;
-    const fetchProvinciaName = async () => {
-      try {
-        const dataProvincias = await dataApiService.get_provinciaName();
-        isMounted.current && setProvincias(dataProvincias);
-      } catch (error) {
-        console.error("Error al obtener provincias: ", error);
-      }
-    };
 
-    fetchProvinciaName();
-  }, []);
-
-  useEffect(() => {
-    isMounted.current = true;
-
-    const fetchCarreterasSinProvincia = async () => {
-      try {
-        const dataCarreterasSinProvincia =
-          await dataApiService.get_carreteraSinProvincia();
-        isMounted.current && setCarreteras(dataCarreterasSinProvincia);
-      } catch (error) {
-        console.error("Error al obtener carreteras: ", error);
-      }
-    };
-
-    if (!selectedProvincia) {
-      // Utiliza fetchCarreterasSinProvincia si no hay provincia seleccionada
-      fetchCarreterasSinProvincia();
-    } else {
-      // Utiliza fetchCarreteras si hay provincia seleccionada
-      fetchCarreteras();
-    }
-  }, [selectedProvincia, isMounted]);
-
-  useEffect(() => {
-    isMounted.current = true;
     const fetchTramosPorCarretera = async () => {
       try {
         if (selectedCarretera) {
@@ -270,8 +366,11 @@ const ConsultaTramo = () => {
             <Stack>
               {selectedProvincia && (
                 <Chip
-                  label={selectedProvincia.descripcion}
-                  onDelete={handleClearProvincia}
+                  label={selectedProvincia}
+                  onDelete={() => {
+                    handleClearProvincia();
+                    handleClearCarretera();
+                  }}
                   deleteIcon={
                     <IconButton>
                       <CloseIcon />
@@ -286,6 +385,8 @@ const ConsultaTramo = () => {
               )}
             </Stack>
           </Stack>
+
+          {selectedProvincia ? `La provincia elegida es ${selectedProvincia}` : 'No se ha elegido provincia'}
 
           <Stack spacing={2} paddingY={2} paddingX={1} sx={formControlStyle}>
             <Typography fontWeight={"bold"} component="span">
@@ -302,10 +403,20 @@ const ConsultaTramo = () => {
                 onChange={handleChangeCarretera}
               >
                 {carreteras
+                  // .filter((carretera) => {
+                  //   if (selectedProvincia) {
+                  //     return carretera.id_provincia === selectedProvincia.id;
+                  //   } else {
+                  //     console.log('carretera.id_provincia: ', carretera.id_provincia)
+                  //     return true;
+                  //   }
                   .filter((carretera) => {
                     if (selectedProvincia) {
+                      console.log('Selected Province ID:', selectedProvincia.id);
+                      // console.log('Carretera Province ID:', carretera.id_provincia);
                       return carretera.id_provincia === selectedProvincia.id;
                     } else {
+                      // console.log('No Province Selected - Carretera:', carretera);
                       return true;
                     }
                   })
@@ -323,11 +434,7 @@ const ConsultaTramo = () => {
               {selectedCarretera && (
                 <Chip
                   label={selectedCarretera}
-                  onDelete={() => {
-                    handleClearCarretera();
-                    handleClearPkInicio();
-                    handleClearPkFin();
-                  }}
+                  onDelete={handleClearCarretera}
                   deleteIcon={
                     <IconButton>
                       <CloseIcon />
@@ -378,7 +485,8 @@ const ConsultaTramo = () => {
                       type="number"
                       inputProps={{ step: 0.1 }}
                       size="small"
-                      placeholder={pk_inicio}
+                      placeholder={pkInicioHelper}
+                      value={inputPkInicio}
                       onChange={handlePkInicio}
                       helperText={
                         selectedCarretera
@@ -391,8 +499,8 @@ const ConsultaTramo = () => {
                       onBlur={(e) => {
                         const inputValue = parseFloat(e.target.value);
                         if (
-                          inputValue < parseFloat(pk_inicio) ||
-                          inputValue > parseFloat(pk_fin - 1)
+                          inputValue < parseFloat(pkInicioHelper) ||
+                          inputValue > parseFloat(pkFinHelper - 1)
                         ) {
                           setShowErrorPkInicio(true);
                         } else {
@@ -421,7 +529,8 @@ const ConsultaTramo = () => {
                       inputProps={{
                         step: 0.1,
                       }}
-                      placeholder={pk_fin}
+                      placeholder={pkFinHelper}
+                      value={inputPkFin}
                       onChange={handlePkFin}
                       helperText={
                         selectedCarretera
@@ -434,8 +543,8 @@ const ConsultaTramo = () => {
                       onBlur={(e) => {
                         const inputValue = parseFloat(e.target.value);
                         if (
-                          inputValue < parseFloat(pk_inicio) + 0.1 ||
-                          inputValue > parseFloat(pk_fin)
+                          inputValue < parseFloat(pkInicioHelper) + 0.1 ||
+                          inputValue > parseFloat(pkFinHelper)
                         ) {
                           setShowErrorPkFin(true);
                         } else {
@@ -459,8 +568,8 @@ const ConsultaTramo = () => {
             }}
             onClick={fetchTramosGeom}
             disabled={
-              !selectedPk_inicio ||
-              !selectedPk_fin ||
+              !inputPkInicio ||
+              !inputPkFin ||
               showErrorPkInicio ||
               showErrorPkFin
             }

@@ -284,7 +284,7 @@ function AccidentesGrafico({
       useFlexGap
       flexWrap="wrap"
     >
-      <div id="chart" />
+      <div id="chart" />        
       <Select
         size="small"
         labelId="Elegir provincia"
